@@ -51,6 +51,20 @@ describe('PixelSprite', () => {
     expect(container.querySelectorAll('img')).toHaveLength(2);
   });
 
+  it.each(['wps-data-lab', 'remetra', 'generex', 'dartbyte'])(
+    'resolves the preserved %s sprite without a fallback',
+    (spriteId) => {
+      const { container } = render(
+        <PixelSprite spriteId={spriteId} label={spriteId} animate />,
+      );
+
+      expect(screen.getByRole('img', { name: spriteId })).toBeVisible();
+      expect(screen.queryByText(spriteId)).not.toBeInTheDocument();
+      expect(container.querySelectorAll('img')).toHaveLength(2);
+      cleanup();
+    },
+  );
+
   const entriesWithExistingSprites = rosterTabs
     .flatMap((roster) => roster.entries)
     .filter((entry) => entry.spriteId !== 'wps-data-lab' && entry.spriteId !== 'remetra');

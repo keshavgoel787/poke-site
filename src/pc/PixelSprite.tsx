@@ -21,8 +21,12 @@ import northeasternUniversityA from '../assets/sprites/northeastern-university-a
 import northeasternUniversityB from '../assets/sprites/northeastern-university-b.svg';
 import procureMateAiA from '../assets/sprites/procuremateai-a.svg';
 import procureMateAiB from '../assets/sprites/procuremateai-b.svg';
+import remetraA from '../assets/sprites/remetra-a.svg';
+import remetraB from '../assets/sprites/remetra-b.svg';
 import vdartA from '../assets/sprites/vdart-a.svg';
 import vdartB from '../assets/sprites/vdart-b.svg';
+import wpsDataLabA from '../assets/sprites/wps-data-lab-a.svg';
+import wpsDataLabB from '../assets/sprites/wps-data-lab-b.svg';
 
 type PixelSpriteProps = {
   spriteId: string;
@@ -39,9 +43,11 @@ const sprites: Record<string, SpriteFrames> = {
   amazon: { frameA: amazonA, frameB: amazonB },
   bhangra: { frameA: bhangraA, frameB: bhangraB },
   'breathe-easy': { frameA: breatheEasyA, frameB: breatheEasyB },
+  dartbyte: { frameA: vdartA, frameB: vdartB },
   draftkings: { frameA: draftKingsA, frameB: draftKingsB },
   'forget-me-not': { frameA: forgetMeNotA, frameB: forgetMeNotB },
   generate: { frameA: generateA, frameB: generateB },
+  generex: { frameA: generateA, frameB: generateB },
   interests: { frameA: interestsA, frameB: interestsB },
   'johnson-johnson': { frameA: johnsonJohnsonA, frameB: johnsonJohnsonB },
   locations: { frameA: locationsA, frameB: locationsB },
@@ -50,7 +56,9 @@ const sprites: Record<string, SpriteFrames> = {
     frameB: northeasternUniversityB,
   },
   procuremateai: { frameA: procureMateAiA, frameB: procureMateAiB },
+  remetra: { frameA: remetraA, frameB: remetraB },
   vdart: { frameA: vdartA, frameB: vdartB },
+  'wps-data-lab': { frameA: wpsDataLabA, frameB: wpsDataLabB },
 };
 
 function SpriteFallback({ label }: Pick<PixelSpriteProps, 'label'>) {
