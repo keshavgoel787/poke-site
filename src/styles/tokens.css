@@ -1,0 +1,10 @@
+:root {
+  --ink: #172032;
+  --cream: #fff4da;
+  --gold: #ffd56b;
+  --red: #d44532;
+  --focus: #2459c4;
+  --pixel-border: 3px;
+  color: var(--ink);
+  background: var(--cream);
+}

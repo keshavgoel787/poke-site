@@ -1,0 +1,738 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 16px;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+button,
+a {
+  min-width: 44px;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+
+button {
+  color: inherit;
+  font: inherit;
+}
+
+a {
+  color: var(--ink);
+  font-weight: 700;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 2px;
+}
+
+a:hover {
+  background: var(--gold);
+}
+
+:focus-visible {
+  outline: 4px solid var(--focus);
+  outline-offset: 3px;
+  position: relative;
+  z-index: 10;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-block-start: 0;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#root {
+  width: min(100%, 80rem);
+  margin-inline: auto;
+  padding: 0.75rem;
+}
+
+/* Recruiter-first trainer file. */
+#root > header,
+#root > main:not([data-booting]) {
+  width: min(100%, 60rem);
+  margin-inline: auto;
+  border: var(--pixel-border) solid var(--ink);
+  box-shadow: 0.35rem 0.35rem 0 var(--ink);
+}
+
+#root > header {
+  padding: clamp(1.25rem, 5vw, 3rem);
+  background: var(--red);
+  color: var(--cream);
+}
+
+#root > header h1 {
+  max-width: 12ch;
+  margin-bottom: 0.75rem;
+  font-size: clamp(2.25rem, 9vw, 5.75rem);
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+}
+
+#root > header p {
+  width: fit-content;
+  max-width: 46rem;
+  margin-bottom: 0.35rem;
+  padding: 0.15rem 0.35rem;
+  border-left: 0.35rem solid var(--gold);
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+#root > main:not([data-booting]) {
+  margin-top: 1.15rem;
+  padding: clamp(1rem, 4vw, 2rem);
+  background: var(--cream);
+}
+
+#root > main:not([data-booting]) h2 {
+  margin-bottom: 1rem;
+  padding: 0.45rem 0.65rem;
+  border-left: 0.8rem solid var(--red);
+  border-bottom: var(--pixel-border) solid var(--ink);
+  background: var(--gold);
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
+  text-transform: uppercase;
+}
+
+#root > main:not([data-booting]) section > ul {
+  display: grid;
+  gap: 0.8rem;
+}
+
+#root > main:not([data-booting]) article {
+  height: 100%;
+  padding: 0.8rem;
+  border: var(--pixel-border) solid var(--ink);
+}
+
+#root > main:not([data-booting]) article h3 {
+  margin-bottom: 0.6rem;
+  font-size: 1.15rem;
+}
+
+#root > main:not([data-booting]) article p {
+  margin-bottom: 0.35rem;
+}
+
+#root > main:not([data-booting]) > p {
+  margin: 1.25rem 0;
+}
+
+#root > main:not([data-booting]) > p a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: var(--pixel-border) solid var(--ink);
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: inset 0.55rem 0 0 var(--red);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+#root > main:not([data-booting]) > p a::after {
+  content: "▶";
+  color: var(--red);
+}
+
+#root > main:not([data-booting]) nav ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+#root > main:not([data-booting]) nav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 0.35rem;
+  border: var(--pixel-border) solid var(--ink);
+  text-align: center;
+  text-decoration: none;
+}
+
+/* Expanded handheld PC. */
+#root > main[data-booting] {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border: var(--pixel-border) solid var(--ink);
+  background: var(--cream);
+  box-shadow: 0.35rem 0.35rem 0 var(--ink);
+  animation: boot 320ms steps(4, end) both;
+}
+
+#root > main[data-booting] > h1 {
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  border-bottom: var(--pixel-border) solid var(--ink);
+  background: var(--red);
+  color: var(--cream);
+  font-size: clamp(1.4rem, 6vw, 2.3rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+#root > main[data-booting] > nav[aria-label="Quick menu"] {
+  padding: 0.65rem;
+  border-bottom: var(--pixel-border) solid var(--ink);
+  background: var(--gold);
+}
+
+#root > main[data-booting] > nav[aria-label="Quick menu"] ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+#root > main[data-booting] > nav[aria-label="Quick menu"] li:last-child {
+  grid-column: 1 / -1;
+}
+
+#root > main[data-booting] > nav[aria-label="Quick menu"] a,
+#root > main[data-booting] > nav[aria-label="Quick menu"] button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.35rem 0.45rem;
+  border: var(--pixel-border) solid var(--ink);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+#root > main[data-booting] > nav[aria-label="Quick menu"] button {
+  cursor: pointer;
+}
+
+#root > main[data-booting]
+  > nav[aria-label="Quick menu"]
+  button[aria-pressed="true"] {
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 0.25rem var(--red);
+}
+
+#root > main[data-booting]
+  > nav[aria-label="Quick menu"]
+  button[aria-pressed="true"]::after {
+  content: " ON";
+  color: var(--ink);
+}
+
+#root > main[data-booting]
+  > nav[aria-label="Quick menu"]
+  button[aria-pressed="false"]::after {
+  content: " OFF";
+}
+
+#root > main[data-booting] > [role="status"] {
+  margin: 0;
+  padding: 0.65rem 0.8rem;
+  border-bottom: var(--pixel-border) solid var(--ink);
+  background: var(--gold);
+  font-weight: 700;
+}
+
+#root > main[data-booting] > nav[aria-label="PC boxes"] {
+  padding: 0.65rem 0.65rem 0;
+}
+
+[role="tablist"] {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.3rem;
+}
+
+[role="tablist"] [role="tab"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 0.35rem 0.2rem;
+  border: var(--pixel-border) solid var(--ink);
+  background: var(--cream);
+  font-size: clamp(0.63rem, 3.1vw, 0.9rem);
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+[role="tablist"] [role="tab"][aria-selected="true"] {
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: inset 0 -0.45rem 0 var(--red);
+}
+
+[role="tablist"] [role="tab"][aria-selected="true"]::before {
+  content: "▶";
+  margin-right: 0.25rem;
+  color: var(--red);
+}
+
+#root > main[data-booting] > [role="tabpanel"] {
+  display: grid;
+  min-width: 0;
+  gap: 0.8rem;
+  padding: 0.65rem;
+}
+
+#root > main[data-booting] > [role="tabpanel"] > ul[aria-label="Career entries"] {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+#root > main[data-booting]
+  > [role="tabpanel"]
+  > ul[aria-label="Career entries"]
+  button {
+  position: relative;
+  display: grid;
+  grid-template-rows: 4.5rem auto auto;
+  place-items: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 9.5rem;
+  padding: 0.55rem 0.35rem 0.45rem;
+  border: var(--pixel-border) solid var(--ink);
+  background: var(--cream);
+  cursor: pointer;
+  overflow-wrap: anywhere;
+  transition: transform 80ms steps(1, end), background-color 80ms steps(1, end);
+}
+
+#root > main[data-booting]
+  > [role="tabpanel"]
+  > ul[aria-label="Career entries"]
+  button:hover {
+  background: var(--gold);
+  transform: translate(-2px, -2px);
+}
+
+#root > main[data-booting]
+  > [role="tabpanel"]
+  > ul[aria-label="Career entries"]
+  button[aria-pressed="true"] {
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 0.25rem var(--red);
+}
+
+#root > main[data-booting]
+  > [role="tabpanel"]
+  > ul[aria-label="Career entries"]
+  button[aria-pressed="true"]::before {
+  content: "▶";
+  position: absolute;
+  top: 0.45rem;
+  left: 0.45rem;
+  color: var(--red);
+  animation: cursor-hop 520ms steps(2, end) infinite;
+}
+
+#root > main[data-booting]
+  > [role="tabpanel"]
+  > ul[aria-label="Career entries"]
+  button
+  > span:nth-last-child(2) {
+  font-size: clamp(0.68rem, 3.2vw, 0.86rem);
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+#root > main[data-booting]
+  > [role="tabpanel"]
+  > ul[aria-label="Career entries"]
+  button
+  > span:last-child {
+  align-self: start;
+  margin-top: 0.25rem;
+  font-size: clamp(0.65rem, 3vw, 0.8rem);
+  line-height: 1.15;
+}
+
+.pixel-sprite {
+  position: relative;
+  display: inline-grid;
+  width: 4.25rem;
+  height: 4.25rem;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.pixel-sprite__frame {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.pixel-sprite__frame--a {
+  z-index: 1;
+  opacity: 1;
+}
+
+.pixel-sprite__frame--b {
+  z-index: 2;
+  opacity: 0;
+}
+
+.pixel-sprite[data-animate="true"] .pixel-sprite__frame--a {
+  animation: sprite-frame-a 760ms steps(1, end) infinite;
+}
+
+.pixel-sprite[data-animate="true"] .pixel-sprite__frame--b {
+  animation: sprite-frame-b 760ms steps(1, end) infinite;
+}
+
+.pixel-sprite--fallback {
+  grid-template-rows: 1fr auto;
+  width: 100%;
+  min-width: 4.25rem;
+  height: auto;
+  min-height: 4.25rem;
+  padding: 0.2rem;
+  border: var(--pixel-border) solid var(--ink) !important;
+  font-size: 0.7rem;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.pixel-sprite--fallback > [aria-hidden="true"] {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+#root > main[data-booting] > [role="tabpanel"] > article {
+  display: grid;
+  grid-template-columns: 4.75rem minmax(0, 1fr);
+  align-content: start;
+  gap: 0.35rem 0.65rem;
+  min-width: 0;
+  padding: 0.8rem;
+  border: var(--pixel-border) solid var(--ink);
+  box-shadow: inset 0.35rem 0 0 var(--red);
+}
+
+#root > main[data-booting] > [role="tabpanel"] > article > .pixel-sprite {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+}
+
+#root > main[data-booting] > [role="tabpanel"] > article > h2,
+#root > main[data-booting] > [role="tabpanel"] > article > p:nth-of-type(-n + 2) {
+  grid-column: 2;
+}
+
+#root > main[data-booting] > [role="tabpanel"] > article > h2 {
+  align-self: end;
+  margin: 0;
+  font-size: clamp(1.2rem, 5vw, 1.8rem);
+  overflow-wrap: anywhere;
+  text-transform: uppercase;
+}
+
+#root > main[data-booting] > [role="tabpanel"] > article > p {
+  margin: 0;
+}
+
+#root > main[data-booting] > [role="tabpanel"] > article > p:nth-of-type(1) {
+  font-weight: 700;
+}
+
+#root > main[data-booting] > [role="tabpanel"] > article > p:nth-of-type(2) {
+  align-self: start;
+  padding-left: 0.35rem;
+  border-left: 0.3rem solid var(--red);
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+#root > main[data-booting] > [role="tabpanel"] > article > p:nth-of-type(3) {
+  grid-column: 1 / -1;
+  margin-top: 0.5rem;
+  padding: 0.65rem;
+  border: var(--pixel-border) solid var(--ink);
+  background: var(--gold);
+  animation: dialogue-reveal 620ms steps(8, end) both;
+}
+
+#root > main[data-booting] > [role="tabpanel"] > article > div[aria-label="Types"] {
+  display: flex;
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+}
+
+#root > main[data-booting]
+  > [role="tabpanel"]
+  > article
+  > div[aria-label="Types"]
+  span {
+  padding: 0.25rem 0.4rem;
+  border: 2px solid var(--red);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+#root > main[data-booting] > [role="tabpanel"] > article > ul[aria-label="Moves"] {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+}
+
+#root > main[data-booting]
+  > [role="tabpanel"]
+  > article
+  > ul[aria-label="Moves"]
+  li {
+  display: grid;
+  min-width: 0;
+  padding: 0.45rem 0.55rem;
+  border-left: 0.45rem solid var(--red);
+  border-bottom: 2px solid var(--ink);
+  background: var(--cream);
+}
+
+#root > main[data-booting]
+  > [role="tabpanel"]
+  > article
+  > ul[aria-label="Moves"]
+  strong,
+#root > main[data-booting]
+  > [role="tabpanel"]
+  > article
+  > ul[aria-label="Moves"]
+  span {
+  overflow-wrap: anywhere;
+}
+
+#root > main[data-booting]
+  > [role="tabpanel"]
+  > article
+  > ul[aria-label="Moves"]
+  span {
+  font-size: 0.83rem;
+}
+
+#root > main[data-booting] > [role="tabpanel"] > article > a {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.5rem;
+  padding: 0.45rem 0.65rem;
+  border: var(--pixel-border) solid var(--ink);
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: inset 0.45rem 0 0 var(--red);
+  text-align: center;
+  text-decoration: none;
+}
+
+@keyframes boot {
+  from {
+    opacity: 0;
+    transform: translateY(0.55rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cursor-hop {
+  0%,
+  49% {
+    transform: translateX(0);
+  }
+
+  50%,
+  100% {
+    transform: translateX(0.2rem);
+  }
+}
+
+@keyframes dialogue-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes sprite-frame-a {
+  0%,
+  49.99% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes sprite-frame-b {
+  0%,
+  49.99% {
+    opacity: 0;
+  }
+
+  50%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 36rem) {
+  #root > main[data-booting] > nav[aria-label="Quick menu"] ul {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  #root > main[data-booting] > nav[aria-label="Quick menu"] li:last-child {
+    grid-column: auto;
+  }
+
+  #root > main[data-booting] > [role="tabpanel"] > article > ul[aria-label="Moves"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  #root {
+    padding: 1.5rem;
+  }
+
+  #root > header,
+  #root > main:not([data-booting]) {
+    box-shadow: 0.65rem 0.65rem 0 var(--ink);
+  }
+
+  #root > main:not([data-booting]) section > ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #root > main:not([data-booting]) nav ul {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  #root > main[data-booting] {
+    box-shadow: 0.75rem 0.75rem 0 var(--ink);
+  }
+
+  #root > main[data-booting] > nav[aria-label="Quick menu"] a,
+  #root > main[data-booting] > nav[aria-label="Quick menu"] button {
+    font-size: 0.82rem;
+  }
+
+  [role="tablist"] [role="tab"] {
+    font-size: 0.9rem;
+  }
+
+  #root > main[data-booting] > [role="tabpanel"] {
+    grid-template-columns: minmax(0, 1fr) minmax(21rem, 1.08fr);
+    align-items: start;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  #root > main[data-booting]
+    > [role="tabpanel"]
+    > ul[aria-label="Career entries"]
+    button {
+    min-height: 10.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  #root > main[data-booting] > [role="tabpanel"] > article > p:nth-of-type(3) {
+    clip-path: inset(0) !important;
+  }
+}
+
+[data-reduced-motion="true"],
+[data-reduced-motion="true"] *,
+[data-reduced-motion="true"] *::before,
+[data-reduced-motion="true"] *::after {
+  scroll-behavior: auto !important;
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+[data-reduced-motion="true"]
+  > [role="tabpanel"]
+  > article
+  > p:nth-of-type(3) {
+  clip-path: inset(0) !important;
+}
