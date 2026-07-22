@@ -1,4 +1,5 @@
 import type { CareerEntry } from '../data/portfolioData';
+import { PixelSprite } from './PixelSprite';
 
 type PokedexEntryProps = {
   entry: CareerEntry;
@@ -7,6 +8,7 @@ type PokedexEntryProps = {
 export function PokedexEntry({ entry }: PokedexEntryProps) {
   return (
     <article aria-live="polite" aria-atomic="true">
+      <PixelSprite spriteId={entry.spriteId} label={entry.creatureName} animate />
       <h2>{entry.organization}</h2>
       <p>{entry.role}</p>
       <p>{entry.dates}</p>

@@ -58,6 +58,13 @@ describe('CareerPC', () => {
     expect(screen.getAllByRole('listitem', { name: /move:/i })).toHaveLength(4);
   });
 
+  it('renders sprites in the creature grid and selected entry', () => {
+    renderCareerPC('/pc/experience/amazon');
+
+    expect(screen.getAllByRole('img', { name: 'Amazoar' })).toHaveLength(2);
+    expect(screen.getByRole('img', { name: 'Draftion' })).toBeVisible();
+  });
+
   it('keeps sound off until the quick menu sound control is clicked', async () => {
     const user = userEvent.setup();
     renderCareerPC('/pc/experience/amazon');

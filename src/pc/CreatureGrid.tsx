@@ -1,5 +1,6 @@
 import { useRef, type KeyboardEvent } from 'react';
 import type { CareerEntry } from '../data/portfolioData';
+import { PixelSprite } from './PixelSprite';
 
 type CreatureGridProps = {
   entries: CareerEntry[];
@@ -43,6 +44,11 @@ export function CreatureGrid({ entries, selectedId, onSelect }: CreatureGridProp
               onClick={() => onSelect(entry.id)}
               onKeyDown={(event) => moveFocus(event, index)}
             >
+              <PixelSprite
+                spriteId={entry.spriteId}
+                label={entry.creatureName}
+                animate={selected}
+              />
               <span>{entry.creatureName}</span>
               <span>{entry.organization}</span>
             </button>
