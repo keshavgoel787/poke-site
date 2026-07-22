@@ -52,6 +52,7 @@ a:hover {
   z-index: 10;
   outline: 4px solid var(--focus);
   outline-offset: 3px;
+  box-shadow: 0 0 0 3px var(--ink) !important;
 }
 
 h1,
@@ -304,7 +305,7 @@ ul {
 
 .trainer-roster-card:focus-visible {
   outline: 4px solid var(--focus);
-  outline-offset: 4px;
+  outline-offset: 3px;
 }
 
 /* Party roster */
@@ -636,7 +637,8 @@ ul {
   min-height: 6.25rem;
   padding: 0.2rem;
   border: var(--pixel-border) solid var(--steel-light) !important;
-  color: var(--screen-white);
+  background: var(--screen-white);
+  color: var(--ink);
   font-size: 0.7rem;
   line-height: 1.1;
   text-align: center;

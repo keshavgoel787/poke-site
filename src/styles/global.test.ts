@@ -2,6 +2,8 @@
 
 // @ts-expect-error Vitest provides this built-in; the app intentionally omits Node globals.
 import { existsSync, readFileSync } from 'node:fs';
+// @ts-expect-error Vitest provides this built-in; the app intentionally omits Node globals.
+import { inflateSync } from 'node:zlib';
 
 const globalStyles = readFileSync(new URL('./global.css', import.meta.url), 'utf8');
 const tokens = readFileSync(new URL('./tokens.css', import.meta.url), 'utf8');
@@ -9,6 +11,101 @@ const mainSource = readFileSync(new URL('../main.tsx', import.meta.url), 'utf8')
 const documentSource = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
 const companionUrl = new URL('../../public/gengar-companion.svg', import.meta.url);
 const companionSource = existsSync(companionUrl) ? readFileSync(companionUrl, 'utf8') : '';
+const trainerStripSource = readFileSync(
+  new URL('../../public/trainer-walk.png', import.meta.url),
+);
+
+function inspectRgbaPng(source: Uint8Array) {
+  const view = new DataView(source.buffer, source.byteOffset, source.byteLength);
+  const width = view.getUint32(16);
+  const height = view.getUint32(20);
+  const colorType = source[25];
+  const idatChunks: Uint8Array[] = [];
+  let offset = 8;
+
+  while (offset < source.length) {
+    const length = view.getUint32(offset);
+    const type = String.fromCharCode(...source.subarray(offset + 4, offset + 8));
+
+    if (type === 'IDAT') {
+      idatChunks.push(source.subarray(offset + 8, offset + 8 + length));
+    }
+
+    offset += length + 12;
+  }
+
+  expect(colorType).toBe(6);
+  const compressed = new Uint8Array(idatChunks.reduce((sum, chunk) => sum + chunk.length, 0));
+  let compressedOffset = 0;
+
+  for (const chunk of idatChunks) {
+    compressed.set(chunk, compressedOffset);
+    compressedOffset += chunk.length;
+  }
+
+  const pixels = inflateSync(compressed);
+  const bytesPerPixel = 4;
+  const stride = width * bytesPerPixel;
+  let previous = new Uint8Array(stride);
+  let pixelOffset = 0;
+  const frameBounds = Array.from({ length: 3 }, () => ({ top: height, bottom: 0 }));
+  let alphaTop = height;
+  let alphaBottom = 0;
+
+  const paeth = (left: number, above: number, upperLeft: number) => {
+    const estimate = left + above - upperLeft;
+    const leftDistance = Math.abs(estimate - left);
+    const aboveDistance = Math.abs(estimate - above);
+    const upperLeftDistance = Math.abs(estimate - upperLeft);
+
+    return leftDistance <= aboveDistance && leftDistance <= upperLeftDistance
+      ? left
+      : aboveDistance <= upperLeftDistance
+        ? above
+        : upperLeft;
+  };
+
+  for (let y = 0; y < height; y += 1) {
+    const filter = pixels[pixelOffset];
+    pixelOffset += 1;
+    const row = new Uint8Array(stride);
+
+    for (let byteIndex = 0; byteIndex < stride; byteIndex += 1) {
+      const raw = pixels[pixelOffset + byteIndex];
+      const left = byteIndex >= bytesPerPixel ? row[byteIndex - bytesPerPixel] : 0;
+      const above = previous[byteIndex];
+      const upperLeft = byteIndex >= bytesPerPixel ? previous[byteIndex - bytesPerPixel] : 0;
+      const predictor =
+        filter === 1
+          ? left
+          : filter === 2
+            ? above
+            : filter === 3
+              ? Math.floor((left + above) / 2)
+              : filter === 4
+                ? paeth(left, above, upperLeft)
+                : 0;
+      row[byteIndex] = (raw + predictor) & 255;
+    }
+
+    for (let x = 0; x < width; x += 1) {
+      if (row[x * bytesPerPixel + 3] === 0) {
+        continue;
+      }
+
+      alphaTop = Math.min(alphaTop, y);
+      alphaBottom = Math.max(alphaBottom, y + 1);
+      const frameIndex = Math.min(2, Math.floor(x / (width / 3)));
+      frameBounds[frameIndex].top = Math.min(frameBounds[frameIndex].top, y);
+      frameBounds[frameIndex].bottom = Math.max(frameBounds[frameIndex].bottom, y + 1);
+    }
+
+    pixelOffset += stride;
+    previous = row;
+  }
+
+  return { width, height, alphaTop, alphaBottom, frameBounds };
+}
 
 describe('handheld reference visual system', () => {
   it('defines the exact approved shared palette and pixel border', () => {
@@ -33,6 +130,9 @@ describe('handheld reference visual system', () => {
   it('defines visible focus and semantic selected-state treatments', () => {
     expect(globalStyles).toMatch(/:focus-visible\s*{/);
     expect(globalStyles).toContain('outline: 4px solid var(--focus)');
+    expect(globalStyles).toMatch(
+      /:focus-visible\s*{[^}]*outline-offset: 3px;[^}]*box-shadow: 0 0 0 3px var\(--ink\) !important;/,
+    );
     expect(globalStyles).toContain('[aria-pressed="true"]');
     expect(globalStyles).toContain('[aria-selected="true"]');
   });
@@ -72,6 +172,19 @@ describe('handheld reference visual system', () => {
     );
   });
 
+  it('normalizes three equal trainer frames to a 32-to-48-pixel visible chibi', () => {
+    const strip = inspectRgbaPng(trainerStripSource);
+    const visibleHeightAt48Pixels =
+      ((strip.alphaBottom - strip.alphaTop) / strip.height) * 48;
+
+    expect(strip.width % 3).toBe(0);
+    expect(strip.frameBounds.every(({ bottom, top }) => bottom > top)).toBe(true);
+    expect(new Set(strip.frameBounds.map(({ bottom }) => bottom)).size).toBe(1);
+    expect(visibleHeightAt48Pixels).toBeGreaterThanOrEqual(32);
+    expect(visibleHeightAt48Pixels).toBeLessThanOrEqual(48);
+    expect(visibleHeightAt48Pixels).toBeCloseTo(40, 0);
+  });
+
   it('uses the repo-native crisp-edge block companion asset', () => {
     expect(companionSource).toContain('viewBox="0 0 32 32"');
     expect(companionSource).toContain('shape-rendering="crispEdges"');
@@ -97,6 +210,12 @@ describe('handheld reference visual system', () => {
     );
     expect(globalStyles).toMatch(
       /\.pokedex-entry__organization\s*{[^}]*color: var\(--ink\);/,
+    );
+  });
+
+  it('gives sprite fallbacks a stable high-contrast backplate on every surface', () => {
+    expect(globalStyles).toMatch(
+      /\.pixel-sprite--fallback\s*{[^}]*background: var\(--screen-white\);[^}]*color: var\(--ink\);/,
     );
   });
 
