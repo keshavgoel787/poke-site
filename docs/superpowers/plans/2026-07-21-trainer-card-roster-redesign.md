@@ -18,8 +18,8 @@
 - Preserve every existing sprite file, including sprites for entries removed from the visible roster.
 - Preserve the existing original menu bleep system, sound-off default, safe storage, and reduced-motion behavior.
 - Use a blue/cyan/charcoal/steel/green handheld palette closely matching the supplied references.
-- Do not use Pokémon characters, names, Poké Balls, badge art, icons, sounds, logos, or extracted game assets.
-- All trainer, creature, icon, and audio assets must be original.
+- Do not use extracted game assets, Poké Balls, badge art, icons, sounds, logos, or franchise trainer designs.
+- All career-creature, trainer, icon, and audio assets must be original. The Trainer Card has one user-directed exception: a newly drawn, simplified Gengar companion based on Keshav's supplied reference, not an extracted sprite.
 - No visible metric, technology, date, location, responsibility, or outcome may be invented.
 - Interactive targets remain at least 44 by 44 pixels and the site must not overflow horizontally at 320 pixels.
 - Do not deploy or change DNS without explicit production-release approval.
@@ -33,9 +33,9 @@
 - `src/navigation/routes.ts`: `/pokemon/...` builders/resolution plus legacy `/pc/...` translation.
 - `src/navigation/routes.test.ts`: new, deep, invalid, and legacy route tests.
 - `src/profile/TrainerProfile.tsx`: full Trainer Card and professional-link icons.
-- `src/profile/TrainerProfile.test.tsx`: exact field, links, avatar fallback, and roster-entry tests.
-- `src/profile/TrainerAvatar.tsx`: original trainer image with readable fallback.
-- `src/profile/TrainerAvatar.test.tsx`: success and runtime-failure behavior.
+- `src/profile/TrainerProfile.test.tsx`: exact fields, links, walking scene, and separate roster-card tests.
+- `src/profile/TrainerWalkScene.tsx`: accessible Keshav-and-Gengar walking viewport with readable asset fallback.
+- `src/profile/TrainerWalkScene.test.tsx`: sprite contract and runtime-failure behavior.
 - `src/pc/CareerPC.tsx`: two-tab roster shell, route recovery, dialog coordination, and sound.
 - `src/pc/CreatureGrid.tsx`: party-style list with focusable roster cards.
 - `src/pc/PokedexEntry.tsx`: accessible modal detail dialog.
@@ -45,7 +45,7 @@
 - `src/pc/PixelSprite.test.tsx`: all visible and preserved IDs plus fallback behavior.
 - `src/assets/sprites/wps-data-lab-*.svg`: original WPS two-frame sprite.
 - `src/assets/sprites/remetra-*.svg`: original Remetra two-frame sprite.
-- `public/trainer-avatar.png`: original low-resolution avatar generated from the supplied photo.
+- `public/trainer-walk.png`: transparent three-frame walking sheet containing an original Keshav trainer and newly drawn simplified Gengar companion.
 - `public/resume.pdf`: byte-for-byte updated résumé.
 - `src/styles/tokens.css`: revised handheld palette.
 - `src/styles/global.css`: Trainer Card, roster, modal, responsive, focus, and motion styling.
@@ -172,30 +172,33 @@ git add public/resume.pdf src/data src/navigation src/app/App.tsx src/app/App.te
 git commit -m "feat: refresh roster content and routes"
 ```
 
-### Task 2: Build the Trainer Card and Original Avatar
+### Task 2: Build the Trainer Card and Walking Companion Scene
 
 **Files:**
-- Create: `src/profile/TrainerAvatar.tsx`
-- Create: `src/profile/TrainerAvatar.test.tsx`
+- Create: `src/profile/TrainerWalkScene.tsx`
+- Create: `src/profile/TrainerWalkScene.test.tsx`
 - Modify: `src/profile/TrainerProfile.tsx`
 - Modify: `src/profile/TrainerProfile.test.tsx`
-- Create: `public/trainer-avatar.png`
+- Create: `public/trainer-walk.png`
+- Remove: `src/profile/TrainerAvatar.tsx`
+- Remove: `src/profile/TrainerAvatar.test.tsx`
+- Remove: `public/trainer-avatar.png`
 
 **Interfaces:**
-- Consumes: `trainerProfile`, `pokemonPath('experience')`, `/resume.pdf`, and original generated avatar.
-- Produces: `TrainerAvatar({ src, label })` and revised `TrainerProfile()`.
+- Consumes: `trainerProfile`, `pokemonPath('experience')`, `/resume.pdf`, Keshav's photo reference, and the supplied Gengar reference.
+- Produces: `TrainerWalkScene({ src, label })` and revised `TrainerProfile()`.
 
-- [ ] **Step 1: Generate the original trainer avatar**
+- [ ] **Step 1: Generate and inspect the walking sprite sheet**
 
-Use the image generation skill with `/Users/keshavgoel/Downloads/id_photo.png` as the reference image and this exact art brief:
+Use the image generation skill with `/Users/keshavgoel/Downloads/id_photo.png` and `/var/folders/bb/hsp4zv4n1j90qvy7v635c_m40000gn/T/codex-clipboard-e16bb6fc-bf6a-4b5c-b83b-b37cc0f7bb02.png` as references and this exact art brief:
 
 ```text
-Create an original full-body 32-bit handheld-era pixel-art trainer avatar based on the supplied person: young South Asian man, dark wavy hair, black suit, white dress shirt, friendly neutral expression. Confident relaxed stance, one hand slightly raised. Transparent background. Crisp hard-edged pixels, limited blue/charcoal/white/skin-tone palette, no antialiasing, no Poké Ball, cap, franchise clothing, logos, badges, characters, or copied game pose. The result must be recognizably based on the reference person while remaining original.
+Create a transparent horizontal three-frame overworld walking sprite sheet. In every equal-width frame, show the same compact side-facing young South Asian trainer based on the supplied photo: dark wavy hair, medium-brown skin, black suit, white dress shirt. A simplified, newly drawn Gengar based on the supplied companion reference follows one step behind and gently bobs. Keep both characters centered as a pair; they walk in place and never leave the frame. Crisp hard-edged low-resolution pixel art, no antialiasing, no Poké Ball, cap, franchise trainer clothing, logos, badges, UI, text, scenery, or extracted game sprite. Keep all three frames aligned to one shared baseline with identical dimensions and transparent backgrounds.
 ```
 
-Inspect the generated image for identity, transparent background, legibility at card size, and absence of franchise marks. Save the approved result as `public/trainer-avatar.png`.
+Inspect the sheet for three equal frames, Keshav's recognizable hair/suit/skin tone, legibility at card size, transparent corners, Gengar following behind, consistent baseline, and absence of copied game UI or extracted sprites. Save the approved sheet as `public/trainer-walk.png`.
 
-- [ ] **Step 2: Write failing avatar and Trainer Card tests**
+- [ ] **Step 2: Write failing walking-scene and Trainer Card tests**
 
 ```tsx
 expect(screen.getByRole('heading', { name: 'Trainer Card' })).toBeVisible();
@@ -204,40 +207,47 @@ expect(screen.getByText('May 2028')).toBeVisible();
 expect(screen.getByText('Data Science')).toBeVisible();
 expect(screen.getByText('Boston, MA')).toBeVisible();
 expect(screen.getByRole('link', { name: "Keshav's Pokémon" })).toHaveAttribute('href', '/pokemon/experience');
-expect(screen.getByRole('img', { name: 'Pixel avatar of Keshav Goel' })).toBeVisible();
+expect(screen.getByRole('img', { name: 'Keshav walking with Gengar' })).toHaveAttribute('src', '/trainer-walk.png');
+expect(screen.getByRole('link', { name: "Keshav's Pokémon" })).toHaveClass('trainer-roster-card');
 ```
 
-In `TrainerAvatar.test.tsx`, fire an image error and assert the labeled fallback `Keshav Goel avatar unavailable` replaces the image.
+In `TrainerWalkScene.test.tsx`, assert stable `trainer-walk-scene` and `trainer-walk-strip` classes. Fire an image error and assert the labeled fallback `Keshav walking with Gengar unavailable` replaces the image.
 
 - [ ] **Step 3: Run tests to verify RED**
 
-Run: `npm test -- src/profile/TrainerAvatar.test.tsx src/profile/TrainerProfile.test.tsx`
+Run: `npm test -- src/profile/TrainerWalkScene.test.tsx src/profile/TrainerProfile.test.tsx`
 
-Expected: FAIL because the Trainer Card fields and avatar component do not exist.
+Expected: FAIL because the walking-scene component and separate roster-card contract do not exist.
 
-- [ ] **Step 4: Implement focused avatar failure handling**
+- [ ] **Step 4: Implement the focused walking scene**
 
 ```tsx
-export function TrainerAvatar({ src, label }: { src: string; label: string }) {
+export function TrainerWalkScene({ src, label }: { src: string; label: string }) {
   const [failed, setFailed] = useState(false);
-  if (failed) return <div role="img" aria-label={`${label} avatar unavailable`}>{label}</div>;
-  return <img src={src} alt={`Pixel avatar of ${label}`} onError={() => setFailed(true)} />;
+  if (failed) return <div role="img" aria-label={`${label} unavailable`}>{label}</div>;
+  return (
+    <div className="trainer-walk-scene">
+      <img className="trainer-walk-strip" src={src} alt={label} onError={() => setFailed(true)} />
+    </div>
+  );
 }
 ```
 
+Style the sheet as three equal horizontal frames using an overflow-hidden viewport and `animation-timing-function: steps(3)`. The pair remains centered and walks in place. Under `@media (prefers-reduced-motion: reduce)`, disable the animation and show the first frame. Do not add sound or a JavaScript animation loop.
+
 - [ ] **Step 5: Implement semantic Trainer Card markup**
 
-Use one `<main className="trainer-screen">`, a heading, definition list for the five exact fields, avatar panel, original text/icon links for résumé/GitHub/LinkedIn/email, and the primary roster link below the card. No visible experience cards remain on the landing page.
+Use one `<main className="trainer-screen">`, a heading, definition list for the five exact fields, walking viewport, and original text/icon links for résumé/GitHub/LinkedIn/email. Render the `Keshav's Pokémon` link below and outside the Trainer Card as a separate raised rectangular `.trainer-roster-card` with visible focus and pressed hover/active states. No visible experience cards remain on the landing page.
 
 - [ ] **Step 6: Verify and commit the Trainer Card**
 
-Run: `npm test -- src/profile/TrainerAvatar.test.tsx src/profile/TrainerProfile.test.tsx src/app/App.test.tsx`
+Run: `npm test -- src/profile/TrainerWalkScene.test.tsx src/profile/TrainerProfile.test.tsx src/app/App.test.tsx`
 
 Expected: all focused tests PASS.
 
 ```bash
-git add public/trainer-avatar.png src/profile
-git commit -m "feat: add trainer card landing screen"
+git add public/trainer-walk.png src/profile src/styles/global.css
+git commit -m "feat: add trainer walking scene"
 ```
 
 ### Task 3: Convert the PC Grid into the Two-Tab Party Roster
