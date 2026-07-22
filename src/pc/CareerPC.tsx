@@ -17,13 +17,17 @@ export function CareerPC() {
   const navigate = useNavigate();
   const resolvedRoute = resolvePokemonRoute(tab, entryId);
   const box = getRoster(resolvedRoute.tab) ?? rosterTabs[0];
-  const selectedEntry =
-    box.entries.find((entry) => entry.id === resolvedRoute.entryId) ?? box.entries[0];
+  const selectedEntry = box.entries.find((entry) => entry.id === resolvedRoute.entryId);
+  const selectedCardId = selectedEntry?.id ?? box.entries[0].id;
   const recoveryState = location.state as RecoveryLocationState | null;
   const showRecoveryMessage =
     resolvedRoute.recovered || recoveryState?.pokemonRouteRecovered === true;
   const [focusedBoxId, setFocusedBoxId] = useState(box.id);
   const boxTabRefs = useRef<Array<HTMLAnchorElement | null>>([]);
+  const boxPanelRef = useRef<HTMLElement>(null);
+  const launchingCardRef = useRef<HTMLButtonElement | null>(null);
+  const launchingEntryIdRef = useRef<string | null>(null);
+  const restoreFocusEntryIdRef = useRef<string | null>(null);
   const { soundEnabled, setSoundEnabled, reducedMotion } = usePreferences();
 
   const playEnabledBleep = () => {
@@ -53,6 +57,48 @@ export function CareerPC() {
   useEffect(() => {
     setFocusedBoxId(box.id);
   }, [box.id]);
+
+  useEffect(() => {
+    const restoreEntryId = restoreFocusEntryIdRef.current;
+
+    if (resolvedRoute.entryId || !restoreEntryId) {
+      return;
+    }
+
+    const expectedDescriptionId = `party-card-${restoreEntryId}-completion`;
+    const launchingCard = launchingCardRef.current;
+    const card =
+      launchingCard?.isConnected &&
+      launchingCard.getAttribute('aria-describedby') === expectedDescriptionId
+        ? launchingCard
+        : Array.from(boxPanelRef.current?.querySelectorAll<HTMLButtonElement>('button') ?? []).find(
+            (button) => button.getAttribute('aria-describedby') === expectedDescriptionId,
+          );
+
+    card?.focus({ preventScroll: true });
+    restoreFocusEntryIdRef.current = null;
+    launchingEntryIdRef.current = null;
+    launchingCardRef.current = null;
+  }, [resolvedRoute.entryId]);
+
+  const selectEntry = (selectedId: string) => {
+    const expectedDescriptionId = `party-card-${selectedId}-completion`;
+    launchingEntryIdRef.current = selectedId;
+    launchingCardRef.current =
+      Array.from(boxPanelRef.current?.querySelectorAll<HTMLButtonElement>('button') ?? []).find(
+        (button) => button.getAttribute('aria-describedby') === expectedDescriptionId,
+      ) ?? null;
+    playEnabledBleep();
+    navigate(pokemonPath(box.id, selectedId));
+  };
+
+  const closeEntry = () => {
+    if (selectedEntry && launchingEntryIdRef.current === selectedEntry.id) {
+      restoreFocusEntryIdRef.current = selectedEntry.id;
+    }
+
+    navigate(pokemonPath(resolvedRoute.tab), { replace: true });
+  };
 
   const moveTabFocus = (event: KeyboardEvent<HTMLAnchorElement>, currentIndex: number) => {
     let nextIndex: number | undefined;
@@ -120,19 +166,17 @@ export function CareerPC() {
       </nav>
 
       <section
+        ref={boxPanelRef}
         id="box-panel-active"
         role="tabpanel"
         aria-labelledby={`box-tab-${box.id}`}
       >
         <CreatureGrid
           entries={box.entries}
-          selectedId={selectedEntry.id}
-          onSelect={(selectedId) => {
-            playEnabledBleep();
-            navigate(pokemonPath(box.id, selectedId));
-          }}
+          selectedId={selectedCardId}
+          onSelect={selectEntry}
         />
-        <PokedexEntry entry={selectedEntry} />
+        {selectedEntry ? <PokedexEntry entry={selectedEntry} onClose={closeEntry} /> : null}
       </section>
     </main>
   );

@@ -279,6 +279,7 @@ describe('CareerPC', () => {
     expect(screen.getByTestId('current-route')).toHaveTextContent(
       '/pokemon/experience/draftkings',
     );
+    expect(screen.getByRole('dialog', { name: 'Draftion details' })).toBeVisible();
   });
 
   it('wraps grid focus and selects a focused item with Space', async () => {
@@ -304,6 +305,7 @@ describe('CareerPC', () => {
       'That PC entry could not be found. Showing Projects.',
     );
     expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/projects');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: /back in history/i }));
 
@@ -320,5 +322,59 @@ describe('CareerPC', () => {
       'aria-selected',
       'true',
     );
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('reconstructs the selected entry dialog from a direct URL', () => {
+    renderCareerPC('/pokemon/experience/draftkings');
+
+    expect(screen.getByRole('dialog', { name: 'Draftion details' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'DraftKings' })).toBeVisible();
+    expect(screen.getByText('Jun 2026 - Present')).toBeVisible();
+    expect(screen.getByText('Boston, MA')).toBeVisible();
+  });
+
+  it('closes the dialog with Escape to the active tab route using replace', async () => {
+    const user = userEvent.setup();
+    renderCareerPC('/pokemon/experience/draftkings', '/before-pc');
+
+    await user.keyboard('{Escape}');
+
+    expect(screen.getByTestId('current-route')).toHaveTextContent(/^\/pokemon\/experience$/);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /back in history/i }));
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/before-pc');
+  });
+
+  it('restores focus to the launching card after the Close route update', async () => {
+    const user = userEvent.setup();
+    renderCareerPC('/pokemon/experience');
+    const launcher = screen.getByRole('button', { name: 'Draftion: DraftKings' });
+
+    await user.click(launcher);
+    expect(screen.getByRole('button', { name: 'Close' })).toHaveFocus();
+
+    await user.click(screen.getByRole('button', { name: 'Close' }));
+
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/experience');
+    expect(launcher).toHaveFocus();
+    expect(screen.getByRole('tab', { name: 'Experience' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+  });
+
+  it('lets Browser Back naturally remove the entry segment', async () => {
+    const user = userEvent.setup();
+    renderCareerPC('/pokemon/experience');
+
+    await user.click(screen.getByRole('button', { name: 'Draftion: DraftKings' }));
+    expect(screen.getByRole('dialog', { name: 'Draftion details' })).toBeVisible();
+
+    await user.click(screen.getByRole('button', { name: /back in history/i }));
+
+    expect(screen.getByTestId('current-route')).toHaveTextContent(/^\/pokemon\/experience$/);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 });
