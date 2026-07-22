@@ -21,6 +21,18 @@ export type CareerBox = {
   entries: CareerEntry[];
 };
 
+export type ProfessionalLink = { label: string; href: string };
+
+export interface TrainerProfile {
+  name: string;
+  positioning: string;
+  education: string;
+  highlights: Array<Pick<CareerEntry, 'organization' | 'role' | 'dates'>>;
+  personal: string;
+  locations: string[];
+  links: ProfessionalLink[];
+}
+
 export const careerBoxes: CareerBox[] = [
   {
     id: 'experience',
@@ -33,12 +45,12 @@ export const careerBoxes: CareerBox[] = [
         role: 'Incoming Software Engineering Intern',
         dates: 'Incoming',
         impact: 'Incoming software engineering internship.',
-        types: ['Steel', 'Electric'],
+        types: ['Software Engineering'],
         moves: [
-          { name: 'Build', skill: 'Software engineering' },
-          { name: 'Automate', skill: 'Automation' },
-          { name: 'Analyze', skill: 'Data' },
-          { name: 'Learn', skill: 'AI' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
         ],
         spriteId: 'amazon',
       },
@@ -49,12 +61,12 @@ export const careerBoxes: CareerBox[] = [
         role: 'Incoming Software Engineering Intern',
         dates: 'Incoming',
         impact: 'Incoming software engineering internship.',
-        types: ['Steel', 'Fire'],
+        types: ['Software Engineering'],
         moves: [
-          { name: 'Build', skill: 'Software engineering' },
-          { name: 'Automate', skill: 'Automation' },
-          { name: 'Analyze', skill: 'Data' },
-          { name: 'Learn', skill: 'AI' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
         ],
         spriteId: 'draftkings',
       },
@@ -65,12 +77,12 @@ export const careerBoxes: CareerBox[] = [
         role: 'Software Engineering Intern',
         dates: 'Current',
         impact: 'Current software engineering internship.',
-        types: ['Steel', 'Psychic'],
+        types: ['Software Engineering'],
         moves: [
-          { name: 'Build', skill: 'Software engineering' },
-          { name: 'Automate', skill: 'Automation' },
-          { name: 'Analyze', skill: 'Data' },
-          { name: 'Learn', skill: 'AI' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
         ],
         spriteId: 'procuremateai',
       },
@@ -81,12 +93,12 @@ export const careerBoxes: CareerBox[] = [
         role: 'Data Scientist',
         dates: 'Previous',
         impact: 'Previous data scientist role.',
-        types: ['Psychic', 'Electric'],
+        types: ['Data Science'],
         moves: [
-          { name: 'Analyze', skill: 'Data' },
-          { name: 'Model', skill: 'Machine learning' },
-          { name: 'Automate', skill: 'Automation' },
-          { name: 'Learn', skill: 'AI' },
+          { name: 'Data Science', skill: 'Data Science' },
+          { name: 'Data Science', skill: 'Data Science' },
+          { name: 'Data Science', skill: 'Data Science' },
+          { name: 'Data Science', skill: 'Data Science' },
         ],
         spriteId: 'generate',
       },
@@ -97,12 +109,12 @@ export const careerBoxes: CareerBox[] = [
         role: 'Software Engineering Co-op',
         dates: 'Previous',
         impact: 'Previous software engineering co-op.',
-        types: ['Steel', 'Normal'],
+        types: ['Software Engineering'],
         moves: [
-          { name: 'Build', skill: 'Software engineering' },
-          { name: 'Automate', skill: 'Automation' },
-          { name: 'Analyze', skill: 'Data' },
-          { name: 'Learn', skill: 'AI' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
         ],
         spriteId: 'johnson-johnson',
       },
@@ -113,12 +125,12 @@ export const careerBoxes: CareerBox[] = [
         role: 'Software Engineering Intern',
         dates: 'Previous',
         impact: 'Previous software engineering internship.',
-        types: ['Steel', 'Flying'],
+        types: ['Software Engineering'],
         moves: [
-          { name: 'Build', skill: 'Software engineering' },
-          { name: 'Automate', skill: 'Automation' },
-          { name: 'Analyze', skill: 'Data' },
-          { name: 'Learn', skill: 'AI' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
+          { name: 'Software Engineering', skill: 'Software Engineering' },
         ],
         spriteId: 'vdart',
       },
@@ -135,28 +147,28 @@ export const careerBoxes: CareerBox[] = [
         role: 'Pollution-aware smart navigation project',
         dates: 'Project',
         impact: '1st of 400 at CSBase Hacks.',
-        types: ['Flying', 'Grass'],
+        types: ['Navigation'],
         moves: [
-          { name: 'Route Scan', skill: 'Pollution-aware navigation' },
-          { name: 'Pathfind', skill: 'Smart navigation' },
-          { name: 'Analyze', skill: 'Data' },
-          { name: 'Build', skill: 'Software engineering' },
+          { name: 'Pollution Awareness', skill: 'Pollution-aware navigation' },
+          { name: 'Smart Navigation', skill: 'Smart navigation' },
+          { name: 'Route Planning', skill: 'Smart navigation' },
+          { name: 'Pollution-Aware Routes', skill: 'Pollution-aware navigation' },
         ],
         spriteId: 'breathe-easy',
       },
       {
-        id: 'forget-me-not',
+        id: 'forgetmenot',
         creatureName: 'Memorai',
         organization: 'ForgetMeNot',
         role: 'AI memory trainer for dementia',
         dates: 'Project',
         impact: '2nd of 500 at HackRU.',
-        types: ['Psychic', 'Fairy'],
+        types: ['AI', 'Memory Training'],
         moves: [
-          { name: 'Recall', skill: 'Memory training' },
-          { name: 'Assist', skill: 'Dementia support' },
-          { name: 'Learn', skill: 'AI' },
-          { name: 'Build', skill: 'Software engineering' },
+          { name: 'AI Memory Training', skill: 'AI memory training' },
+          { name: 'Memory Training', skill: 'Memory training' },
+          { name: 'Dementia Focus', skill: 'Dementia' },
+          { name: 'AI', skill: 'AI' },
         ],
         spriteId: 'forget-me-not',
       },
@@ -173,12 +185,12 @@ export const careerBoxes: CareerBox[] = [
         role: 'Data Science student',
         dates: 'Current',
         impact: 'Studies data science with a math minor.',
-        types: ['Psychic'],
+        types: ['Data Science', 'Mathematics'],
         moves: [
-          { name: 'Analyze', skill: 'Data science' },
-          { name: 'Calculate', skill: 'Mathematics' },
-          { name: 'Model', skill: 'Machine learning' },
-          { name: 'Learn', skill: 'AI' },
+          { name: 'Data Science', skill: 'Data Science' },
+          { name: 'Math Minor', skill: 'Math minor' },
+          { name: 'Data Science', skill: 'Data Science' },
+          { name: 'Math Minor', skill: 'Math minor' },
         ],
         spriteId: 'northeastern-university',
       },
@@ -189,12 +201,12 @@ export const careerBoxes: CareerBox[] = [
         role: 'Dancer',
         dates: 'Personal',
         impact: 'Bhangra dancer.',
-        types: ['Fighting', 'Fairy'],
+        types: ['Bhangra'],
         moves: [
-          { name: 'Rhythm', skill: 'Bhangra' },
-          { name: 'Dance', skill: 'Bhangra' },
-          { name: 'Perform', skill: 'Bhangra' },
-          { name: 'Move', skill: 'Bhangra' },
+          { name: 'Bhangra', skill: 'Bhangra' },
+          { name: 'Dancer', skill: 'Bhangra dancer' },
+          { name: 'Bhangra', skill: 'Bhangra' },
+          { name: 'Dancer', skill: 'Bhangra dancer' },
         ],
         spriteId: 'bhangra',
       },
@@ -205,7 +217,7 @@ export const careerBoxes: CareerBox[] = [
         role: 'Locations',
         dates: 'Personal',
         impact: 'NJ, NY, and Boston.',
-        types: ['Ground', 'Flying'],
+        types: ['Locations'],
         moves: [
           { name: 'Route', skill: 'NJ' },
           { name: 'Route', skill: 'NY' },
@@ -221,18 +233,49 @@ export const careerBoxes: CareerBox[] = [
         role: 'Automation focus',
         dates: 'Personal',
         impact: 'Focused on automating manual tasks with data, ML, and AI.',
-        types: ['Steel', 'Psychic'],
+        types: ['Data', 'Machine Learning'],
         moves: [
-          { name: 'Analyze', skill: 'Data' },
-          { name: 'Model', skill: 'Machine learning' },
-          { name: 'Learn', skill: 'AI' },
-          { name: 'Automate', skill: 'Manual tasks' },
+          { name: 'Data', skill: 'Data' },
+          { name: 'ML', skill: 'ML' },
+          { name: 'AI', skill: 'AI' },
+          { name: 'Automate', skill: 'Automating manual tasks' },
         ],
         spriteId: 'interests',
       },
     ],
   },
 ];
+
+export const trainerProfile: TrainerProfile = {
+  name: 'Keshav Goel',
+  positioning: 'Automating manual tasks with data, ML, and AI.',
+  education: 'Northeastern University — Data Science, math minor',
+  highlights: [
+    {
+      organization: 'Amazon',
+      role: 'Incoming Software Engineering Intern',
+      dates: 'Incoming',
+    },
+    {
+      organization: 'DraftKings',
+      role: 'Incoming Software Engineering Intern',
+      dates: 'Incoming',
+    },
+    {
+      organization: 'ProcureMateAI',
+      role: 'Software Engineering Intern',
+      dates: 'Current',
+    },
+  ],
+  personal: 'Bhangra dancer',
+  locations: ['NJ', 'NY', 'Boston'],
+  links: [
+    { label: 'Résumé', href: '/resume.pdf' },
+    { label: 'GitHub', href: 'https://github.com/keshavgoel787' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/goel-keshav' },
+    { label: 'Email', href: 'mailto:kgoel9657@gmail.com' },
+  ],
+};
 
 export const getBox = (boxId: BoxId) => careerBoxes.find((box) => box.id === boxId);
 
