@@ -60,6 +60,12 @@ describe('Kanto-red visual system', () => {
     expect(globalStyles).toContain('[data-reduced-motion="true"]');
     expect(globalStyles).toContain('animation-duration: 0.01ms !important');
     expect(globalStyles).toContain('transition-duration: 0.01ms !important');
+    expect(globalStyles).toMatch(
+      /prefers-reduced-motion:[\s\S]*p:nth-of-type\(4\)[\s\S]*clip-path: inset\(0\) !important/,
+    );
+    expect(globalStyles).toMatch(
+      /data-reduced-motion="true"[\s\S]*p:nth-of-type\(4\)[\s\S]*clip-path: inset\(0\) !important/,
+    );
   });
 
   it('supplies portfolio metadata without introducing an unapproved theme color', () => {

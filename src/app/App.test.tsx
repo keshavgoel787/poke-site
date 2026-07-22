@@ -30,7 +30,7 @@ it('recovers an unknown project route to the Projects box', () => {
   render(<MemoryRouter initialEntries={['/pc/projects/missing']}><App /></MemoryRouter>);
 
   expect(screen.getByRole('status')).toHaveTextContent(
-    'That PC entry could not be found. Showing Box 1.',
+    'That PC entry could not be found. Showing Projects.',
   );
   expect(screen.getByRole('tab', { name: 'Projects' })).toHaveAttribute(
     'aria-selected',

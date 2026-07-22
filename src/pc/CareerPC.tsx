@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { playBleep } from '../audio/playBleep';
 import { careerBoxes, getBox } from '../data/portfolioData';
 import { pcPath, resolvePcRoute } from '../navigation/routes';
 import { CreatureGrid } from './CreatureGrid';
@@ -23,7 +24,13 @@ export function CareerPC() {
   const showRecoveryMessage = resolvedRoute.recovered || recoveryState?.pcRouteRecovered === true;
   const [focusedBoxId, setFocusedBoxId] = useState(box.id);
   const boxTabRefs = useRef<Array<HTMLAnchorElement | null>>([]);
-  const { reducedMotion } = usePreferences();
+  const { soundEnabled, setSoundEnabled, reducedMotion } = usePreferences();
+
+  const playEnabledBleep = () => {
+    if (soundEnabled) {
+      playBleep();
+    }
+  };
 
   useEffect(() => {
     if (resolvedRoute.recovered) {
@@ -64,10 +71,15 @@ export function CareerPC() {
     <main data-reduced-motion={reducedMotion} data-booting>
       <h1>Keshav's PC</h1>
 
-      <QuickMenu />
+      <QuickMenu
+        soundEnabled={soundEnabled}
+        setSoundEnabled={setSoundEnabled}
+      />
 
       {showRecoveryMessage ? (
-        <p role="status">That PC entry could not be found. Showing Box 1.</p>
+        <p role="status">
+          That PC entry could not be found. Showing {box.label}.
+        </p>
       ) : null}
 
       <nav aria-label="PC boxes">
@@ -81,10 +93,11 @@ export function CareerPC() {
               id={`box-tab-${careerBox.id}`}
               role="tab"
               aria-selected={careerBox.id === box.id}
-              aria-controls={`box-panel-${careerBox.id}`}
+              aria-controls="box-panel-active"
               tabIndex={careerBox.id === focusedBoxId ? 0 : -1}
               to={pcPath(careerBox.id)}
               onFocus={() => setFocusedBoxId(careerBox.id)}
+              onClick={playEnabledBleep}
               onKeyDown={(event) => moveTabFocus(event, index)}
             >
               {careerBox.label}
@@ -94,14 +107,17 @@ export function CareerPC() {
       </nav>
 
       <section
-        id={`box-panel-${box.id}`}
+        id="box-panel-active"
         role="tabpanel"
         aria-labelledby={`box-tab-${box.id}`}
       >
         <CreatureGrid
           entries={box.entries}
           selectedId={selectedEntry.id}
-          onSelect={(selectedId) => navigate(pcPath(box.id, selectedId))}
+          onSelect={(selectedId) => {
+            playEnabledBleep();
+            navigate(pcPath(box.id, selectedId));
+          }}
         />
         <PokedexEntry entry={selectedEntry} />
       </section>

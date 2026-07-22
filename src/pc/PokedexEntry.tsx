@@ -10,6 +10,7 @@ export function PokedexEntry({ entry }: PokedexEntryProps) {
     <article aria-live="polite" aria-atomic="true">
       <PixelSprite spriteId={entry.spriteId} label={entry.creatureName} animate />
       <h2>{entry.organization}</h2>
+      <p className="pokedex-entry__creature">Creature: {entry.creatureName}</p>
       <p>{entry.role}</p>
       <p>{entry.dates}</p>
       <p>{entry.impact}</p>

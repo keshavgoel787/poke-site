@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { careerBoxes } from '../data/portfolioData';
 import { PixelSprite } from './PixelSprite';
 
@@ -13,6 +13,17 @@ describe('PixelSprite', () => {
     render(<PixelSprite spriteId="missing" label="Unknown creature" animate={false} />);
 
     expect(screen.getByText('Unknown creature')).toBeVisible();
+  });
+
+  it('switches to the readable placeholder when a sprite image fails to load', () => {
+    const { container } = render(
+      <PixelSprite spriteId="amazon" label="Amazoar" animate />,
+    );
+
+    fireEvent.error(container.querySelector('img')!);
+
+    expect(screen.getByText('Amazoar')).toBeVisible();
+    expect(container.querySelector('img')).not.toBeInTheDocument();
   });
 
   it.each(['constructor', 'toString', '__proto__'])(

@@ -4,6 +4,40 @@ import { MemoryRouter, Route, Routes, useLocation, useNavigate } from 'react-rou
 import { beforeEach, vi } from 'vitest';
 import { CareerPC } from './CareerPC';
 
+function installWorkingAudioContext() {
+  const oscillator = {
+    type: 'sine',
+    frequency: { setValueAtTime: vi.fn() },
+    connect: vi.fn(),
+    start: vi.fn(),
+    stop: vi.fn(),
+    addEventListener: vi.fn(),
+  };
+  const gain = {
+    gain: {
+      setValueAtTime: vi.fn(),
+      exponentialRampToValueAtTime: vi.fn(),
+    },
+    connect: vi.fn(),
+  };
+  const context = {
+    currentTime: 4,
+    destination: {},
+    state: 'running',
+    createOscillator: vi.fn(() => oscillator),
+    createGain: vi.fn(() => gain),
+    resume: vi.fn(() => Promise.resolve()),
+    close: vi.fn(() => Promise.resolve()),
+  };
+  const AudioContext = vi.fn(function AudioContext() {
+    return context;
+  });
+
+  vi.stubGlobal('AudioContext', AudioContext);
+
+  return { AudioContext, context, gain, oscillator };
+}
+
 function LocationProbe() {
   const location = useLocation();
 
@@ -67,14 +101,88 @@ describe('CareerPC', () => {
 
   it('keeps sound off until the quick menu sound control is clicked', async () => {
     const user = userEvent.setup();
+    const audio = installWorkingAudioContext();
     renderCareerPC('/pc/experience/amazon');
     const sound = screen.getByRole('button', { name: /sound/i });
 
     expect(sound).toHaveAttribute('aria-pressed', 'false');
+    expect(audio.AudioContext).not.toHaveBeenCalled();
 
     await user.click(sound);
 
     expect(sound).toHaveAttribute('aria-pressed', 'true');
+    expect(audio.AudioContext).toHaveBeenCalledTimes(1);
+    expect(audio.context.createOscillator).toHaveBeenCalledTimes(1);
+    expect(audio.context.createGain).toHaveBeenCalledTimes(1);
+    expect(audio.oscillator.type).toBe('square');
+    expect(audio.oscillator.connect).toHaveBeenCalledWith(audio.gain);
+    expect(audio.gain.connect).toHaveBeenCalledWith(audio.context.destination);
+    expect(audio.oscillator.start).toHaveBeenCalledWith(4);
+    expect(audio.oscillator.stop).toHaveBeenCalledWith(4.07);
+    expect(audio.gain.gain.exponentialRampToValueAtTime).toHaveBeenCalledWith(
+      0.0001,
+      4.07,
+    );
+  });
+
+  it('plays enabled sound only for user-initiated menu, tab, and grid actions', async () => {
+    const user = userEvent.setup();
+    const audio = installWorkingAudioContext();
+    renderCareerPC('/pc/experience/amazon');
+
+    await user.click(screen.getByRole('button', { name: /sound/i }));
+    await user.click(screen.getByRole('tab', { name: /projects/i }));
+    await user.click(screen.getByRole('button', { name: /memorai: forgetmenot/i }));
+
+    expect(audio.AudioContext).toHaveBeenCalledTimes(3);
+  });
+
+  it('does not play stored-on sound during hydration or recovered navigation', async () => {
+    const user = userEvent.setup();
+    window.localStorage.setItem('career-pc:sound', 'on');
+    const audio = installWorkingAudioContext();
+
+    renderCareerPC('/pc/projects/missing');
+
+    expect(screen.getByRole('button', { name: /sound/i })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    expect(audio.AudioContext).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole('tab', { name: /trainer/i }));
+
+    expect(audio.AudioContext).toHaveBeenCalledTimes(1);
+  });
+
+  it('ignores audio construction errors while enabling sound', async () => {
+    const user = userEvent.setup();
+    const AudioContext = vi.fn(function AudioContext() {
+      throw new DOMException('Audio is blocked', 'NotAllowedError');
+    });
+    vi.stubGlobal('AudioContext', AudioContext);
+    renderCareerPC('/pc/experience/amazon');
+
+    await user.click(screen.getByRole('button', { name: /sound/i }));
+
+    expect(AudioContext).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole('button', { name: /sound/i })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+  });
+
+  it('ignores an unavailable Web Audio API while enabling sound', async () => {
+    const user = userEvent.setup();
+    vi.stubGlobal('AudioContext', undefined);
+    renderCareerPC('/pc/experience/amazon');
+
+    await user.click(screen.getByRole('button', { name: /sound/i }));
+
+    expect(screen.getByRole('button', { name: /sound/i })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
   });
 
   it('renders the quick menu links and motion state on the PC root', () => {
@@ -102,6 +210,17 @@ describe('CareerPC', () => {
       'aria-selected',
       'true',
     );
+  });
+
+  it('keeps every box tab associated with the mounted active panel', () => {
+    renderCareerPC('/pc/experience/amazon');
+
+    for (const tab of screen.getAllByRole('tab')) {
+      const panelId = tab.getAttribute('aria-controls');
+
+      expect(panelId).toBeTruthy();
+      expect(document.getElementById(panelId!)).toBe(screen.getByRole('tabpanel'));
+    }
   });
 
   it('moves focus between box tabs with the arrow keys', async () => {
@@ -161,12 +280,24 @@ describe('CareerPC', () => {
     renderCareerPC('/pc/projects/not-a-project', '/before-pc');
 
     expect(screen.getByRole('status')).toHaveTextContent(
-      'That PC entry could not be found. Showing Box 1.',
+      'That PC entry could not be found. Showing Projects.',
     );
     expect(screen.getByTestId('current-route')).toHaveTextContent('/pc/projects');
 
     await user.click(screen.getByRole('button', { name: /back in history/i }));
 
     expect(screen.getByTestId('current-route')).toHaveTextContent('/before-pc');
+  });
+
+  it('names the fallback box while recovering an invalid box route', () => {
+    renderCareerPC('/pc/not-a-box/missing');
+
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'That PC entry could not be found. Showing Experience.',
+    );
+    expect(screen.getByRole('tab', { name: /experience/i })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
   });
 });

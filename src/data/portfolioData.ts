@@ -248,7 +248,8 @@ export const careerBoxes: CareerBox[] = [
 
 export const trainerProfile: TrainerProfile = {
   name: 'Keshav Goel',
-  positioning: 'Automating manual tasks with data, ML, and AI.',
+  positioning:
+    'Software engineering and data science student focused on automating manual tasks with data, ML, and AI.',
   education: 'Northeastern University — Data Science, math minor',
   highlights: [
     {

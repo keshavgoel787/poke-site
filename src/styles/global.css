@@ -466,11 +466,11 @@ ul {
 
 #root > main[data-booting] > [role="tabpanel"] > article > .pixel-sprite {
   grid-column: 1;
-  grid-row: 1 / span 3;
+  grid-row: 1 / span 4;
 }
 
 #root > main[data-booting] > [role="tabpanel"] > article > h2,
-#root > main[data-booting] > [role="tabpanel"] > article > p:nth-of-type(-n + 2) {
+#root > main[data-booting] > [role="tabpanel"] > article > p:nth-of-type(-n + 3) {
   grid-column: 2;
 }
 
@@ -488,9 +488,14 @@ ul {
 
 #root > main[data-booting] > [role="tabpanel"] > article > p:nth-of-type(1) {
   font-weight: 700;
+  text-transform: uppercase;
 }
 
 #root > main[data-booting] > [role="tabpanel"] > article > p:nth-of-type(2) {
+  font-weight: 700;
+}
+
+#root > main[data-booting] > [role="tabpanel"] > article > p:nth-of-type(3) {
   align-self: start;
   padding-left: 0.35rem;
   border-left: 0.3rem solid var(--red);
@@ -500,7 +505,7 @@ ul {
   text-transform: uppercase;
 }
 
-#root > main[data-booting] > [role="tabpanel"] > article > p:nth-of-type(3) {
+#root > main[data-booting] > [role="tabpanel"] > article > p:nth-of-type(4) {
   grid-column: 1 / -1;
   margin-top: 0.5rem;
   padding: 0.65rem;
@@ -715,7 +720,7 @@ ul {
     transition-duration: 0.01ms !important;
   }
 
-  #root > main[data-booting] > [role="tabpanel"] > article > p:nth-of-type(3) {
+  #root > main[data-booting] > [role="tabpanel"] > article > p:nth-of-type(4) {
     clip-path: inset(0) !important;
   }
 }
@@ -733,6 +738,6 @@ ul {
 [data-reduced-motion="true"]
   > [role="tabpanel"]
   > article
-  > p:nth-of-type(3) {
+  > p:nth-of-type(4) {
   clip-path: inset(0) !important;
 }

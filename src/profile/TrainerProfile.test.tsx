@@ -9,7 +9,9 @@ it('presents Keshav\'s positioning and professional destinations', () => {
     </MemoryRouter>,
   );
 
-  expect(screen.getByText(/data, ml, and ai/i)).toBeVisible();
+  expect(
+    screen.getByText(/software engineering.*data.*ml.*ai/i),
+  ).toBeVisible();
   expect(screen.getByRole('link', { name: /résumé/i })).toHaveAttribute('href', '/resume.pdf');
   expect(screen.getByRole('link', { name: /open keshav\'s pc/i })).toHaveAttribute(
     'href',

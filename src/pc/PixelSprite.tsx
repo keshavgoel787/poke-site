@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import amazonA from '../assets/sprites/amazon-a.svg';
 import amazonB from '../assets/sprites/amazon-b.svg';
 import bhangraA from '../assets/sprites/bhangra-a.svg';
@@ -52,21 +53,26 @@ const sprites: Record<string, SpriteFrames> = {
   vdart: { frameA: vdartA, frameB: vdartB },
 };
 
+function SpriteFallback({ label }: Pick<PixelSpriteProps, 'label'>) {
+  return (
+    <span
+      className="pixel-sprite pixel-sprite--fallback"
+      role="img"
+      aria-label={label}
+      style={{ border: '3px solid #172032' }}
+    >
+      <span aria-hidden="true">?</span>
+      <span>{label}</span>
+    </span>
+  );
+}
+
 export function PixelSprite({ spriteId, label, animate }: PixelSpriteProps) {
+  const [failedSpriteId, setFailedSpriteId] = useState<string>();
   const sprite = Object.hasOwn(sprites, spriteId) ? sprites[spriteId] : undefined;
 
-  if (!sprite) {
-    return (
-      <span
-        className="pixel-sprite pixel-sprite--fallback"
-        role="img"
-        aria-label={label}
-        style={{ border: '3px solid #172032' }}
-      >
-        <span aria-hidden="true">?</span>
-        <span>{label}</span>
-      </span>
-    );
+  if (!sprite || failedSpriteId === spriteId) {
+    return <SpriteFallback label={label} />;
   }
 
   return (
@@ -76,12 +82,18 @@ export function PixelSprite({ spriteId, label, animate }: PixelSpriteProps) {
       aria-label={label}
       data-animate={animate ? 'true' : 'false'}
     >
-      <img className="pixel-sprite__frame pixel-sprite__frame--a" src={sprite.frameA} alt="" />
+      <img
+        className="pixel-sprite__frame pixel-sprite__frame--a"
+        src={sprite.frameA}
+        alt=""
+        onError={() => setFailedSpriteId(spriteId)}
+      />
       {animate && sprite.frameB ? (
         <img
           className="pixel-sprite__frame pixel-sprite__frame--b"
           src={sprite.frameB}
           alt=""
+          onError={() => setFailedSpriteId(spriteId)}
         />
       ) : null}
     </span>

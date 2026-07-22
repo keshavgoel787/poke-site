@@ -3,8 +3,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { usePreferences } from './usePreferences';
 
 describe('usePreferences', () => {
+  let values: Map<string, string>;
+
   beforeEach(() => {
-    const values = new Map<string, string>();
+    values = new Map<string, string>();
     vi.stubGlobal('localStorage', {
       getItem: (key: string) => values.get(key) ?? null,
       setItem: (key: string, value: string) => values.set(key, value),
@@ -24,6 +26,54 @@ describe('usePreferences', () => {
     act(() => result.current.setSoundEnabled(true));
 
     expect(window.localStorage.getItem('career-pc:sound')).toBe('on');
+    expect(result.current.soundEnabled).toBe(true);
+  });
+
+  it('hydrates a stored enabled sound preference without changing storage', () => {
+    values.set('career-pc:sound', 'on');
+    const setItem = vi.spyOn(window.localStorage, 'setItem');
+
+    const { result } = renderHook(() => usePreferences());
+
+    expect(result.current.soundEnabled).toBe(true);
+    expect(setItem).not.toHaveBeenCalled();
+  });
+
+  it('persists switching sound from on back to off', () => {
+    values.set('career-pc:sound', 'on');
+    const { result } = renderHook(() => usePreferences());
+
+    act(() => result.current.setSoundEnabled(false));
+
+    expect(window.localStorage.getItem('career-pc:sound')).toBe('off');
+    expect(result.current.soundEnabled).toBe(false);
+  });
+
+  it('defaults sound off when storage reading throws', () => {
+    vi.stubGlobal('localStorage', {
+      getItem: () => {
+        throw new DOMException('Storage is unavailable', 'SecurityError');
+      },
+      setItem: vi.fn(),
+    });
+
+    const { result } = renderHook(() => usePreferences());
+
+    expect(result.current.soundEnabled).toBe(false);
+  });
+
+  it('keeps rendering and updates sound when storage writing throws', () => {
+    vi.stubGlobal('localStorage', {
+      getItem: () => null,
+      setItem: () => {
+        throw new DOMException('Storage is full', 'QuotaExceededError');
+      },
+    });
+    const { result } = renderHook(() => usePreferences());
+
+    expect(() => {
+      act(() => result.current.setSoundEnabled(true));
+    }).not.toThrow();
     expect(result.current.soundEnabled).toBe(true);
   });
 
