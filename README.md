@@ -20,8 +20,10 @@ as part of release verification.
 
 ## Artwork policy
 
-Trainer, companion, and roster artwork in this repository is original project artwork.
-Do not substitute official Pokémon game sprites, screenshots, or third-party fan art.
+Trainer and roster artwork in this repository is original project artwork. Gengar appears
+only as the user-requested companion; `public/gengar-companion.svg` is newly drawn,
+repo-native crisp-edge artwork, not an asset extracted from a Pokémon game. Do not
+substitute official game sprites, screenshots, or third-party fan art.
 
 ## Local development
 
