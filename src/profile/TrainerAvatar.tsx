@@ -16,5 +16,14 @@ export function TrainerAvatar({ src, label }: TrainerAvatarProps): JSX.Element {
     );
   }
 
-  return <img src={src} alt={`Pixel avatar of ${label}`} onError={() => setFailed(true)} />;
+  return (
+    <img
+      className="trainer-card__avatar-image"
+      src={src}
+      alt={`Pixel avatar of ${label}`}
+      width="320"
+      height="534"
+      onError={() => setFailed(true)}
+    />
+  );
 }
