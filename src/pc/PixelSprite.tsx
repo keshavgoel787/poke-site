@@ -53,7 +53,7 @@ const sprites: Record<string, SpriteFrames> = {
 };
 
 export function PixelSprite({ spriteId, label, animate }: PixelSpriteProps) {
-  const sprite = sprites[spriteId];
+  const sprite = Object.hasOwn(sprites, spriteId) ? sprites[spriteId] : undefined;
 
   if (!sprite) {
     return (

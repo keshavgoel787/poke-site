@@ -15,6 +15,19 @@ describe('PixelSprite', () => {
     expect(screen.getByText('Unknown creature')).toBeVisible();
   });
 
+  it.each(['constructor', 'toString', '__proto__'])(
+    'treats the inherited %s property as an unknown sprite',
+    (spriteId) => {
+      const { container } = render(
+        <PixelSprite spriteId={spriteId} label="Prototype creature" animate />,
+      );
+
+      expect(screen.getByText('Prototype creature')).toBeVisible();
+      expect(container.querySelector('img')).not.toBeInTheDocument();
+      cleanup();
+    },
+  );
+
   it('includes the alternate frame only when animation is enabled', () => {
     const { container, rerender } = render(
       <PixelSprite spriteId="amazon" label="Amazoar" animate={false} />,
