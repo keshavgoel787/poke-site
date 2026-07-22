@@ -4,6 +4,8 @@ import { careerBoxes, getBox } from '../data/portfolioData';
 import { pcPath, resolvePcRoute } from '../navigation/routes';
 import { CreatureGrid } from './CreatureGrid';
 import { PokedexEntry } from './PokedexEntry';
+import { QuickMenu } from './QuickMenu';
+import { usePreferences } from '../preferences/usePreferences';
 
 type RecoveryLocationState = {
   pcRouteRecovered?: boolean;
@@ -21,6 +23,7 @@ export function CareerPC() {
   const showRecoveryMessage = resolvedRoute.recovered || recoveryState?.pcRouteRecovered === true;
   const [focusedBoxId, setFocusedBoxId] = useState(box.id);
   const boxTabRefs = useRef<Array<HTMLAnchorElement | null>>([]);
+  const { reducedMotion } = usePreferences();
 
   useEffect(() => {
     if (resolvedRoute.recovered) {
@@ -58,8 +61,10 @@ export function CareerPC() {
   };
 
   return (
-    <main>
+    <main data-reduced-motion={reducedMotion} data-booting>
       <h1>Keshav's PC</h1>
+
+      <QuickMenu />
 
       {showRecoveryMessage ? (
         <p role="status">That PC entry could not be found. Showing Box 1.</p>

@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { beforeEach, vi } from 'vitest';
 import { CareerPC } from './CareerPC';
 
 function LocationProbe() {
@@ -38,6 +39,14 @@ function renderCareerPC(path: string, priorPath?: string) {
 }
 
 describe('CareerPC', () => {
+  beforeEach(() => {
+    const values = new Map<string, string>();
+    vi.stubGlobal('localStorage', {
+      getItem: (key: string) => values.get(key) ?? null,
+      setItem: (key: string, value: string) => values.set(key, value),
+    });
+  });
+
   it('shows the selected career box and concise entry', () => {
     renderCareerPC('/pc/experience/amazon');
 
@@ -47,6 +56,32 @@ describe('CareerPC', () => {
     );
     expect(screen.getByRole('heading', { name: /amazon/i })).toBeVisible();
     expect(screen.getAllByRole('listitem', { name: /move:/i })).toHaveLength(4);
+  });
+
+  it('keeps sound off until the quick menu sound control is clicked', async () => {
+    const user = userEvent.setup();
+    renderCareerPC('/pc/experience/amazon');
+    const sound = screen.getByRole('button', { name: /sound/i });
+
+    expect(sound).toHaveAttribute('aria-pressed', 'false');
+
+    await user.click(sound);
+
+    expect(sound).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('renders the quick menu links and motion state on the PC root', () => {
+    renderCareerPC('/pc/experience/amazon');
+
+    expect(screen.getByRole('link', { name: /profile/i })).toHaveAttribute('href', '/');
+    expect(screen.getByRole('link', { name: /résumé/i })).toHaveAttribute('href', '/resume.pdf');
+    expect(screen.getByRole('link', { name: /contact/i })).toHaveAttribute(
+      'href',
+      'mailto:kgoel9657@gmail.com',
+    );
+    expect(screen.getByRole('link', { name: /exit pc/i })).toHaveAttribute('href', '/');
+    expect(screen.getByRole('main')).toHaveAttribute('data-reduced-motion', 'false');
+    expect(screen.getByRole('main')).toHaveAttribute('data-booting');
   });
 
   it('opens a box route from its tab', async () => {
