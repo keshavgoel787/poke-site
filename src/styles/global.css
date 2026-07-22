@@ -106,12 +106,9 @@ ul {
 
 .trainer-card > h1 {
   margin: 0 0 1rem;
-  color: var(--screen-white);
+  color: var(--ink);
   font-size: clamp(2rem, 8vw, 5rem);
   letter-spacing: -0.06em;
-  text-shadow:
-    3px 0 var(--ink),
-    0 3px var(--ink);
   text-transform: uppercase;
 }
 
@@ -185,8 +182,8 @@ ul {
 
 .trainer-walk-scene {
   position: relative;
-  width: min(48vw, 11rem);
-  aspect-ratio: 2 / 3;
+  width: 2rem;
+  height: 3rem;
   overflow: hidden;
   background: var(--panel-cyan);
 }
@@ -198,20 +195,22 @@ ul {
   display: block;
   width: 300%;
   max-width: none;
-  height: 100%;
+  height: 3rem;
   image-rendering: pixelated;
+  transform: scaleX(1);
   animation: trainer-walk-cycle 900ms steps(3) infinite;
 }
 
 .trainer-walk-companion {
   position: absolute;
-  bottom: 4%;
+  bottom: 0.6rem;
   left: 0;
   z-index: 1;
   display: block;
-  width: 48%;
+  width: 1.75rem;
   height: auto;
   image-rendering: pixelated;
+  transform: scaleX(1);
   animation: trainer-companion-bob 900ms steps(2, end) infinite;
 }
 
@@ -263,7 +262,7 @@ ul {
   margin: 0 auto;
   padding: 0.7rem 0.85rem;
   border: 0.35rem solid var(--steel-dark);
-  background: var(--select-blue);
+  background: var(--steel-dark);
   color: var(--screen-white);
   box-shadow:
     inset 0 0 0 0.18rem var(--steel-light),
@@ -292,6 +291,10 @@ ul {
     inset 0 0 0 0.18rem var(--steel-light),
     0.15rem 0.15rem 0 var(--ink);
   transform: translate(0.2rem, 0.2rem);
+}
+
+.trainer-roster-card:hover::after {
+  color: var(--ink);
 }
 
 .trainer-roster-card:active {
@@ -323,16 +326,13 @@ ul {
   padding: 0.7rem 0.8rem;
   border-bottom: 0.35rem solid var(--steel-dark);
   background: var(--screen-blue);
-  color: var(--screen-white);
+  color: var(--ink);
   font-size: clamp(1.5rem, 7vw, 3rem);
   letter-spacing: 0.02em;
-  text-shadow:
-    3px 0 var(--ink),
-    0 3px var(--ink);
   text-transform: uppercase;
 }
 
-#root > main[data-booting] > div:first-of-type {
+#root > main[data-booting] > .career-pc__utility-bar {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
@@ -341,8 +341,8 @@ ul {
   background: var(--steel-dark);
 }
 
-#root > main[data-booting] > div:first-of-type a,
-#root > main[data-booting] > div:first-of-type button {
+#root > main[data-booting] > .career-pc__utility-bar a,
+#root > main[data-booting] > .career-pc__utility-bar button {
   display: flex;
   flex: 1 1 10rem;
   align-items: center;
@@ -358,12 +358,12 @@ ul {
   text-transform: uppercase;
 }
 
-#root > main[data-booting] > div:first-of-type button {
+#root > main[data-booting] > .career-pc__utility-bar button {
   cursor: pointer;
 }
 
 #root > main[data-booting]
-  > div:first-of-type
+  > .career-pc__utility-bar
   button[aria-pressed="true"] {
   background: var(--steel-dark);
   color: var(--screen-white);
@@ -373,13 +373,13 @@ ul {
 }
 
 #root > main[data-booting]
-  > div:first-of-type
+  > .career-pc__utility-bar
   button[aria-pressed="true"]::after {
   content: " ON";
 }
 
 #root > main[data-booting]
-  > div:first-of-type
+  > .career-pc__utility-bar
   button[aria-pressed="false"]::after {
   content: " OFF";
 }
@@ -462,8 +462,8 @@ ul {
   padding: 0.55rem;
   overflow: hidden;
   border: 0.35rem solid var(--steel-dark);
-  background: var(--select-blue);
-  color: var(--screen-white);
+  background: var(--steel-dark);
+  color: var(--ink);
   box-shadow: inset 0 0 0 0.18rem var(--steel-light);
   cursor: pointer;
   text-align: left;
@@ -495,9 +495,10 @@ ul {
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button[aria-pressed="true"] {
-  background: var(--select-blue);
-  color: var(--screen-white);
+  background: var(--steel-dark);
+  color: var(--ink);
   box-shadow:
+    inset 0 0 0 0.28rem var(--select-blue),
     inset 0 0 0 0.18rem var(--steel-light),
     inset 0 -0.5rem 0 var(--status-green);
 }
@@ -539,7 +540,9 @@ ul {
   line-height: 1.05;
   overflow-wrap: anywhere;
   text-shadow:
+    -2px 0 var(--ink),
     2px 0 var(--ink),
+    0 -2px var(--ink),
     0 2px var(--ink);
   text-transform: uppercase;
 }
@@ -692,22 +695,16 @@ dialog.pokedex-entry > .pokedex-entry__meta {
 dialog.pokedex-entry > .pokedex-entry__creature {
   align-self: end;
   margin: 0;
-  color: var(--screen-white);
+  color: var(--ink);
   font-size: 0.78rem;
-  text-shadow:
-    2px 0 var(--ink),
-    0 2px var(--ink);
   text-transform: uppercase;
 }
 
 dialog.pokedex-entry > .pokedex-entry__organization {
   margin: 0;
-  color: var(--screen-white);
+  color: var(--ink);
   font-size: clamp(1.05rem, 5vw, 1.8rem);
   overflow-wrap: anywhere;
-  text-shadow:
-    2px 0 var(--ink),
-    0 2px var(--ink);
   text-transform: uppercase;
 }
 
@@ -827,13 +824,13 @@ dialog.pokedex-entry > button {
 
 @keyframes trainer-walk-cycle {
   to {
-    transform: translateX(-100%);
+    transform: translateX(-100%) scaleX(1);
   }
 }
 
 @keyframes trainer-companion-bob {
   50% {
-    transform: translateY(-0.3rem);
+    transform: translateY(-0.2rem) scaleX(1);
   }
 }
 
@@ -912,10 +909,6 @@ dialog.pokedex-entry > button {
     grid-template-columns: minmax(0, 1fr) minmax(11rem, 17rem);
   }
 
-  .trainer-walk-scene {
-    width: min(100%, 12rem);
-  }
-
   dialog.pokedex-entry > ul[aria-label="Moves"] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -934,7 +927,7 @@ dialog.pokedex-entry > button {
     gap: 1.5rem;
   }
 
-  #root > main[data-booting] > div:first-of-type {
+  #root > main[data-booting] > .career-pc__utility-bar {
     flex-wrap: nowrap;
   }
 

@@ -126,7 +126,7 @@ export function CareerPC() {
     <main data-reduced-motion={reducedMotion} data-booting>
       <h1>Keshav's PC</h1>
 
-      <div>
+      <div className="career-pc__utility-bar">
         <Link to="/" onClick={playEnabledBleep}>
           Back to Trainer Card
         </Link>

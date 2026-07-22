@@ -1,6 +1,7 @@
 import type { JSX } from 'react';
 import { trainerProfile } from '../data/portfolioData';
 import { pokemonPath } from '../navigation/routes';
+import { usePreferences } from '../preferences/usePreferences';
 import { TrainerWalkScene } from './TrainerWalkScene';
 
 const professionalLinkIcons: Record<string, string> = {
@@ -11,8 +12,10 @@ const professionalLinkIcons: Record<string, string> = {
 };
 
 export function TrainerProfile(): JSX.Element {
+  const { reducedMotion } = usePreferences();
+
   return (
-    <main className="trainer-screen">
+    <main className="trainer-screen" data-reduced-motion={reducedMotion}>
       <section className="trainer-card" aria-labelledby="trainer-card-title">
         <h1 id="trainer-card-title">Trainer Card</h1>
 
@@ -45,7 +48,7 @@ export function TrainerProfile(): JSX.Element {
           <div className="trainer-card__walk-viewport">
             <TrainerWalkScene
               trainerSrc="/trainer-walk.png"
-              companionSrc="/gengar-companion.png"
+              companionSrc="/gengar-companion.svg"
               label="Keshav walking with Gengar"
             />
           </div>

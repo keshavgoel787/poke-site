@@ -1,12 +1,14 @@
 // @vitest-environment node
 
 // @ts-expect-error Vitest provides this built-in; the app intentionally omits Node globals.
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 const globalStyles = readFileSync(new URL('./global.css', import.meta.url), 'utf8');
 const tokens = readFileSync(new URL('./tokens.css', import.meta.url), 'utf8');
 const mainSource = readFileSync(new URL('../main.tsx', import.meta.url), 'utf8');
 const documentSource = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
+const companionUrl = new URL('../../public/gengar-companion.svg', import.meta.url);
+const companionSource = existsSync(companionUrl) ? readFileSync(companionUrl, 'utf8') : '';
 
 describe('handheld reference visual system', () => {
   it('defines the exact approved shared palette and pixel border', () => {
@@ -58,6 +60,46 @@ describe('handheld reference visual system', () => {
     expect(globalStyles).toMatch(/\.trainer-roster-card\s*{[\s\S]*?display: flex;/);
   });
 
+  it('keeps the chibi scene compact, pixelated, layered, and facing right', () => {
+    expect(globalStyles).toMatch(
+      /\.trainer-walk-scene\s*{[^}]*width: 2rem;[^}]*height: 3rem;/,
+    );
+    expect(globalStyles).toMatch(
+      /\.trainer-walk-strip\s*{[^}]*z-index: 2;[^}]*height: 3rem;[^}]*image-rendering: pixelated;[^}]*transform: scaleX\(1\);/,
+    );
+    expect(globalStyles).toMatch(
+      /\.trainer-walk-companion\s*{[^}]*bottom: 0\.6rem;[^}]*z-index: 1;[^}]*width: 1\.75rem;[^}]*image-rendering: pixelated;[^}]*transform: scaleX\(1\);/,
+    );
+  });
+
+  it('uses the repo-native crisp-edge block companion asset', () => {
+    expect(companionSource).toContain('viewBox="0 0 32 32"');
+    expect(companionSource).toContain('shape-rendering="crispEdges"');
+    expect(companionSource).toContain('<rect');
+    expect(companionSource).not.toMatch(/<(?:path|circle|ellipse|polygon|image)\b/);
+  });
+
+  it('uses contrast-safe text or complete outlines on blue surfaces', () => {
+    expect(globalStyles).toMatch(
+      /\.trainer-card\s*>\s*h1\s*{[^}]*color: var\(--ink\);/,
+    );
+    expect(globalStyles).toMatch(
+      /main\[data-booting\]\s*>\s*h1\s*{[^}]*background: var\(--screen-blue\);[^}]*color: var\(--ink\);/,
+    );
+    expect(globalStyles).toMatch(
+      /\.trainer-roster-card\s*{[^}]*background: var\(--steel-dark\);[^}]*color: var\(--screen-white\);/,
+    );
+    expect(globalStyles).toMatch(
+      /\.trainer-roster-card:hover::after\s*{[^}]*color: var\(--ink\);/,
+    );
+    expect(globalStyles).toMatch(
+      /\.pixel-sprite\s*\+\s*span\s*{[^}]*color: var\(--screen-white\);[^}]*-2px 0 var\(--ink\)[^}]*2px 0 var\(--ink\)[^}]*0 -2px var\(--ink\)[^}]*0 2px var\(--ink\)/,
+    );
+    expect(globalStyles).toMatch(
+      /\.pokedex-entry__organization\s*{[^}]*color: var\(--ink\);/,
+    );
+  });
+
   it('uses one roster column by default and two columns from 768 pixels', () => {
     expect(globalStyles).toContain('min-width: 44px');
     expect(globalStyles).toContain('min-height: 44px');
@@ -106,6 +148,12 @@ describe('handheld reference visual system', () => {
     );
     expect(globalStyles).toMatch(
       /data-reduced-motion="true"[\s\S]*\.pixel-sprite__frame--b[\s\S]*opacity: 0 !important/,
+    );
+    expect(globalStyles).toMatch(
+      /prefers-reduced-motion:[\s\S]*\.trainer-walk-strip,[\s\S]*\.trainer-walk-companion[\s\S]*animation: none !important/,
+    );
+    expect(globalStyles).toMatch(
+      /data-reduced-motion="true"[\s\S]*\.trainer-walk-strip,[\s\S]*\.trainer-walk-companion[\s\S]*animation: none !important/,
     );
   });
 

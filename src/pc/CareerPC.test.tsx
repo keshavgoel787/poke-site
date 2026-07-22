@@ -210,10 +210,10 @@ describe('CareerPC', () => {
   it('shows only the roster return and sound controls above the party', () => {
     renderCareerPC('/pokemon/experience');
 
-    expect(screen.getByRole('link', { name: /back to trainer card/i })).toHaveAttribute(
-      'href',
-      '/',
-    );
+    const backLink = screen.getByRole('link', { name: /back to trainer card/i });
+
+    expect(backLink).toHaveAttribute('href', '/');
+    expect(backLink.parentElement).toHaveClass('career-pc__utility-bar');
     expect(screen.getByRole('button', { name: /sound/i })).toBeVisible();
     expect(screen.queryByRole('navigation', { name: /quick menu/i })).not.toBeInTheDocument();
     expect(screen.getByRole('main')).toHaveAttribute('data-reduced-motion', 'false');

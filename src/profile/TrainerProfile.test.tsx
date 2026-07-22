@@ -1,6 +1,19 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { beforeEach, vi } from 'vitest';
 import { TrainerProfile } from './TrainerProfile';
+
+beforeEach(() => {
+  vi.stubGlobal('localStorage', {
+    getItem: vi.fn().mockReturnValue(null),
+    setItem: vi.fn(),
+  });
+  vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({
+    matches: false,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  }));
+});
 
 it('presents Keshav\'s Trainer Card and professional destinations', () => {
   render(
@@ -16,10 +29,11 @@ it('presents Keshav\'s Trainer Card and professional destinations', () => {
   expect(screen.getByText('Data Science')).toBeVisible();
   expect(screen.getByText('Boston, MA')).toBeVisible();
   expect(screen.getByRole('img', { name: 'Keshav walking with Gengar' })).toBeVisible();
+  expect(screen.getByRole('main')).toHaveAttribute('data-reduced-motion', 'false');
   expect(screen.getByTestId('trainer-walk-strip')).toHaveAttribute('src', '/trainer-walk.png');
   expect(screen.getByTestId('trainer-companion')).toHaveAttribute(
     'src',
-    '/gengar-companion.png',
+    '/gengar-companion.svg',
   );
   expect(screen.getByRole('link', { name: /résumé/i })).toHaveAttribute('href', '/resume.pdf');
   expect(screen.getByRole('link', { name: "Keshav's Pokémon" })).toHaveAttribute(
