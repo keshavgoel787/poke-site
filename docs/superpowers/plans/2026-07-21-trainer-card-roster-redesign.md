@@ -45,7 +45,8 @@
 - `src/pc/PixelSprite.test.tsx`: all visible and preserved IDs plus fallback behavior.
 - `src/assets/sprites/wps-data-lab-*.svg`: original WPS two-frame sprite.
 - `src/assets/sprites/remetra-*.svg`: original Remetra two-frame sprite.
-- `public/trainer-walk.png`: transparent three-frame walking sheet containing an original Keshav trainer and newly drawn simplified Gengar companion.
+- `public/trainer-walk.png`: transparent three-frame walking sheet containing the original Keshav trainer.
+- `public/gengar-companion.png`: transparent companion art derived from Keshav's supplied Gengar reference.
 - `public/resume.pdf`: byte-for-byte updated résumé.
 - `src/styles/tokens.css`: revised handheld palette.
 - `src/styles/global.css`: Trainer Card, roster, modal, responsive, focus, and motion styling.
@@ -180,23 +181,24 @@ git commit -m "feat: refresh roster content and routes"
 - Modify: `src/profile/TrainerProfile.tsx`
 - Modify: `src/profile/TrainerProfile.test.tsx`
 - Create: `public/trainer-walk.png`
+- Create: `public/gengar-companion.png`
 - Remove: `src/profile/TrainerAvatar.tsx`
 - Remove: `src/profile/TrainerAvatar.test.tsx`
 - Remove: `public/trainer-avatar.png`
 
 **Interfaces:**
 - Consumes: `trainerProfile`, `pokemonPath('experience')`, `/resume.pdf`, Keshav's photo reference, and the supplied Gengar reference.
-- Produces: `TrainerWalkScene({ src, label })` and revised `TrainerProfile()`.
+- Produces: `TrainerWalkScene({ trainerSrc, companionSrc, label })` and revised `TrainerProfile()`.
 
 - [ ] **Step 1: Generate and inspect the walking sprite sheet**
 
-Use the image generation skill with `/Users/keshavgoel/Downloads/id_photo.png` and `/var/folders/bb/hsp4zv4n1j90qvy7v635c_m40000gn/T/codex-clipboard-e16bb6fc-bf6a-4b5c-b83b-b37cc0f7bb02.png` as references and this exact art brief:
+Use the image generation skill with `/Users/keshavgoel/Downloads/id_photo.png` as the trainer reference and this exact art brief:
 
 ```text
-Create a transparent horizontal three-frame overworld walking sprite sheet. In every equal-width frame, show the same compact side-facing young South Asian trainer based on the supplied photo: dark wavy hair, medium-brown skin, black suit, white dress shirt. A simplified, newly drawn Gengar based on the supplied companion reference follows one step behind and gently bobs. Keep both characters centered as a pair; they walk in place and never leave the frame. Crisp hard-edged low-resolution pixel art, no antialiasing, no Poké Ball, cap, franchise trainer clothing, logos, badges, UI, text, scenery, or extracted game sprite. Keep all three frames aligned to one shared baseline with identical dimensions and transparent backgrounds.
+Create a transparent horizontal three-frame overworld walking sprite sheet. In every equal-width frame, show the same compact side-facing young South Asian trainer based on the supplied photo: dark wavy hair, medium-brown skin, black suit, white dress shirt. Frame 1 is a left-foot pose, frame 2 a passing pose, and frame 3 a right-foot pose. Keep the trainer centered, walking in place, aligned to one shared baseline, and consistent in size and palette. Crisp hard-edged low-resolution pixel art, no antialiasing, no Poké Ball, cap, franchise trainer clothing, logos, badges, UI, text, scenery, other character, or copied game pose.
 ```
 
-Inspect the sheet for three equal frames, Keshav's recognizable hair/suit/skin tone, legibility at card size, transparent corners, Gengar following behind, consistent baseline, and absence of copied game UI or extracted sprites. Save the approved sheet as `public/trainer-walk.png`.
+Inspect the sheet for three equal frames, Keshav's recognizable hair/suit/skin tone, legibility at card size, transparent corners, a consistent baseline, and absence of copied game UI or extracted sprites. Save it as `public/trainer-walk.png`. Because combined generation is rejected by the image service, crop the central companion from Keshav's supplied Gengar reference, remove only its flat light background with the image-generation skill's chroma helper, and save the resulting transparent art as `public/gengar-companion.png`. Preserve the supplied pixels; do not synthesize a replacement character.
 
 - [ ] **Step 2: Write failing walking-scene and Trainer Card tests**
 
@@ -207,11 +209,13 @@ expect(screen.getByText('May 2028')).toBeVisible();
 expect(screen.getByText('Data Science')).toBeVisible();
 expect(screen.getByText('Boston, MA')).toBeVisible();
 expect(screen.getByRole('link', { name: "Keshav's Pokémon" })).toHaveAttribute('href', '/pokemon/experience');
-expect(screen.getByRole('img', { name: 'Keshav walking with Gengar' })).toHaveAttribute('src', '/trainer-walk.png');
+expect(screen.getByRole('img', { name: 'Keshav walking with Gengar' })).toBeVisible();
+expect(screen.getByTestId('trainer-walk-strip')).toHaveAttribute('src', '/trainer-walk.png');
+expect(screen.getByTestId('trainer-companion')).toHaveAttribute('src', '/gengar-companion.png');
 expect(screen.getByRole('link', { name: "Keshav's Pokémon" })).toHaveClass('trainer-roster-card');
 ```
 
-In `TrainerWalkScene.test.tsx`, assert stable `trainer-walk-scene` and `trainer-walk-strip` classes. Fire an image error and assert the labeled fallback `Keshav walking with Gengar unavailable` replaces the image.
+In `TrainerWalkScene.test.tsx`, assert stable `trainer-walk-scene`, `trainer-walk-strip`, and `trainer-walk-companion` classes. Fire an error on either source and assert the single labeled fallback `Keshav walking with Gengar unavailable` replaces the scene.
 
 - [ ] **Step 3: Run tests to verify RED**
 
@@ -222,18 +226,19 @@ Expected: FAIL because the walking-scene component and separate roster-card cont
 - [ ] **Step 4: Implement the focused walking scene**
 
 ```tsx
-export function TrainerWalkScene({ src, label }: { src: string; label: string }) {
+export function TrainerWalkScene({ trainerSrc, companionSrc, label }: { trainerSrc: string; companionSrc: string; label: string }) {
   const [failed, setFailed] = useState(false);
   if (failed) return <div role="img" aria-label={`${label} unavailable`}>{label}</div>;
   return (
-    <div className="trainer-walk-scene">
-      <img className="trainer-walk-strip" src={src} alt={label} onError={() => setFailed(true)} />
+    <div className="trainer-walk-scene" role="img" aria-label={label}>
+      <img data-testid="trainer-companion" className="trainer-walk-companion" src={companionSrc} alt="" onError={() => setFailed(true)} />
+      <img data-testid="trainer-walk-strip" className="trainer-walk-strip" src={trainerSrc} alt="" onError={() => setFailed(true)} />
     </div>
   );
 }
 ```
 
-Style the sheet as three equal horizontal frames using an overflow-hidden viewport and `animation-timing-function: steps(3)`. The pair remains centered and walks in place. Under `@media (prefers-reduced-motion: reduce)`, disable the animation and show the first frame. Do not add sound or a JavaScript animation loop.
+Style the trainer sheet as three equal horizontal frames using an overflow-hidden viewport and `animation-timing-function: steps(3)`. Layer the companion behind the trainer and animate it with a subtle CSS bob synchronized to the trainer loop. The pair remains centered and walks in place. Under `@media (prefers-reduced-motion: reduce)`, disable both animations and show the trainer's first frame. Do not add sound or a JavaScript animation loop.
 
 - [ ] **Step 5: Implement semantic Trainer Card markup**
 
@@ -246,7 +251,7 @@ Run: `npm test -- src/profile/TrainerWalkScene.test.tsx src/profile/TrainerProfi
 Expected: all focused tests PASS.
 
 ```bash
-git add public/trainer-walk.png src/profile src/styles/global.css
+git add public/trainer-walk.png public/gengar-companion.png src/profile src/styles/global.css
 git commit -m "feat: add trainer walking scene"
 ```
 
