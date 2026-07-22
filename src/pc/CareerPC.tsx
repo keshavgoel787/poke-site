@@ -5,7 +5,6 @@ import { getRoster, rosterTabs } from '../data/portfolioData';
 import { pokemonPath, resolvePokemonRoute } from '../navigation/routes';
 import { CreatureGrid } from './CreatureGrid';
 import { PokedexEntry } from './PokedexEntry';
-import { QuickMenu } from './QuickMenu';
 import { usePreferences } from '../preferences/usePreferences';
 
 type RecoveryLocationState = {
@@ -29,6 +28,15 @@ export function CareerPC() {
 
   const playEnabledBleep = () => {
     if (soundEnabled) {
+      playBleep();
+    }
+  };
+
+  const toggleSound = () => {
+    const nextSoundEnabled = !soundEnabled;
+
+    setSoundEnabled(nextSoundEnabled);
+    if (nextSoundEnabled) {
       playBleep();
     }
   };
@@ -72,10 +80,14 @@ export function CareerPC() {
     <main data-reduced-motion={reducedMotion} data-booting>
       <h1>Keshav's PC</h1>
 
-      <QuickMenu
-        soundEnabled={soundEnabled}
-        setSoundEnabled={setSoundEnabled}
-      />
+      <div>
+        <Link to="/" onClick={playEnabledBleep}>
+          Back to Trainer Card
+        </Link>
+        <button type="button" aria-pressed={soundEnabled} onClick={toggleSound}>
+          Sound
+        </button>
+      </div>
 
       {showRecoveryMessage ? (
         <p role="status">
@@ -83,8 +95,8 @@ export function CareerPC() {
         </p>
       ) : null}
 
-      <nav aria-label="PC boxes">
-        <div role="tablist" aria-label="Career boxes">
+      <nav aria-label="Professional roster">
+        <div role="tablist" aria-label="Roster tabs">
           {rosterTabs.map((careerBox, index) => (
             <Link
               key={careerBox.id}

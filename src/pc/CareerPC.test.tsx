@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { beforeEach, vi } from 'vitest';
@@ -81,15 +81,34 @@ describe('CareerPC', () => {
     });
   });
 
-  it('shows the selected career box and concise entry', () => {
+  it('shows exactly the two professional roster tabs and current experience party', () => {
     renderCareerPC('/pokemon/experience/amazon');
 
-    expect(screen.getByRole('tab', { name: /experience/i })).toHaveAttribute(
+    expect(screen.getAllByRole('tab')).toHaveLength(2);
+    expect(screen.getByRole('tab', { name: 'Experience' })).toHaveAttribute(
       'aria-selected',
       'true',
     );
+    expect(screen.getByRole('button', { name: 'Draftion: DraftKings' })).toBeVisible();
+    expect(screen.queryByText('Generate')).not.toBeInTheDocument();
+    expect(screen.queryByText('VDart')).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /amazon/i })).toBeVisible();
     expect(screen.getAllByRole('listitem', { name: /move:/i }).length).toBeGreaterThan(0);
+  });
+
+  it('presents each party member with professional details and a completion bar', () => {
+    renderCareerPC('/pokemon/experience/draftkings');
+    const draftKings = screen.getByRole('button', { name: 'Draftion: DraftKings' });
+
+    expect(draftKings).toHaveTextContent('Draftion');
+    expect(draftKings).toHaveTextContent('DraftKings');
+    expect(draftKings).toHaveTextContent('Software Engineering Intern');
+    expect(draftKings).toHaveTextContent('Experience');
+    const completion = within(draftKings).getByRole('img', { name: 'Entry complete' });
+
+    expect(completion).toBeVisible();
+    expect(completion).not.toBeEmptyDOMElement();
+    expect(draftKings).not.toHaveTextContent(/\b(?:HP|level|gender)\b/i);
   });
 
   it('renders sprites in the creature grid and selected entry', () => {
@@ -185,16 +204,15 @@ describe('CareerPC', () => {
     );
   });
 
-  it('renders the quick menu links and motion state on the PC root', () => {
+  it('shows only the roster return and sound controls above the party', () => {
     renderCareerPC('/pokemon/experience/amazon');
 
-    expect(screen.getByRole('link', { name: /profile/i })).toHaveAttribute('href', '/');
-    expect(screen.getByRole('link', { name: /résumé/i })).toHaveAttribute('href', '/resume.pdf');
-    expect(screen.getByRole('link', { name: /contact/i })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /back to trainer card/i })).toHaveAttribute(
       'href',
-      'mailto:kgoel9657@gmail.com',
+      '/',
     );
-    expect(screen.getByRole('link', { name: /exit pc/i })).toHaveAttribute('href', '/');
+    expect(screen.getByRole('button', { name: /sound/i })).toBeVisible();
+    expect(screen.queryByRole('navigation', { name: /quick menu/i })).not.toBeInTheDocument();
     expect(screen.getByRole('main')).toHaveAttribute('data-reduced-motion', 'false');
     expect(screen.getByRole('main')).toHaveAttribute('data-booting');
   });
@@ -210,6 +228,9 @@ describe('CareerPC', () => {
       'aria-selected',
       'true',
     );
+    expect(screen.getByRole('button', { name: 'Remetrix: Remetra' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Memorai: ForgetMeNot' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'AeroRoute: BreatheEasy' })).toBeVisible();
   });
 
   it('keeps every box tab associated with the mounted active panel', () => {
