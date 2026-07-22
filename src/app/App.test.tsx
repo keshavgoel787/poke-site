@@ -36,4 +36,7 @@ it('recovers an unknown project route to the Projects box', () => {
     'aria-selected',
     'true',
   );
+  expect(
+    screen.getByRole('button', { name: 'AeroRoute: Breathe Easy' }),
+  ).toBeVisible();
 });
