@@ -4,7 +4,7 @@
 
 Reshape the existing portfolio into a faithful three-screen handheld-game flow: a Trainer Card landing page, a two-tab professional creature roster, and a compact detail popup. Preserve the original creature sprites, opt-in sound system, accessibility foundation, and static deployment model while refreshing all visible professional content from Keshav Goel's July 18, 2026 résumé.
 
-The screenshots supplied by Keshav define the visual target. The implementation may closely emulate their palette, density, beveling, and screen hierarchy, but it must not copy Pokémon characters, Poké Balls, badge art, icons, sound recordings, logos, or extracted game assets. All trainer, creature, icon, and audio assets remain original.
+The screenshots supplied by Keshav define the visual target. The implementation may closely emulate their palette, density, beveling, and screen hierarchy, but it must not copy extracted game assets, Poké Balls, badge art, icons, sound recordings, logos, or franchise trainer designs. All career-creature, trainer, icon, and audio assets remain original. The Trainer Card scene has one user-directed exception: a newly drawn, simplified Gengar companion based on the reference image supplied by Keshav, not an extracted sprite.
 
 ## Authoritative Inputs
 
@@ -27,9 +27,11 @@ The root route displays a full-screen blue Trainer Card. It contains:
 - Graduation: May 2028.
 - Major: Data Science.
 - Hometown: Boston, MA.
-- An original low-resolution trainer avatar based on Keshav's supplied photo, retaining recognizable dark wavy hair, black suit, and white shirt without tracing a franchise trainer.
+- A compact overworld walking scene. Keshav appears as an original side-facing, low-resolution trainer sprite based on his supplied photo, retaining recognizable dark wavy hair, medium-brown skin, black suit, and white shirt without tracing a franchise trainer. A simplified, newly drawn Gengar sprite follows one step behind.
 - Original bottom-row icons linking to résumé, GitHub, LinkedIn, and email.
-- One primary action below the card labeled **Keshav's Pokémon**.
+- One primary action below the card labeled **Keshav's Pokémon**. It is presented as a separate raised rectangular pixel card, not embedded inside the Trainer Card.
+
+The walking viewport stays centered inside the Trainer Card's picture panel. Keshav uses a subtle three-frame side-walk loop; Gengar follows and gently bobs in the same loop. The scene does not travel across or leave the viewport. Reduced-motion users receive a clean static idle frame.
 
 The updated résumé PDF replaces the existing `public/resume.pdf` byte-for-byte.
 
@@ -93,10 +95,11 @@ Pixel labels remain secondary to legibility. Professional descriptions use a rea
 
 - Preserve all existing creature sprite files, including creatures no longer displayed.
 - Preserve the existing original menu bleep system and opt-in preference behavior.
-- Create an original trainer sprite from Keshav's photo reference.
+- Create an original three-frame overworld trainer sprite from Keshav's photo reference.
+- Create a simplified Gengar companion sprite from the user-supplied reference; do not use an extracted game sprite.
 - Create original WPS Data Lab and Remetra sprites.
 - Create original trainer-card navigation icons.
-- Do not use copied franchise artwork, icons, sounds, names, ball motifs, or logos.
+- Except for the user-requested Gengar companion, do not use copied franchise artwork, characters, icons, sounds, names, ball motifs, or logos.
 - Missing or failed artwork falls back to a labeled pixel placeholder.
 
 ## Content Mapping
@@ -126,7 +129,7 @@ Component changes:
 - `PokedexEntry` becomes the accessible detail dialog.
 - `portfolioData` is refreshed from the updated résumé.
 - `PixelSprite` and sound preference/playback modules remain in place.
-- Add a focused trainer-avatar component or sprite registry entry rather than embedding avatar logic in the page component.
+- Replace the interim static-avatar presentation with a focused `TrainerWalkScene` component rather than embedding animation logic in the page component. It uses transparent sprite artwork and CSS `steps()` animation. Do not add a canvas or JavaScript animation loop.
 
 Routes:
 
@@ -147,6 +150,7 @@ The URL is the source of truth for the active tab and popup. Presentation-only s
 - Maintain at least 44-by-44-pixel interactive targets.
 - Preserve sound-off default, explicit opt-in, safe storage, and fail-silent Web Audio behavior.
 - Reduced motion removes card transitions, popup animation, sprite animation, and dialogue effects without hiding content.
+- The walking scene exposes one accessible label for Keshav and Gengar, uses the existing labeled art fallback if its sprite fails, and does not autoplay sound.
 - Missing avatar or creature art uses a readable labeled fallback.
 - Mobile roster order, popup content, professional links, and Trainer Card fields remain complete without horizontal scrolling at 320 pixels.
 
@@ -155,6 +159,8 @@ The URL is the source of truth for the active tab and popup. Presentation-only s
 Automated verification includes:
 
 - Exact Trainer Card fields and links.
+- Walking-scene accessible label, asset contract, stable animation classes, image fallback, and reduced-motion styling.
+- Separate roster-card accessible name, destination, focus state, and pressed interaction styling.
 - Updated résumé data, visible roster membership, and removal of stale entries.
 - Exactly two roster tabs.
 - Roster tab routing and legacy `/pc/...` redirects.
