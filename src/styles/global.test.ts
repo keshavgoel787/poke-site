@@ -8,13 +8,18 @@ const tokens = readFileSync(new URL('./tokens.css', import.meta.url), 'utf8');
 const mainSource = readFileSync(new URL('../main.tsx', import.meta.url), 'utf8');
 const documentSource = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
 
-describe('Kanto-red visual system', () => {
+describe('handheld reference visual system', () => {
   it('defines the exact approved shared palette and pixel border', () => {
-    expect(tokens).toContain('--ink: #172032');
-    expect(tokens).toContain('--cream: #fff4da');
-    expect(tokens).toContain('--gold: #ffd56b');
-    expect(tokens).toContain('--red: #d44532');
-    expect(tokens).toContain('--focus: #2459c4');
+    expect(tokens).toContain('--ink: #0c1720');
+    expect(tokens).toContain('--screen-blue: #5596df');
+    expect(tokens).toContain('--panel-cyan: #a9d8f3');
+    expect(tokens).toContain('--steel-dark: #596875');
+    expect(tokens).toContain('--steel-light: #cbd4d8');
+    expect(tokens).toContain('--status-green: #35d34a');
+    expect(tokens).toContain('--screen-white: #f4f8f7');
+    expect(tokens).toContain('--select-red: #d94545');
+    expect(tokens).toContain('--select-blue: #2877c8');
+    expect(tokens).toContain('--focus: #ffd84d');
     expect(tokens).toContain('--pixel-border: 3px');
   });
 
@@ -30,20 +35,39 @@ describe('Kanto-red visual system', () => {
     expect(globalStyles).toContain('[aria-selected="true"]');
   });
 
-  it('keeps small selected-control labels on the high-contrast ink/cream pair', () => {
+  it('keeps small selected-control labels on a high-contrast steel/white pair', () => {
     expect(globalStyles).toMatch(
-      /button\[aria-pressed="true"\]\s*{\s*background: var\(--cream\);\s*color: var\(--ink\);/,
+      /button\[aria-pressed="true"\]\s*{[^}]*background: var\(--steel-dark\);[^}]*color: var\(--screen-white\);/,
     );
     expect(globalStyles).toMatch(
-      /\[role="tab"\]\[aria-selected="true"\]\s*{\s*background: var\(--cream\);\s*color: var\(--ink\);/,
+      /\[role="tab"\]\[aria-selected="true"\]\s*{[^}]*background: var\(--steel-dark\);[^}]*color: var\(--screen-white\);/,
+    );
+    expect(globalStyles).toMatch(
+      /div\[aria-label="Types"\]\s*span\s*{[^}]*background: var\(--screen-white\);[^}]*color: var\(--ink\);/,
     );
   });
 
-  it('stacks mobile content grid-first and switches to two desktop columns', () => {
+  it('styles the framed Trainer Card, cyan field rows, avatar panel, and roster control', () => {
+    expect(globalStyles).toMatch(/\.trainer-card\s*{[\s\S]*?background: var\(--screen-blue\);/);
+    expect(globalStyles).toMatch(
+      /\.trainer-card__fields\s*>\s*div\s*{[\s\S]*?background: var\(--panel-cyan\);/,
+    );
+    expect(globalStyles).toMatch(
+      /\.trainer-card__walk-viewport\s*{[\s\S]*?border: 0\.35rem solid var\(--steel-dark\);/,
+    );
+    expect(globalStyles).toMatch(/\.trainer-roster-card\s*{[\s\S]*?display: flex;/);
+  });
+
+  it('uses one roster column by default and two columns from 768 pixels', () => {
     expect(globalStyles).toContain('min-width: 44px');
     expect(globalStyles).toContain('min-height: 44px');
+    expect(globalStyles).toMatch(
+      /ul\[aria-label="Career entries"\]\s*{[\s\S]*?grid-template-columns: minmax\(0, 1fr\);/,
+    );
     expect(globalStyles).toMatch(/@media\s*\(min-width:\s*768px\)/);
-    expect(globalStyles).toContain('grid-template-columns: minmax(0, 1fr) minmax(21rem, 1.08fr)');
+    expect(globalStyles).toMatch(
+      /@media\s*\(min-width:\s*768px\)[\s\S]*?ul\[aria-label="Career entries"\][\s\S]*?grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/,
+    );
   });
 
   it('uses pixel rendering and all four restrained motion treatments', () => {
@@ -58,9 +82,12 @@ describe('Kanto-red visual system', () => {
   it('presents roster details as a fixed modal with a backdrop', () => {
     expect(globalStyles).toMatch(/dialog\.pokedex-entry\[open\]\s*{/);
     expect(globalStyles).toMatch(
-      /dialog\.pokedex-entry\[open\][\s\S]*position: fixed;[\s\S]*max-height: calc\(100dvh - 2rem\);[\s\S]*overflow: auto;/,
+      /dialog\.pokedex-entry\[open\][\s\S]*position: fixed;[\s\S]*width: min\(calc\(100% - 1rem\), 48rem\);[\s\S]*max-height: calc\(100dvh - 1rem\);[\s\S]*overflow: auto;/,
     );
     expect(globalStyles).toMatch(/dialog\.pokedex-entry::backdrop\s*{/);
+    expect(globalStyles).toMatch(
+      /dialog\.pokedex-entry\[open\][\s\S]*?background: var\(--screen-blue\);/,
+    );
   });
 
   it('collapses motion for system and in-app reduced-motion preferences', () => {
@@ -74,12 +101,18 @@ describe('Kanto-red visual system', () => {
     expect(globalStyles).toMatch(
       /data-reduced-motion="true"[\s\S]*\.pokedex-entry__highlight[\s\S]*clip-path: inset\(0\) !important/,
     );
+    expect(globalStyles).toMatch(
+      /prefers-reduced-motion:[\s\S]*\.pixel-sprite__frame--b[\s\S]*opacity: 0 !important/,
+    );
+    expect(globalStyles).toMatch(
+      /data-reduced-motion="true"[\s\S]*\.pixel-sprite__frame--b[\s\S]*opacity: 0 !important/,
+    );
   });
 
   it('supplies portfolio metadata without introducing an unapproved theme color', () => {
     expect(documentSource).toContain(
       'content="Software engineering and data science portfolio for Keshav Goel."',
     );
-    expect(documentSource).toContain('name="theme-color" content="#d44532"');
+    expect(documentSource).toContain('name="theme-color" content="#5596df"');
   });
 });

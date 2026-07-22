@@ -1,10 +1,15 @@
 :root {
-  --ink: #172032;
-  --cream: #fff4da;
-  --gold: #ffd56b;
-  --red: #d44532;
-  --focus: #2459c4;
+  --ink: #0c1720;
+  --screen-blue: #5596df;
+  --panel-cyan: #a9d8f3;
+  --steel-dark: #596875;
+  --steel-light: #cbd4d8;
+  --status-green: #35d34a;
+  --screen-white: #f4f8f7;
+  --select-red: #d94545;
+  --select-blue: #2877c8;
+  --focus: #ffd84d;
   --pixel-border: 3px;
   color: var(--ink);
-  background: var(--cream);
+  background: var(--ink);
 }
