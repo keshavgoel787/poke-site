@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 import { trainerProfile } from '../data/portfolioData';
 import { pokemonPath } from '../navigation/routes';
-import { TrainerAvatar } from './TrainerAvatar';
+import { TrainerWalkScene } from './TrainerWalkScene';
 
 const professionalLinkIcons: Record<string, string> = {
   Résumé: '▤',
@@ -42,8 +42,12 @@ export function TrainerProfile(): JSX.Element {
             </div>
           </dl>
 
-          <div className="trainer-card__avatar">
-            <TrainerAvatar src="/trainer-avatar.png" label={trainerProfile.name} />
+          <div className="trainer-card__walk-viewport">
+            <TrainerWalkScene
+              trainerSrc="/trainer-walk.png"
+              companionSrc="/gengar-companion.png"
+              label="Keshav walking with Gengar"
+            />
           </div>
         </div>
 
@@ -63,7 +67,7 @@ export function TrainerProfile(): JSX.Element {
         </nav>
       </section>
 
-      <a className="trainer-screen__roster-link" href={pokemonPath('experience')}>
+      <a className="trainer-roster-card" href={pokemonPath('experience')}>
         Keshav&apos;s Pokémon
       </a>
     </main>

@@ -15,11 +15,19 @@ it('presents Keshav\'s Trainer Card and professional destinations', () => {
   expect(screen.getByText('May 2028')).toBeVisible();
   expect(screen.getByText('Data Science')).toBeVisible();
   expect(screen.getByText('Boston, MA')).toBeVisible();
-  expect(screen.getByRole('img', { name: 'Pixel avatar of Keshav Goel' })).toBeVisible();
+  expect(screen.getByRole('img', { name: 'Keshav walking with Gengar' })).toBeVisible();
+  expect(screen.getByTestId('trainer-walk-strip')).toHaveAttribute('src', '/trainer-walk.png');
+  expect(screen.getByTestId('trainer-companion')).toHaveAttribute(
+    'src',
+    '/gengar-companion.png',
+  );
   expect(screen.getByRole('link', { name: /résumé/i })).toHaveAttribute('href', '/resume.pdf');
   expect(screen.getByRole('link', { name: "Keshav's Pokémon" })).toHaveAttribute(
     'href',
     '/pokemon/experience',
+  );
+  expect(screen.getByRole('link', { name: "Keshav's Pokémon" })).toHaveClass(
+    'trainer-roster-card',
   );
   expect(screen.getByRole('link', { name: /github/i })).toHaveAttribute(
     'href',
