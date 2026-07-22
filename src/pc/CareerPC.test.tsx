@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { beforeEach, vi } from 'vitest';
@@ -104,10 +104,8 @@ describe('CareerPC', () => {
     expect(draftKings).toHaveTextContent('DraftKings');
     expect(draftKings).toHaveTextContent('Software Engineering Intern');
     expect(draftKings).toHaveTextContent('Experience');
-    const completion = within(draftKings).getByRole('img', { name: 'Entry complete' });
-
-    expect(completion).toBeVisible();
-    expect(completion).not.toBeEmptyDOMElement();
+    expect(draftKings).toHaveAccessibleName('Draftion: DraftKings');
+    expect(draftKings).toHaveAccessibleDescription('Entry complete');
     expect(draftKings).not.toHaveTextContent(/\b(?:HP|level|gender)\b/i);
   });
 

@@ -30,6 +30,7 @@ export function CreatureGrid({ entries, selectedId, onSelect }: CreatureGridProp
     <ul aria-label="Career entries">
       {entries.map((entry, index) => {
         const selected = entry.id === selectedId;
+        const completionId = `party-card-${entry.id}-completion`;
 
         return (
           <li key={entry.id}>
@@ -39,6 +40,7 @@ export function CreatureGrid({ entries, selectedId, onSelect }: CreatureGridProp
               }}
               type="button"
               aria-label={`${entry.creatureName}: ${entry.organization}`}
+              aria-describedby={completionId}
               aria-pressed={selected}
               tabIndex={selected ? 0 : -1}
               onClick={() => onSelect(entry.id)}
@@ -55,6 +57,9 @@ export function CreatureGrid({ entries, selectedId, onSelect }: CreatureGridProp
               <span>{entry.category}</span>
               <span className="party-card__completion" role="img" aria-label="Entry complete">
                 <span aria-hidden="true">━━━━━━━━</span>
+              </span>
+              <span id={completionId} hidden>
+                Entry complete
               </span>
             </button>
           </li>
