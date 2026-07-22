@@ -407,11 +407,16 @@ git commit -m "feat: add updated roster sprites"
 **Files:**
 - Modify: `src/styles/tokens.css`
 - Modify: `src/styles/global.css`
+- Modify: `src/profile/TrainerProfile.tsx`
+- Modify: `src/profile/TrainerProfile.test.tsx`
+- Modify: `src/profile/TrainerWalkScene.test.tsx`
+- Replace: `public/trainer-walk.png`
+- Replace: `public/gengar-companion.png`
 - Modify: `index.html`
 
 **Interfaces:**
 - Consumes: Trainer Card, roster, dialog, sprite, focus, sound, and reduced-motion hooks.
-- Produces: the approved reference-matched presentation at mobile, tablet, and desktop sizes.
+- Produces: the approved reference-matched presentation and compact chibi walking scene at mobile, tablet, and desktop sizes.
 
 - [ ] **Step 1: Replace the palette tokens**
 
@@ -438,15 +443,43 @@ Do not add unapproved decorative colors.
 
 Create a blue full-width card with a thick layered steel frame, cyan field rows, right-side avatar panel, large pixel title, original bottom icon strip, and primary roster button below. Preserve normal document flow and semantic headings; do not render copied badge shapes.
 
-- [ ] **Step 3: Style the roster and modal**
+- [ ] **Step 3: Write failing chibi-scene contract tests**
+
+```tsx
+expect(screen.getByTestId('trainer-walk-strip')).toHaveAttribute('src', '/trainer-walk.png');
+expect(screen.getByTestId('trainer-companion')).toHaveAttribute('src', '/gengar-companion.png');
+expect(screen.getByTestId('trainer-walk-strip')).toHaveClass('trainer-walk-strip');
+expect(screen.getByTestId('trainer-companion')).toHaveClass('trainer-walk-companion');
+expect(screen.getByRole('main')).toHaveAttribute('data-reduced-motion');
+```
+
+Extend the style contract to require `image-rendering: pixelated`, a 32-to-48-pixel trainer display height, a smaller companion, right-facing same-direction transforms, companion placement behind and slightly above the trainer, and applicable selectors for both `@media (prefers-reduced-motion: reduce)` and `[data-reduced-motion="true"]` on the Trainer route.
+
+- [ ] **Step 4: Run the new contracts to verify RED**
+
+Run: `npm test -- src/profile/TrainerWalkScene.test.tsx src/profile/TrainerProfile.test.tsx src/styles/global.test.ts`
+
+Expected: FAIL because the current portrait-proportioned assets and Trainer route data-reduced-motion hook do not meet the approved chibi contract.
+
+- [ ] **Step 5: Replace the scene with compact chibi assets**
+
+Generate a transparent three-frame strip from `/Users/keshavgoel/Downloads/id_photo.png`: an original right-facing chibi Keshav approximately two heads tall, oversized dark wavy hair, medium-brown skin, compact black suit and white shirt, tiny left/neutral/right walking poses, equal frame widths and baseline. Use a flat `#00ff00` background and the image-generation skill's chroma helper. Replace `public/trainer-walk.png`.
+
+Transform the user-supplied Gengar reference at `/var/folders/bb/hsp4zv4n1j90qvy7v635c_m40000gn/T/codex-clipboard-e16bb6fc-bf6a-4b5c-b83b-b37cc0f7bb02.png` into a compact right-facing mini companion on a flat removable background. Preserve the recognizable purple silhouette, red eyes, and grin while redrawing it at the trainer's chibi pixel scale; do not use an extracted game sprite. Replace `public/gengar-companion.png`. If combined image generation is rejected, process the trainer and companion in separate image-generation calls.
+
+Style the trainer at 32 to 48 pixels tall on screen with nearest-neighbor rendering. Style Gengar slightly smaller, behind and slightly above Keshav, and facing right. Keep the pair centered and walking in place.
+
+- [ ] **Step 6: Style the roster and modal**
 
 Use charcoal screen background, two-column party cards at 768 pixels and above, one column below, layered metallic borders, white outlined labels, green decorative bars, and crisp enlarged sprites. The dialog overlays the roster with blue/steel panels and remains within the viewport at 320 pixels.
 
-- [ ] **Step 4: Preserve accessibility and reduced motion**
+- [ ] **Step 7: Preserve accessibility, contrast, and reduced motion**
 
-All links/buttons maintain 44-pixel targets. Focus uses `--focus` independently of selected state. Under system or data-attribute reduced motion, disable Trainer Card entrance, roster movement, dialog transition, and two-frame sprites while leaving all content visible.
+All links/buttons maintain 44-pixel targets. Focus uses `--focus` independently of selected state. Put `data-reduced-motion` on the Trainer route's `<main>` using the same preferences hook as the roster so its selectors actually apply. Under system or data-attribute reduced motion, disable Trainer Card entrance, chibi walking/floating, roster movement, dialog transition, and two-frame sprites while leaving all content visible.
 
-- [ ] **Step 5: Run automated and static responsive checks**
+Replace white-on-`--screen-blue` and white-on-`--select-blue` text treatments that measure below WCAG thresholds. Use `--ink` on pale/bright blue fields, a darker blue backplate, or a complete four-direction high-contrast outline. Verify body/small text reaches 4.5:1 and large text reaches 3:1 against its actual rendered surface.
+
+- [ ] **Step 8: Run automated and static responsive checks**
 
 Run: `npm test && npm run build`
 
@@ -454,10 +487,10 @@ Expected: all tests PASS and production build succeeds.
 
 Statically verify no horizontal overflow assumptions at 320 pixels, roster one-column source order, dialog width constraints, and two-column roster at 768 and 1440 pixels.
 
-- [ ] **Step 6: Commit the reference-matched visual system**
+- [ ] **Step 9: Commit the reference-matched visual system**
 
 ```bash
-git add src/styles index.html
+git add public/trainer-walk.png public/gengar-companion.png src/profile src/styles index.html
 git commit -m "feat: match handheld portfolio references"
 ```
 
