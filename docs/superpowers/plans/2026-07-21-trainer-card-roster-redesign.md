@@ -411,7 +411,8 @@ git commit -m "feat: add updated roster sprites"
 - Modify: `src/profile/TrainerProfile.test.tsx`
 - Modify: `src/profile/TrainerWalkScene.test.tsx`
 - Replace: `public/trainer-walk.png`
-- Replace: `public/gengar-companion.png`
+- Create: `public/gengar-companion.svg`
+- Remove: `public/gengar-companion.png`
 - Modify: `index.html`
 
 **Interfaces:**
@@ -447,7 +448,7 @@ Create a blue full-width card with a thick layered steel frame, cyan field rows,
 
 ```tsx
 expect(screen.getByTestId('trainer-walk-strip')).toHaveAttribute('src', '/trainer-walk.png');
-expect(screen.getByTestId('trainer-companion')).toHaveAttribute('src', '/gengar-companion.png');
+expect(screen.getByTestId('trainer-companion')).toHaveAttribute('src', '/gengar-companion.svg');
 expect(screen.getByTestId('trainer-walk-strip')).toHaveClass('trainer-walk-strip');
 expect(screen.getByTestId('trainer-companion')).toHaveClass('trainer-walk-companion');
 expect(screen.getByRole('main')).toHaveAttribute('data-reduced-motion');
@@ -465,7 +466,7 @@ Expected: FAIL because the current portrait-proportioned assets and Trainer rout
 
 Generate a transparent three-frame strip from `/Users/keshavgoel/Downloads/id_photo.png`: an original right-facing chibi Keshav approximately two heads tall, oversized dark wavy hair, medium-brown skin, compact black suit and white shirt, tiny left/neutral/right walking poses, equal frame widths and baseline. Use a flat `#00ff00` background and the image-generation skill's chroma helper. Replace `public/trainer-walk.png`.
 
-Transform the user-supplied Gengar reference at `/var/folders/bb/hsp4zv4n1j90qvy7v635c_m40000gn/T/codex-clipboard-e16bb6fc-bf6a-4b5c-b83b-b37cc0f7bb02.png` into a compact right-facing mini companion on a flat removable background. Preserve the recognizable purple silhouette, red eyes, and grin while redrawing it at the trainer's chibi pixel scale; do not use an extracted game sprite. Replace `public/gengar-companion.png`. If combined image generation is rejected, process the trainer and companion in separate image-generation calls.
+The built-in image service rejected both combined and separate Gengar transformation attempts. Use the supplied reference at `/var/folders/bb/hsp4zv4n1j90qvy7v635c_m40000gn/T/codex-clipboard-e16bb6fc-bf6a-4b5c-b83b-b37cc0f7bb02.png` only as drawing reference for a new repo-native `public/gengar-companion.svg`. Build it from integer-coordinate `<rect>` blocks on a 32-by-32 viewBox with `shape-rendering="crispEdges"`: a compact right-facing purple ghost, one visible red eye facing right, wide white grin, short rear spikes, two small arms, and no background. Do not trace or embed the supplied bitmap and do not use an extracted game sprite.
 
 Style the trainer at 32 to 48 pixels tall on screen with nearest-neighbor rendering. Style Gengar slightly smaller, behind and slightly above Keshav, and facing right. Keep the pair centered and walking in place.
 
@@ -490,7 +491,7 @@ Statically verify no horizontal overflow assumptions at 320 pixels, roster one-c
 - [ ] **Step 9: Commit the reference-matched visual system**
 
 ```bash
-git add public/trainer-walk.png public/gengar-companion.png src/profile src/styles index.html
+git add public/trainer-walk.png public/gengar-companion.svg src/profile src/styles index.html
 git commit -m "feat: match handheld portfolio references"
 ```
 
