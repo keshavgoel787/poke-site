@@ -55,16 +55,24 @@ describe('Kanto-red visual system', () => {
     expect(globalStyles).toContain('@keyframes sprite-frame-b');
   });
 
+  it('presents roster details as a fixed modal with a backdrop', () => {
+    expect(globalStyles).toMatch(/dialog\.pokedex-entry\[open\]\s*{/);
+    expect(globalStyles).toMatch(
+      /dialog\.pokedex-entry\[open\][\s\S]*position: fixed;[\s\S]*max-height: calc\(100dvh - 2rem\);[\s\S]*overflow: auto;/,
+    );
+    expect(globalStyles).toMatch(/dialog\.pokedex-entry::backdrop\s*{/);
+  });
+
   it('collapses motion for system and in-app reduced-motion preferences', () => {
     expect(globalStyles).toMatch(/@media\s*\(prefers-reduced-motion:\s*reduce\)/);
     expect(globalStyles).toContain('[data-reduced-motion="true"]');
     expect(globalStyles).toContain('animation-duration: 0.01ms !important');
     expect(globalStyles).toContain('transition-duration: 0.01ms !important');
     expect(globalStyles).toMatch(
-      /prefers-reduced-motion:[\s\S]*p:nth-of-type\(4\)[\s\S]*clip-path: inset\(0\) !important/,
+      /prefers-reduced-motion:[\s\S]*\.pokedex-entry__highlight[\s\S]*clip-path: inset\(0\) !important/,
     );
     expect(globalStyles).toMatch(
-      /data-reduced-motion="true"[\s\S]*p:nth-of-type\(4\)[\s\S]*clip-path: inset\(0\) !important/,
+      /data-reduced-motion="true"[\s\S]*\.pokedex-entry__highlight[\s\S]*clip-path: inset\(0\) !important/,
     );
   });
 

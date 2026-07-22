@@ -12,6 +12,9 @@ describe('PokedexEntry', () => {
     render(<PokedexEntry entry={draftKings} onClose={vi.fn()} />);
     const entry = screen.getByRole('dialog', { name: 'Draftion details' });
 
+    expect(entry.tagName).toBe('DIALOG');
+    expect(entry).toHaveAttribute('open');
+    expect(entry).toHaveClass('pokedex-entry');
     expect(within(entry).getByText('Draftion')).toBeVisible();
     expect(within(entry).getByRole('heading', { name: 'DraftKings' })).toBeVisible();
     expect(within(entry).getByText('Jun 2026 - Present')).toBeVisible();

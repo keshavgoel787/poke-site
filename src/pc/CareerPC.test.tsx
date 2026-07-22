@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { beforeEach, vi } from 'vitest';
@@ -84,12 +84,14 @@ describe('CareerPC', () => {
   it('shows exactly the two professional roster tabs and current experience party', () => {
     renderCareerPC('/pokemon/experience/amazon');
 
-    expect(screen.getAllByRole('tab')).toHaveLength(2);
-    expect(screen.getByRole('tab', { name: 'Experience' })).toHaveAttribute(
+    expect(screen.getAllByRole('tab', { hidden: true })).toHaveLength(2);
+    expect(screen.getByRole('tab', { name: 'Experience', hidden: true })).toHaveAttribute(
       'aria-selected',
       'true',
     );
-    expect(screen.getByRole('button', { name: 'Draftion: DraftKings' })).toBeVisible();
+    expect(
+      screen.getByRole('button', { name: 'Draftion: DraftKings', hidden: true }),
+    ).toBeVisible();
     expect(screen.queryByText('Generate')).not.toBeInTheDocument();
     expect(screen.queryByText('VDart')).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /amazon/i })).toBeVisible();
@@ -98,7 +100,10 @@ describe('CareerPC', () => {
 
   it('presents each party member with professional details and a completion bar', () => {
     renderCareerPC('/pokemon/experience/draftkings');
-    const draftKings = screen.getByRole('button', { name: 'Draftion: DraftKings' });
+    const draftKings = screen.getByRole('button', {
+      name: 'Draftion: DraftKings',
+      hidden: true,
+    });
 
     expect(draftKings).toHaveTextContent('Draftion');
     expect(draftKings).toHaveTextContent('DraftKings');
@@ -112,14 +117,14 @@ describe('CareerPC', () => {
   it('renders sprites in the creature grid and selected entry', () => {
     renderCareerPC('/pokemon/experience/amazon');
 
-    expect(screen.getAllByRole('img', { name: 'Amazoar' })).toHaveLength(2);
-    expect(screen.getByRole('img', { name: 'Draftion' })).toBeVisible();
+    expect(screen.getAllByRole('img', { name: 'Amazoar', hidden: true })).toHaveLength(2);
+    expect(screen.getByRole('img', { name: 'Draftion', hidden: true })).toBeVisible();
   });
 
   it('keeps sound off until the quick menu sound control is clicked', async () => {
     const user = userEvent.setup();
     const audio = installWorkingAudioContext();
-    renderCareerPC('/pokemon/experience/amazon');
+    renderCareerPC('/pokemon/experience');
     const sound = screen.getByRole('button', { name: /sound/i });
 
     expect(sound).toHaveAttribute('aria-pressed', 'false');
@@ -145,7 +150,7 @@ describe('CareerPC', () => {
   it('plays enabled sound only for user-initiated menu, tab, and grid actions', async () => {
     const user = userEvent.setup();
     const audio = installWorkingAudioContext();
-    renderCareerPC('/pokemon/experience/amazon');
+    renderCareerPC('/pokemon/experience');
 
     await user.click(screen.getByRole('button', { name: /sound/i }));
     await user.click(screen.getByRole('tab', { name: /projects/i }));
@@ -178,7 +183,7 @@ describe('CareerPC', () => {
       throw new DOMException('Audio is blocked', 'NotAllowedError');
     });
     vi.stubGlobal('AudioContext', AudioContext);
-    renderCareerPC('/pokemon/experience/amazon');
+    renderCareerPC('/pokemon/experience');
 
     await user.click(screen.getByRole('button', { name: /sound/i }));
 
@@ -192,7 +197,7 @@ describe('CareerPC', () => {
   it('ignores an unavailable Web Audio API while enabling sound', async () => {
     const user = userEvent.setup();
     vi.stubGlobal('AudioContext', undefined);
-    renderCareerPC('/pokemon/experience/amazon');
+    renderCareerPC('/pokemon/experience');
 
     await user.click(screen.getByRole('button', { name: /sound/i }));
 
@@ -203,7 +208,7 @@ describe('CareerPC', () => {
   });
 
   it('shows only the roster return and sound controls above the party', () => {
-    renderCareerPC('/pokemon/experience/amazon');
+    renderCareerPC('/pokemon/experience');
 
     expect(screen.getByRole('link', { name: /back to trainer card/i })).toHaveAttribute(
       'href',
@@ -217,7 +222,7 @@ describe('CareerPC', () => {
 
   it('opens a box route from its tab', async () => {
     const user = userEvent.setup();
-    renderCareerPC('/pokemon/experience/amazon');
+    renderCareerPC('/pokemon/experience');
 
     await user.click(screen.getByRole('tab', { name: /projects/i }));
 
@@ -232,7 +237,7 @@ describe('CareerPC', () => {
   });
 
   it('keeps every box tab associated with the mounted active panel', () => {
-    renderCareerPC('/pokemon/experience/amazon');
+    renderCareerPC('/pokemon/experience');
 
     for (const tab of screen.getAllByRole('tab')) {
       const panelId = tab.getAttribute('aria-controls');
@@ -244,7 +249,7 @@ describe('CareerPC', () => {
 
   it('moves focus between box tabs with the arrow keys', async () => {
     const user = userEvent.setup();
-    renderCareerPC('/pokemon/experience/amazon');
+    renderCareerPC('/pokemon/experience');
     const experience = screen.getByRole('tab', { name: /experience/i });
     const projects = screen.getByRole('tab', { name: /projects/i });
 
@@ -256,7 +261,7 @@ describe('CareerPC', () => {
 
   it('moves grid focus with the arrow keys', async () => {
     const user = userEvent.setup();
-    renderCareerPC('/pokemon/experience/amazon');
+    renderCareerPC('/pokemon/experience');
     const amazon = screen.getByRole('button', { name: /amazoar: amazon/i });
     const draftKings = screen.getByRole('button', { name: /draftion: draftkings/i });
 
@@ -268,7 +273,7 @@ describe('CareerPC', () => {
 
   it('selects a focused grid item with Enter', async () => {
     const user = userEvent.setup();
-    renderCareerPC('/pokemon/experience/amazon');
+    renderCareerPC('/pokemon/experience');
     const amazon = screen.getByRole('button', { name: /amazoar: amazon/i });
     const draftKings = screen.getByRole('button', { name: /draftion: draftkings/i });
 
@@ -284,7 +289,7 @@ describe('CareerPC', () => {
 
   it('wraps grid focus and selects a focused item with Space', async () => {
     const user = userEvent.setup();
-    renderCareerPC('/pokemon/projects/breathe-easy');
+    renderCareerPC('/pokemon/projects');
     const breatheEasy = screen.getByRole('button', { name: /aeroroute: breatheeasy/i });
     const forgetMeNot = screen.getByRole('button', { name: /memorai: forgetmenot/i });
 
@@ -329,6 +334,11 @@ describe('CareerPC', () => {
     renderCareerPC('/pokemon/experience/draftkings');
 
     expect(screen.getByRole('dialog', { name: 'Draftion details' })).toBeVisible();
+    expect(screen.getByRole('tabpanel', { hidden: true })).toHaveAttribute('inert');
+    expect(screen.getByRole('tabpanel', { hidden: true })).toHaveAttribute(
+      'aria-hidden',
+      'true',
+    );
     expect(screen.getByRole('heading', { name: 'DraftKings' })).toBeVisible();
     expect(screen.getByText('Jun 2026 - Present')).toBeVisible();
     expect(screen.getByText('Boston, MA')).toBeVisible();
@@ -372,9 +382,10 @@ describe('CareerPC', () => {
     await user.click(screen.getByRole('button', { name: 'Draftion: DraftKings' }));
     expect(screen.getByRole('dialog', { name: 'Draftion details' })).toBeVisible();
 
-    await user.click(screen.getByRole('button', { name: /back in history/i }));
+    act(() => screen.getByRole('button', { name: /back in history/i, hidden: true }).click());
 
     expect(screen.getByTestId('current-route')).toHaveTextContent(/^\/pokemon\/experience$/);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Draftion: DraftKings' })).toHaveFocus();
   });
 });

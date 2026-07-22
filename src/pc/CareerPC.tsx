@@ -27,7 +27,7 @@ export function CareerPC() {
   const boxPanelRef = useRef<HTMLElement>(null);
   const launchingCardRef = useRef<HTMLButtonElement | null>(null);
   const launchingEntryIdRef = useRef<string | null>(null);
-  const restoreFocusEntryIdRef = useRef<string | null>(null);
+  const previousEntryIdRef = useRef(resolvedRoute.entryId);
   const { soundEnabled, setSoundEnabled, reducedMotion } = usePreferences();
 
   const playEnabledBleep = () => {
@@ -59,13 +59,18 @@ export function CareerPC() {
   }, [box.id]);
 
   useEffect(() => {
-    const restoreEntryId = restoreFocusEntryIdRef.current;
+    const previousEntryId = previousEntryIdRef.current;
+    previousEntryIdRef.current = resolvedRoute.entryId;
 
-    if (resolvedRoute.entryId || !restoreEntryId) {
+    if (
+      resolvedRoute.entryId ||
+      !previousEntryId ||
+      launchingEntryIdRef.current !== previousEntryId
+    ) {
       return;
     }
 
-    const expectedDescriptionId = `party-card-${restoreEntryId}-completion`;
+    const expectedDescriptionId = `party-card-${previousEntryId}-completion`;
     const launchingCard = launchingCardRef.current;
     const card =
       launchingCard?.isConnected &&
@@ -76,7 +81,6 @@ export function CareerPC() {
           );
 
     card?.focus({ preventScroll: true });
-    restoreFocusEntryIdRef.current = null;
     launchingEntryIdRef.current = null;
     launchingCardRef.current = null;
   }, [resolvedRoute.entryId]);
@@ -93,10 +97,6 @@ export function CareerPC() {
   };
 
   const closeEntry = () => {
-    if (selectedEntry && launchingEntryIdRef.current === selectedEntry.id) {
-      restoreFocusEntryIdRef.current = selectedEntry.id;
-    }
-
     navigate(pokemonPath(resolvedRoute.tab), { replace: true });
   };
 
@@ -170,14 +170,16 @@ export function CareerPC() {
         id="box-panel-active"
         role="tabpanel"
         aria-labelledby={`box-tab-${box.id}`}
+        aria-hidden={selectedEntry ? true : undefined}
+        inert={selectedEntry ? true : undefined}
       >
         <CreatureGrid
           entries={box.entries}
           selectedId={selectedCardId}
           onSelect={selectEntry}
         />
-        {selectedEntry ? <PokedexEntry entry={selectedEntry} onClose={closeEntry} /> : null}
       </section>
+      {selectedEntry ? <PokedexEntry entry={selectedEntry} onClose={closeEntry} /> : null}
     </main>
   );
 }

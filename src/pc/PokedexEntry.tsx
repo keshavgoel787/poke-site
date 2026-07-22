@@ -10,16 +10,36 @@ type PokedexEntryProps = {
 const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 export function PokedexEntry({ entry, onClose }: PokedexEntryProps) {
-  const dialogRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const displayedHighlight = entry.highlight.replace(/hours per week/gi, 'hrs/week');
 
   useEffect(() => {
+    const dialog = dialogRef.current;
+
+    if (!dialog) {
+      return;
+    }
+
+    if (typeof dialog.showModal === 'function') {
+      dialog.showModal();
+    } else {
+      dialog.setAttribute('open', '');
+    }
+
     closeRef.current?.focus({ preventScroll: true });
+
+    return () => {
+      if (dialog.open && typeof dialog.close === 'function') {
+        dialog.close();
+      } else {
+        dialog.removeAttribute('open');
+      }
+    };
   }, []);
 
-  const containFocus = (event: KeyboardEvent<HTMLDivElement>) => {
+  const containFocus = (event: KeyboardEvent<HTMLDialogElement>) => {
     if (event.key === 'Escape') {
       event.preventDefault();
       onClose();
@@ -50,23 +70,31 @@ export function PokedexEntry({ entry, onClose }: PokedexEntryProps) {
   };
 
   return (
-    <div
+    <dialog
       ref={dialogRef}
-      role="dialog"
+      className="pokedex-entry"
       aria-modal="true"
       aria-labelledby={titleId}
       onKeyDown={containFocus}
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose();
+      }}
     >
-      <h2 id={titleId}>
+      <h2 id={titleId} className="pokedex-entry__creature">
         <span>{entry.creatureName}</span> details
       </h2>
       <PixelSprite spriteId={entry.spriteId} label={entry.creatureName} animate />
-      <h3>{entry.organization}</h3>
-      <p>{entry.category}</p>
-      <p>{entry.role}</p>
-      {entry.category === 'Experience' && entry.dates ? <p>{entry.dates}</p> : null}
-      {entry.category === 'Experience' && entry.location ? <p>{entry.location}</p> : null}
-      <p>{displayedHighlight}</p>
+      <h3 className="pokedex-entry__organization">{entry.organization}</h3>
+      <p className="pokedex-entry__category">{entry.category}</p>
+      <p className="pokedex-entry__role">{entry.role}</p>
+      {entry.category === 'Experience' && entry.dates ? (
+        <p className="pokedex-entry__meta">{entry.dates}</p>
+      ) : null}
+      {entry.category === 'Experience' && entry.location ? (
+        <p className="pokedex-entry__meta">{entry.location}</p>
+      ) : null}
+      <p className="pokedex-entry__highlight">{displayedHighlight}</p>
 
       <div aria-label="Types">
         <span>{entry.professionalType}</span>
@@ -85,6 +113,6 @@ export function PokedexEntry({ entry, onClose }: PokedexEntryProps) {
       <button ref={closeRef} type="button" onClick={onClose}>
         Close
       </button>
-    </div>
+    </dialog>
   );
 }
