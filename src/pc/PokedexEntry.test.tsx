@@ -59,6 +59,26 @@ describe('PokedexEntry', () => {
     expect(screen.queryByText('Boston, MA')).not.toBeInTheDocument();
   });
 
+  it('renders one visible label when a move name and skill are identical', () => {
+    render(<PokedexEntry entry={amazon} onClose={vi.fn()} />);
+    const move = screen.getByRole('listitem', { name: 'Move: AWS' });
+
+    expect(within(move).getAllByText('AWS')).toHaveLength(1);
+  });
+
+  it('keeps a distinct verified skill visible alongside its move name', () => {
+    const entryWithDistinctMove: CareerEntry = {
+      ...amazon,
+      moves: [{ name: 'Graph workflow', skill: 'LangGraph' }],
+    };
+
+    render(<PokedexEntry entry={entryWithDistinctMove} onClose={vi.fn()} />);
+    const move = screen.getByRole('listitem', { name: 'Move: Graph workflow' });
+
+    expect(within(move).getByText('Graph workflow')).toBeVisible();
+    expect(within(move).getByText('LangGraph')).toBeVisible();
+  });
+
   it('focuses Close on open and wraps Tab focus inside the dialog', async () => {
     const user = userEvent.setup();
     const linkedEntry: CareerEntry = {

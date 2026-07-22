@@ -59,6 +59,12 @@ export function CareerPC() {
   }, [box.id]);
 
   useEffect(() => {
+    if (selectedEntry) {
+      launchingEntryIdRef.current = selectedEntry.id;
+    }
+  }, [selectedEntry]);
+
+  useEffect(() => {
     const previousEntryId = previousEntryIdRef.current;
     previousEntryIdRef.current = resolvedRoute.entryId;
 
@@ -101,6 +107,17 @@ export function CareerPC() {
   };
 
   const moveTabFocus = (event: KeyboardEvent<HTMLAnchorElement>, currentIndex: number) => {
+    if (event.key === ' ') {
+      const selectedTab = rosterTabs[currentIndex];
+
+      event.preventDefault();
+      setFocusedBoxId(selectedTab.id);
+      boxTabRefs.current[currentIndex]?.focus();
+      playEnabledBleep();
+      navigate(pokemonPath(selectedTab.id));
+      return;
+    }
+
     let nextIndex: number | undefined;
 
     if (event.key === 'ArrowLeft') {

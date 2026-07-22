@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { beforeEach, vi } from 'vitest';
@@ -247,15 +247,50 @@ describe('CareerPC', () => {
     }
   });
 
-  it('moves focus between box tabs with the arrow keys', async () => {
+  it('moves focus between box tabs with arrows, Home, and End', async () => {
     const user = userEvent.setup();
     renderCareerPC('/pokemon/experience');
     const experience = screen.getByRole('tab', { name: /experience/i });
     const projects = screen.getByRole('tab', { name: /projects/i });
 
-    experience.focus();
-    await user.keyboard('{ArrowRight}');
+    act(() => experience.focus());
+    await user.keyboard('{End}');
+    expect(projects).toHaveFocus();
 
+    await user.keyboard('{Home}');
+    expect(experience).toHaveFocus();
+
+    await user.keyboard('{ArrowLeft}');
+    expect(projects).toHaveFocus();
+
+    await user.keyboard('{ArrowRight}');
+    expect(experience).toHaveFocus();
+  });
+
+  it('activates a focused box tab with Space without scrolling', async () => {
+    const user = userEvent.setup();
+    const audio = installWorkingAudioContext();
+    renderCareerPC('/pokemon/experience');
+    const projects = screen.getByRole('tab', { name: /projects/i });
+
+    await user.click(screen.getByRole('button', { name: /sound/i }));
+    act(() => projects.focus());
+
+    expect(fireEvent.keyDown(projects, { key: ' ', code: 'Space' })).toBe(false);
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/projects');
+    expect(projects).toHaveFocus();
+    expect(audio.AudioContext).toHaveBeenCalledTimes(2);
+  });
+
+  it('retains native Enter activation for a focused box tab', async () => {
+    const user = userEvent.setup();
+    renderCareerPC('/pokemon/experience');
+    const projects = screen.getByRole('tab', { name: /projects/i });
+
+    act(() => projects.focus());
+    await user.keyboard('{Enter}');
+
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/projects');
     expect(projects).toHaveFocus();
   });
 
@@ -347,14 +382,35 @@ describe('CareerPC', () => {
   it('closes the dialog with Escape to the active tab route using replace', async () => {
     const user = userEvent.setup();
     renderCareerPC('/pokemon/experience/draftkings', '/before-pc');
+    const selectedCard = screen.getByRole('button', {
+      name: 'Draftion: DraftKings',
+      hidden: true,
+    });
 
     await user.keyboard('{Escape}');
 
     expect(screen.getByTestId('current-route')).toHaveTextContent(/^\/pokemon\/experience$/);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(selectedCard).toHaveFocus();
 
     await user.click(screen.getByRole('button', { name: /back in history/i }));
     expect(screen.getByTestId('current-route')).toHaveTextContent('/before-pc');
+  });
+
+  it('restores focus to the selected card after closing a direct-route dialog', async () => {
+    const user = userEvent.setup();
+    renderCareerPC('/pokemon/projects/remetra');
+    const selectedCard = screen.getByRole('button', {
+      name: 'Remetrix: Remetra',
+      hidden: true,
+    });
+
+    expect(screen.getByRole('button', { name: 'Close' })).toHaveFocus();
+
+    await user.click(screen.getByRole('button', { name: 'Close' }));
+
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/projects');
+    expect(selectedCard).toHaveFocus();
   });
 
   it('restores focus to the launching card after the Close route update', async () => {

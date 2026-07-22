@@ -104,7 +104,7 @@ export function PokedexEntry({ entry, onClose }: PokedexEntryProps) {
         {entry.moves.map((move, index) => (
           <li key={`${move.name}-${index}`} aria-label={`Move: ${move.name}`}>
             <strong>{move.name}</strong>
-            <span>{move.skill}</span>
+            {move.skill !== move.name ? <span>{move.skill}</span> : null}
           </li>
         ))}
       </ul>
