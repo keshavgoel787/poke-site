@@ -162,13 +162,16 @@ describe('handheld reference visual system', () => {
 
   it('keeps the chibi scene compact, pixelated, layered, and facing right', () => {
     expect(globalStyles).toMatch(
-      /\.trainer-walk-scene\s*{[^}]*width: 2rem;[^}]*height: 3rem;/,
+      /\.trainer-walk-scene\s*{[^}]*width: 4rem;[^}]*height: 3rem;[^}]*overflow: hidden;/,
     );
     expect(globalStyles).toMatch(
-      /\.trainer-walk-strip\s*{[^}]*z-index: 2;[^}]*height: 3rem;[^}]*image-rendering: pixelated;[^}]*transform: scaleX\(1\);/,
+      /\.trainer-walk-trainer\s*{[^}]*right: 0;[^}]*z-index: 2;[^}]*width: 2rem;[^}]*height: 3rem;[^}]*overflow: hidden;/,
     );
     expect(globalStyles).toMatch(
-      /\.trainer-walk-companion\s*{[^}]*bottom: 0\.6rem;[^}]*z-index: 1;[^}]*width: 1\.75rem;[^}]*image-rendering: pixelated;[^}]*transform: scaleX\(1\);/,
+      /\.trainer-walk-strip\s*{[^}]*width: 300%;[^}]*height: 3rem;[^}]*image-rendering: pixelated;[^}]*transform: scaleX\(1\);/,
+    );
+    expect(globalStyles).toMatch(
+      /\.trainer-walk-companion\s*{[^}]*bottom: 0\.75rem;[^}]*left: 0\.5rem;[^}]*z-index: 1;[^}]*width: 1\.75rem;[^}]*image-rendering: pixelated;[^}]*transform: scaleX\(1\);/,
     );
   });
 

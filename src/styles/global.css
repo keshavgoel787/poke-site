@@ -183,16 +183,26 @@ ul {
 
 .trainer-walk-scene {
   position: relative;
-  width: 2rem;
+  width: 4rem;
   height: 3rem;
   overflow: hidden;
   background: var(--panel-cyan);
 }
 
+.trainer-walk-trainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 2rem;
+  height: 3rem;
+  overflow: hidden;
+}
+
 .trainer-walk-strip {
   position: absolute;
   inset: 0 auto 0 0;
-  z-index: 2;
   display: block;
   width: 300%;
   max-width: none;
@@ -204,8 +214,8 @@ ul {
 
 .trainer-walk-companion {
   position: absolute;
-  bottom: 0.6rem;
-  left: 0;
+  bottom: 0.75rem;
+  left: 0.5rem;
   z-index: 1;
   display: block;
   width: 1.75rem;

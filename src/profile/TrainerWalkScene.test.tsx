@@ -16,6 +16,9 @@ it('renders the walking scene with stable layer classes', () => {
   expect(screen.getByRole('img', { name: 'Keshav walking with Gengar' })).toHaveClass(
     'trainer-walk-scene',
   );
+  expect(screen.getByTestId('trainer-walk-strip').parentElement).toHaveClass(
+    'trainer-walk-trainer',
+  );
   expect(screen.getByTestId('trainer-walk-strip')).toHaveClass('trainer-walk-strip');
   expect(screen.getByTestId('trainer-companion')).toHaveClass('trainer-walk-companion');
   expect(screen.getByTestId('trainer-walk-strip')).toHaveAttribute('src', '/trainer-walk.png');

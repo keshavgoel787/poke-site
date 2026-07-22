@@ -30,13 +30,15 @@ export function TrainerWalkScene({
         alt=""
         onError={() => setFailed(true)}
       />
-      <img
-        data-testid="trainer-walk-strip"
-        className="trainer-walk-strip"
-        src={trainerSrc}
-        alt=""
-        onError={() => setFailed(true)}
-      />
+      <div className="trainer-walk-trainer">
+        <img
+          data-testid="trainer-walk-strip"
+          className="trainer-walk-strip"
+          src={trainerSrc}
+          alt=""
+          onError={() => setFailed(true)}
+        />
+      </div>
     </div>
   );
 }
