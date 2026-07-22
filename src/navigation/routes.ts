@@ -1,21 +1,32 @@
-import { careerBoxes, getBox, getEntry, type BoxId } from '../data/portfolioData';
+import { getRoster, rosterTabs, type RosterTab } from '../data/portfolioData';
 
-export type PcRouteState = {
-  boxId: BoxId;
+export type PokemonRouteState = {
+  tab: RosterTab;
   entryId?: string;
   recovered: boolean;
 };
 
-export const pcPath = (boxId: BoxId, entryId?: string) =>
-  entryId ? `/pc/${boxId}/${entryId}` : `/pc/${boxId}`;
+export const pokemonPath = (tab: RosterTab, entryId?: string) =>
+  entryId ? `/pokemon/${tab}/${entryId}` : `/pokemon/${tab}`;
 
-export function resolvePcRoute(boxId?: string, entryId?: string): PcRouteState {
-  const box = getBox(boxId as BoxId) ?? careerBoxes[0];
-  const entry = entryId ? getEntry(box.id, entryId) : undefined;
+export function resolvePokemonRoute(tab?: string, entryId?: string): PokemonRouteState {
+  const roster = rosterTabs.find((item) => item.id === tab) ?? rosterTabs[0];
+  const entry = roster.entries.find((item) => item.id === entryId);
 
   return {
-    boxId: box.id,
+    tab: roster.id,
     entryId: entry?.id,
-    recovered: box.id !== boxId || (!!entryId && !entry),
+    recovered: roster.id !== tab || (!!entryId && !entry),
   };
+}
+
+export function legacyPcPath(boxId?: string, entryId?: string) {
+  if (boxId !== 'experience' && boxId !== 'projects') {
+    return '/';
+  }
+
+  const roster = getRoster(boxId);
+  const retainedEntry = roster?.entries.find((entry) => entry.id === entryId);
+
+  return pokemonPath(boxId, retainedEntry?.id);
 }

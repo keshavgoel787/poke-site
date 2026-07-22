@@ -1,39 +1,43 @@
-export type BoxId = 'experience' | 'projects' | 'trainer';
+export type RosterTab = 'experience' | 'projects';
 
-export type Move = { name: string; skill: string };
+export type ProfessionalMove = { name: string; skill: string };
 
 export type CareerEntry = {
   id: string;
   creatureName: string;
   organization: string;
   role: string;
-  dates: string;
-  impact: string;
-  types: [string] | [string, string];
-  moves: [Move, Move, Move, Move];
+  category: 'Experience' | 'Project';
+  dates?: string;
+  location?: string;
+  highlight: string;
+  professionalType: string;
+  moves: ProfessionalMove[];
   spriteId: string;
   link?: { label: string; href: string };
 };
 
-export type CareerBox = {
-  id: BoxId;
+export type Roster = {
+  id: RosterTab;
   label: string;
   entries: CareerEntry[];
 };
 
 export type ProfessionalLink = { label: string; href: string };
 
-export interface TrainerProfile {
+export type TrainerProfile = {
   name: string;
-  positioning: string;
-  education: string;
-  highlights: Array<Pick<CareerEntry, 'organization' | 'role' | 'dates'>>;
-  personal: string;
-  locations: string[];
+  school: string;
+  graduation: string;
+  major: string;
+  hometown: string;
   links: ProfessionalLink[];
-}
+};
 
-export const careerBoxes: CareerBox[] = [
+const moves = (...skills: string[]): ProfessionalMove[] =>
+  skills.map((skill) => ({ name: skill, skill }));
+
+export const rosterTabs: Roster[] = [
   {
     id: 'experience',
     label: 'Experience',
@@ -43,96 +47,70 @@ export const careerBoxes: CareerBox[] = [
         creatureName: 'Amazoar',
         organization: 'Amazon',
         role: 'Incoming Software Engineering Intern',
-        dates: 'Incoming',
-        impact: 'Incoming software engineering internship.',
-        types: ['Software Engineering'],
-        moves: [
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-        ],
+        category: 'Experience',
+        dates: 'Aug 2026 - Dec 2026',
+        location: 'Seattle, WA',
+        highlight:
+          'Incoming intern scoped to build identity-synchronization and telemetry pipelines across AWS, Azure, and Google Cloud.',
+        professionalType: 'Cloud Engineering',
+        moves: moves('AWS', 'Azure', 'Google Cloud'),
         spriteId: 'amazon',
       },
       {
         id: 'draftkings',
         creatureName: 'Draftion',
         organization: 'DraftKings',
-        role: 'Incoming Software Engineering Intern',
-        dates: 'Incoming',
-        impact: 'Incoming software engineering internship.',
-        types: ['Software Engineering'],
-        moves: [
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-        ],
+        role: 'Software Engineering Intern',
+        category: 'Experience',
+        dates: 'Jun 2026 - Present',
+        location: 'Boston, MA',
+        highlight:
+          'Built a production LangGraph FinOps agent that eliminated 20+ hours per week of manual cloud-cost analysis.',
+        professionalType: 'Software Engineering',
+        moves: moves('LangGraph', 'Kubernetes', 'Terraform', 'DynamoDB', 'Datadog'),
         spriteId: 'draftkings',
       },
       {
         id: 'procuremateai',
         creatureName: 'Procura',
-        organization: 'ProcureMateAI',
-        role: 'Software Engineering Intern',
-        dates: 'Current',
-        impact: 'Current software engineering internship.',
-        types: ['Software Engineering'],
-        moves: [
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-        ],
+        organization: 'ProcureMate AI',
+        role: 'Software Development Engineering Intern',
+        category: 'Experience',
+        dates: 'Jan 2026 - May 2026',
+        location: 'Boston, MA',
+        highlight:
+          'Built a computer vision system across 20+ dental offices, eliminating 15+ hours per week of manual work per office.',
+        professionalType: 'Computer Vision',
+        moves: moves('Node.js', 'S3', 'Vercel', 'Roboflow', 'Claude API'),
         spriteId: 'procuremateai',
-      },
-      {
-        id: 'generate',
-        creatureName: 'Generex',
-        organization: 'Generate',
-        role: 'Data Scientist',
-        dates: 'Previous',
-        impact: 'Previous data scientist role.',
-        types: ['Data Science'],
-        moves: [
-          { name: 'Data Science', skill: 'Data Science' },
-          { name: 'Data Science', skill: 'Data Science' },
-          { name: 'Data Science', skill: 'Data Science' },
-          { name: 'Data Science', skill: 'Data Science' },
-        ],
-        spriteId: 'generate',
       },
       {
         id: 'johnson-johnson',
         creatureName: 'JandJay',
         organization: 'Johnson & Johnson',
         role: 'Software Engineering Co-op',
-        dates: 'Previous',
-        impact: 'Previous software engineering co-op.',
-        types: ['Software Engineering'],
-        moves: [
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-        ],
+        category: 'Experience',
+        dates: 'Jun 2025 - Dec 2025',
+        location: 'Raritan, NJ',
+        highlight:
+          'Built a GPT-4o and LangChain paper-summarization pipeline that cut literature review from 2 hours to 30 minutes.',
+        professionalType: 'AI/ML Engineering',
+        moves: moves('GPT-4o', 'LangChain', 'Neo4j', 'GraphRAG', 'Streamlit', 'FastAPI'),
         spriteId: 'johnson-johnson',
       },
       {
-        id: 'vdart',
-        creatureName: 'Dartbyte',
-        organization: 'VDart',
-        role: 'Software Engineering Intern',
-        dates: 'Previous',
-        impact: 'Previous software engineering internship.',
-        types: ['Software Engineering'],
-        moves: [
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-          { name: 'Software Engineering', skill: 'Software Engineering' },
-        ],
-        spriteId: 'vdart',
+        id: 'wps-data-lab',
+        creatureName: 'Datavire',
+        organization: 'WPS Data Lab',
+        role: 'Data Science Research Assistant',
+        category: 'Experience',
+        dates: 'Oct 2024 - Present',
+        location: 'Boston, MA',
+        highlight:
+          'Analyzed 257K EPA violations and 100K+ federal spending records to identify 12 significant worker-safety drivers.',
+        professionalType: 'Data Science Research',
+        moves: moves('Python', 'PostgreSQL', 'Hierarchical REML'),
+        spriteId: 'wps-data-lab',
       },
     ],
   },
@@ -141,106 +119,39 @@ export const careerBoxes: CareerBox[] = [
     label: 'Projects',
     entries: [
       {
-        id: 'breathe-easy',
-        creatureName: 'AeroRoute',
-        organization: 'Breathe Easy',
-        role: 'Pollution-aware smart navigation project',
-        dates: 'Project',
-        impact: '1st of 400 at CSBase Hacks.',
-        types: ['Navigation'],
-        moves: [
-          { name: 'Pollution Awareness', skill: 'Pollution-aware navigation' },
-          { name: 'Smart Navigation', skill: 'Smart navigation' },
-          { name: 'Route Planning', skill: 'Smart navigation' },
-          { name: 'Pollution-Aware Routes', skill: 'Pollution-aware navigation' },
-        ],
-        spriteId: 'breathe-easy',
+        id: 'remetra',
+        creatureName: 'Remetrix',
+        organization: 'Remetra',
+        role: 'Autoimmune symptom-tracking application',
+        category: 'Project',
+        highlight:
+          'Built a cross-platform autoimmune symptom-tracking app used by 250 users logging 10K+ entries.',
+        professionalType: 'Health Technology',
+        moves: moves('React', 'Supabase', 'FastAPI', 'Ollama', 'Neo4j'),
+        spriteId: 'remetra',
       },
       {
         id: 'forgetmenot',
         creatureName: 'Memorai',
         organization: 'ForgetMeNot',
-        role: 'AI memory trainer for dementia',
-        dates: 'Project',
-        impact: '2nd of 500 at HackRU.',
-        types: ['AI', 'Memory Training'],
-        moves: [
-          { name: 'AI Memory Training', skill: 'AI memory training' },
-          { name: 'Memory Training', skill: 'Memory training' },
-          { name: 'Dementia Focus', skill: 'Dementia' },
-          { name: 'AI', skill: 'AI' },
-        ],
+        role: 'AI dementia-care platform',
+        category: 'Project',
+        highlight: 'Placed 2nd at HackRU among 300 teams with an AI dementia-care platform.',
+        professionalType: 'AI Application',
+        moves: moves('FastAPI', 'Gemini', 'ElevenLabs', 'OpenCV', 'Next.js', 'Snowflake'),
         spriteId: 'forget-me-not',
       },
-    ],
-  },
-  {
-    id: 'trainer',
-    label: 'Trainer',
-    entries: [
       {
-        id: 'northeastern-university',
-        creatureName: 'Northeaster',
-        organization: 'Northeastern University',
-        role: 'Data Science student',
-        dates: 'Current',
-        impact: 'Studies data science with a math minor.',
-        types: ['Data Science', 'Mathematics'],
-        moves: [
-          { name: 'Data Science', skill: 'Data Science' },
-          { name: 'Math Minor', skill: 'Math minor' },
-          { name: 'Data Science', skill: 'Data Science' },
-          { name: 'Math Minor', skill: 'Math minor' },
-        ],
-        spriteId: 'northeastern-university',
-      },
-      {
-        id: 'bhangra',
-        creatureName: 'BhangraBeat',
-        organization: 'Bhangra',
-        role: 'Dancer',
-        dates: 'Personal',
-        impact: 'Bhangra dancer.',
-        types: ['Bhangra'],
-        moves: [
-          { name: 'Bhangra', skill: 'Bhangra' },
-          { name: 'Dancer', skill: 'Bhangra dancer' },
-          { name: 'Bhangra', skill: 'Bhangra' },
-          { name: 'Dancer', skill: 'Bhangra dancer' },
-        ],
-        spriteId: 'bhangra',
-      },
-      {
-        id: 'locations',
-        creatureName: 'MetroMap',
-        organization: 'NJ / NY / Boston',
-        role: 'Locations',
-        dates: 'Personal',
-        impact: 'NJ, NY, and Boston.',
-        types: ['Locations'],
-        moves: [
-          { name: 'Route', skill: 'NJ' },
-          { name: 'Route', skill: 'NY' },
-          { name: 'Route', skill: 'Boston' },
-          { name: 'Explore', skill: 'Locations' },
-        ],
-        spriteId: 'locations',
-      },
-      {
-        id: 'interests',
-        creatureName: 'AutoMind',
-        organization: 'Data, ML, and AI',
-        role: 'Automation focus',
-        dates: 'Personal',
-        impact: 'Focused on automating manual tasks with data, ML, and AI.',
-        types: ['Data', 'Machine Learning'],
-        moves: [
-          { name: 'Data', skill: 'Data' },
-          { name: 'ML', skill: 'ML' },
-          { name: 'AI', skill: 'AI' },
-          { name: 'Automate', skill: 'Automating manual tasks' },
-        ],
-        spriteId: 'interests',
+        id: 'breathe-easy',
+        creatureName: 'AeroRoute',
+        organization: 'BreatheEasy',
+        role: 'Lower-pollution navigation application',
+        category: 'Project',
+        highlight:
+          'Placed 1st at CSBase Hacks among 250 teams with a lower-pollution navigation app.',
+        professionalType: 'Mobile Engineering',
+        moves: moves('Flutter', 'Dart', 'Google Maps API', 'Shelf', 'Docker'),
+        spriteId: 'breathe-easy',
       },
     ],
   },
@@ -248,28 +159,10 @@ export const careerBoxes: CareerBox[] = [
 
 export const trainerProfile: TrainerProfile = {
   name: 'Keshav Goel',
-  positioning:
-    'Software engineering and data science student focused on automating manual tasks with data, ML, and AI.',
-  education: 'Northeastern University — Data Science, math minor',
-  highlights: [
-    {
-      organization: 'Amazon',
-      role: 'Incoming Software Engineering Intern',
-      dates: 'Incoming',
-    },
-    {
-      organization: 'DraftKings',
-      role: 'Incoming Software Engineering Intern',
-      dates: 'Incoming',
-    },
-    {
-      organization: 'ProcureMateAI',
-      role: 'Software Engineering Intern',
-      dates: 'Current',
-    },
-  ],
-  personal: 'Bhangra dancer',
-  locations: ['NJ', 'NY', 'Boston'],
+  school: 'Northeastern University',
+  graduation: 'May 2028',
+  major: 'Data Science',
+  hometown: 'Boston, MA',
   links: [
     { label: 'Résumé', href: '/resume.pdf' },
     { label: 'GitHub', href: 'https://github.com/keshavgoel787' },
@@ -278,7 +171,7 @@ export const trainerProfile: TrainerProfile = {
   ],
 };
 
-export const getBox = (boxId: BoxId) => careerBoxes.find((box) => box.id === boxId);
+export const getRoster = (tab: RosterTab) => rosterTabs.find((roster) => roster.id === tab);
 
-export const getEntry = (boxId: BoxId, entryId: string) =>
-  getBox(boxId)?.entries.find((entry) => entry.id === entryId);
+export const getRosterEntry = (tab: RosterTab, entryId: string) =>
+  getRoster(tab)?.entries.find((entry) => entry.id === entryId);

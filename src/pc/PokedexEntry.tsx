@@ -12,13 +12,12 @@ export function PokedexEntry({ entry }: PokedexEntryProps) {
       <h2>{entry.organization}</h2>
       <p className="pokedex-entry__creature">Creature: {entry.creatureName}</p>
       <p>{entry.role}</p>
-      <p>{entry.dates}</p>
-      <p>{entry.impact}</p>
+      {entry.dates ? <p>{entry.dates}</p> : null}
+      {entry.location ? <p>{entry.location}</p> : null}
+      <p>{entry.highlight}</p>
 
       <div aria-label="Types">
-        {entry.types.map((type) => (
-          <span key={type}>{type}</span>
-        ))}
+        <span>{entry.professionalType}</span>
       </div>
 
       <ul aria-label="Moves">

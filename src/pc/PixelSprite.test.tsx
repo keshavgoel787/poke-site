@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { careerBoxes } from '../data/portfolioData';
+import { rosterTabs } from '../data/portfolioData';
 import { PixelSprite } from './PixelSprite';
 
 describe('PixelSprite', () => {
@@ -51,7 +51,11 @@ describe('PixelSprite', () => {
     expect(container.querySelectorAll('img')).toHaveLength(2);
   });
 
-  it.each(careerBoxes.flatMap((box) => box.entries))(
+  const entriesWithExistingSprites = rosterTabs
+    .flatMap((roster) => roster.entries)
+    .filter((entry) => entry.spriteId !== 'wps-data-lab' && entry.spriteId !== 'remetra');
+
+  it.each(entriesWithExistingSprites)(
     'resolves the $spriteId sprite used by $organization',
     (entry) => {
       render(

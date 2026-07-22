@@ -1,8 +1,8 @@
 import { render, screen, within } from '@testing-library/react';
-import { careerBoxes, type CareerEntry } from '../data/portfolioData';
+import { rosterTabs, type CareerEntry } from '../data/portfolioData';
 import { PokedexEntry } from './PokedexEntry';
 
-const amazon = careerBoxes[0].entries[0];
+const amazon = rosterTabs[0].entries[0];
 
 describe('PokedexEntry', () => {
   it('shows the creature name while keeping the organization as its heading', () => {

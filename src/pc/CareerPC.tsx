@@ -1,27 +1,28 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { playBleep } from '../audio/playBleep';
-import { careerBoxes, getBox } from '../data/portfolioData';
-import { pcPath, resolvePcRoute } from '../navigation/routes';
+import { getRoster, rosterTabs } from '../data/portfolioData';
+import { pokemonPath, resolvePokemonRoute } from '../navigation/routes';
 import { CreatureGrid } from './CreatureGrid';
 import { PokedexEntry } from './PokedexEntry';
 import { QuickMenu } from './QuickMenu';
 import { usePreferences } from '../preferences/usePreferences';
 
 type RecoveryLocationState = {
-  pcRouteRecovered?: boolean;
+  pokemonRouteRecovered?: boolean;
 };
 
 export function CareerPC() {
-  const { boxId, entryId } = useParams();
+  const { tab, entryId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const resolvedRoute = resolvePcRoute(boxId, entryId);
-  const box = getBox(resolvedRoute.boxId) ?? careerBoxes[0];
+  const resolvedRoute = resolvePokemonRoute(tab, entryId);
+  const box = getRoster(resolvedRoute.tab) ?? rosterTabs[0];
   const selectedEntry =
     box.entries.find((entry) => entry.id === resolvedRoute.entryId) ?? box.entries[0];
   const recoveryState = location.state as RecoveryLocationState | null;
-  const showRecoveryMessage = resolvedRoute.recovered || recoveryState?.pcRouteRecovered === true;
+  const showRecoveryMessage =
+    resolvedRoute.recovered || recoveryState?.pokemonRouteRecovered === true;
   const [focusedBoxId, setFocusedBoxId] = useState(box.id);
   const boxTabRefs = useRef<Array<HTMLAnchorElement | null>>([]);
   const { soundEnabled, setSoundEnabled, reducedMotion } = usePreferences();
@@ -34,12 +35,12 @@ export function CareerPC() {
 
   useEffect(() => {
     if (resolvedRoute.recovered) {
-      navigate(pcPath(resolvedRoute.boxId, resolvedRoute.entryId), {
+      navigate(pokemonPath(resolvedRoute.tab, resolvedRoute.entryId), {
         replace: true,
-        state: { pcRouteRecovered: true } satisfies RecoveryLocationState,
+        state: { pokemonRouteRecovered: true } satisfies RecoveryLocationState,
       });
     }
-  }, [navigate, resolvedRoute.boxId, resolvedRoute.entryId, resolvedRoute.recovered]);
+  }, [navigate, resolvedRoute.tab, resolvedRoute.entryId, resolvedRoute.recovered]);
 
   useEffect(() => {
     setFocusedBoxId(box.id);
@@ -49,13 +50,13 @@ export function CareerPC() {
     let nextIndex: number | undefined;
 
     if (event.key === 'ArrowLeft') {
-      nextIndex = (currentIndex - 1 + careerBoxes.length) % careerBoxes.length;
+      nextIndex = (currentIndex - 1 + rosterTabs.length) % rosterTabs.length;
     } else if (event.key === 'ArrowRight') {
-      nextIndex = (currentIndex + 1) % careerBoxes.length;
+      nextIndex = (currentIndex + 1) % rosterTabs.length;
     } else if (event.key === 'Home') {
       nextIndex = 0;
     } else if (event.key === 'End') {
-      nextIndex = careerBoxes.length - 1;
+      nextIndex = rosterTabs.length - 1;
     }
 
     if (nextIndex === undefined) {
@@ -63,7 +64,7 @@ export function CareerPC() {
     }
 
     event.preventDefault();
-    setFocusedBoxId(careerBoxes[nextIndex].id);
+    setFocusedBoxId(rosterTabs[nextIndex].id);
     boxTabRefs.current[nextIndex]?.focus();
   };
 
@@ -84,7 +85,7 @@ export function CareerPC() {
 
       <nav aria-label="PC boxes">
         <div role="tablist" aria-label="Career boxes">
-          {careerBoxes.map((careerBox, index) => (
+          {rosterTabs.map((careerBox, index) => (
             <Link
               key={careerBox.id}
               ref={(element) => {
@@ -95,7 +96,7 @@ export function CareerPC() {
               aria-selected={careerBox.id === box.id}
               aria-controls="box-panel-active"
               tabIndex={careerBox.id === focusedBoxId ? 0 : -1}
-              to={pcPath(careerBox.id)}
+              to={pokemonPath(careerBox.id)}
               onFocus={() => setFocusedBoxId(careerBox.id)}
               onClick={playEnabledBleep}
               onKeyDown={(event) => moveTabFocus(event, index)}
@@ -116,7 +117,7 @@ export function CareerPC() {
           selectedId={selectedEntry.id}
           onSelect={(selectedId) => {
             playEnabledBleep();
-            navigate(pcPath(box.id, selectedId));
+            navigate(pokemonPath(box.id, selectedId));
           }}
         />
         <PokedexEntry entry={selectedEntry} />
