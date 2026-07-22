@@ -27,11 +27,11 @@ The root route displays a full-screen blue Trainer Card. It contains:
 - Graduation: May 2028.
 - Major: Data Science.
 - Hometown: Boston, MA.
-- A compact overworld walking scene. Keshav appears as an original side-facing, low-resolution trainer sprite based on his supplied photo, retaining recognizable dark wavy hair, medium-brown skin, black suit, and white shirt without tracing a franchise trainer. A simplified, newly drawn Gengar sprite follows one step behind.
+- A compact chibi overworld walking scene. Keshav appears as an original side-facing, low-resolution trainer sprite based on his supplied photo, retaining recognizable dark wavy hair, medium-brown skin, black suit, and white shirt without tracing a franchise trainer. His proportions are approximately two heads tall, with an oversized head/hair silhouette, compact body, and tiny walking stride. A simplified mini Gengar sprite floats one step behind and slightly above him, faces the same direction, and is slightly smaller than Keshav.
 - Original bottom-row icons linking to résumé, GitHub, LinkedIn, and email.
 - One primary action below the card labeled **Keshav's Pokémon**. It is presented as a separate raised rectangular pixel card, not embedded inside the Trainer Card.
 
-The walking viewport stays centered inside the Trainer Card's picture panel. Keshav uses a subtle three-frame side-walk loop; Gengar follows and gently bobs in the same loop. The scene does not travel across or leave the viewport. Reduced-motion users receive a clean static idle frame.
+The walking viewport stays centered inside the Trainer Card's picture panel. Keshav uses a subtle three-frame side-walk loop; Gengar follows and gently bobs in the same loop. The scene does not travel across or leave the viewport. Both assets use nearest-neighbor rendering and remain crisp at an on-screen height of roughly 32 to 48 pixels. Reduced-motion users receive a clean static paired frame.
 
 The updated résumé PDF replaces the existing `public/resume.pdf` byte-for-byte.
 
@@ -95,8 +95,8 @@ Pixel labels remain secondary to legibility. Professional descriptions use a rea
 
 - Preserve all existing creature sprite files, including creatures no longer displayed.
 - Preserve the existing original menu bleep system and opt-in preference behavior.
-- Create an original three-frame overworld trainer sprite from Keshav's photo reference.
-- Create a simplified Gengar companion sprite from the user-supplied reference; do not use an extracted game sprite.
+- Create an original three-frame chibi overworld trainer sprite from Keshav's photo reference.
+- Create a simplified right-facing mini Gengar companion sprite from the user-supplied reference; do not use an extracted game sprite.
 - Create original WPS Data Lab and Remetra sprites.
 - Create original trainer-card navigation icons.
 - Except for the user-requested Gengar companion, do not use copied franchise artwork, characters, icons, sounds, names, ball motifs, or logos.
@@ -150,7 +150,9 @@ The URL is the source of truth for the active tab and popup. Presentation-only s
 - Maintain at least 44-by-44-pixel interactive targets.
 - Preserve sound-off default, explicit opt-in, safe storage, and fail-silent Web Audio behavior.
 - Reduced motion removes card transitions, popup animation, sprite animation, and dialogue effects without hiding content.
-- The walking scene exposes one accessible label for Keshav and Gengar, uses the existing labeled art fallback if its sprite fails, and does not autoplay sound.
+- The walking scene exposes one accessible label for Keshav and Gengar, uses the existing labeled art fallback if either sprite fails, and does not autoplay sound.
+- Both the operating-system reduced-motion preference and the site's `data-reduced-motion="true"` state disable the Trainer Card walking and floating animations.
+- Blue interface labels use a foreground/background or full outline treatment that meets WCAG contrast requirements against their rendered blue surface.
 - Missing avatar or creature art uses a readable labeled fallback.
 - Mobile roster order, popup content, professional links, and Trainer Card fields remain complete without horizontal scrolling at 320 pixels.
 
@@ -159,7 +161,7 @@ The URL is the source of truth for the active tab and popup. Presentation-only s
 Automated verification includes:
 
 - Exact Trainer Card fields and links.
-- Walking-scene accessible label, asset contract, stable animation classes, image fallback, and reduced-motion styling.
+- Walking-scene accessible label, separate trainer/companion asset contract, chibi scale and same-direction layered positioning, stable animation classes, image fallback, nearest-neighbor rendering, and both reduced-motion paths.
 - Separate roster-card accessible name, destination, focus state, and pressed interaction styling.
 - Updated résumé data, visible roster membership, and removal of stale entries.
 - Exactly two roster tabs.
