@@ -165,7 +165,7 @@ describe('handheld reference visual system', () => {
     );
     expect(globalStyles).not.toMatch(/\.trainer-roster-card\s*{/);
     expect(globalStyles).toMatch(
-      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)\s*{[\s\S]*?\.trainer-screen\s*{[^}]*height: calc\(100dvh - 2rem\);[^}]*grid-template-rows: minmax\(0, 19rem\) minmax\(0, 1fr\);/,
+      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)\s*{[\s\S]*?\.trainer-screen\s*{[^}]*height: calc\(100dvh - 2rem\);[^}]*grid-template-rows: minmax\(0, 21\.5rem\) minmax\(0, 1fr\);/,
     );
     expect(globalStyles).toMatch(
       /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.career-pc[^}]*min-height: 0;/,
@@ -176,6 +176,15 @@ describe('handheld reference visual system', () => {
     expect(globalStyles).toMatch(
       /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.career-pc [^{]*button\s*{[^}]*min-height: 0;[^}]*height: 6\.75rem;/,
     );
+  });
+
+  it('allocates enough desktop height to keep Trainer Card links inside the clipped card', () => {
+    const desktopTrainerTrack = globalStyles.match(
+      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.trainer-screen\s*{[^}]*grid-template-rows: minmax\(0, ([\d.]+)rem\) minmax\(0, 1fr\);/,
+    );
+
+    expect(desktopTrainerTrack).not.toBeNull();
+    expect(Number(desktopTrainerTrack?.[1])).toBeGreaterThanOrEqual(21.5);
   });
 
   it('keeps the enlarged chibi scene proportional, pixelated, layered, and facing right', () => {

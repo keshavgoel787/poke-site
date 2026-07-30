@@ -913,7 +913,7 @@ dialog.pokedex-entry > button {
   .trainer-screen {
     width: min(100%, 78rem);
     height: calc(100dvh - 2rem);
-    grid-template-rows: minmax(0, 19rem) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 21.5rem) minmax(0, 1fr);
     gap: 0.65rem;
   }
 
