@@ -56,7 +56,7 @@ export function CreatureGrid({ entries, selectedId, onSelect }: CreatureGridProp
                 <span className="party-card__organization">{entry.organization}</span>
               ) : null}
               <span className="party-card__role">{entry.role}</span>
-              <span className="party-card__category">{entry.category}</span>
+              <span className="party-card__metadata">{entry.cardMetadata}</span>
               <span className="party-card__completion" role="img" aria-label="Entry complete">
                 <span aria-hidden="true">━━━━━━━━</span>
               </span>

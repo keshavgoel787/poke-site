@@ -104,6 +104,20 @@ it('provides dates and location for every experience entry', () => {
   expect(experienceEntries.every((entry) => entry.location?.trim())).toBe(true);
 });
 
+it('provides concise roster-card metadata for every entry', () => {
+  const experienceEntries = rosterTabs[0].entries;
+  const projectEntries = rosterTabs[1].entries;
+
+  expect(experienceEntries.map((entry) => entry.cardMetadata)).toEqual(
+    experienceEntries.map((entry) => entry.dates),
+  );
+  expect(projectEntries.map((entry) => entry.cardMetadata)).toEqual([
+    'React · Supabase · FastAPI',
+    'FastAPI · Gemini · OpenCV',
+    'Flutter · Dart · Google Maps',
+  ]);
+});
+
 it('finds a roster entry by tab and id', () => {
   expect(getRosterEntry('projects', 'forgetmenot')?.organization).toBe('ForgetMeNot');
 });

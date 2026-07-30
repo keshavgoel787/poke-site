@@ -8,6 +8,7 @@ export type CareerEntry = {
   organization: string;
   role: string;
   category: 'Experience' | 'Project';
+  cardMetadata: string;
   dates?: string;
   location?: string;
   highlight: string;
@@ -48,6 +49,7 @@ export const rosterTabs: Roster[] = [
         organization: 'Amazon',
         role: 'Incoming Software Engineering Intern',
         category: 'Experience',
+        cardMetadata: 'Aug 2026 - Dec 2026',
         dates: 'Aug 2026 - Dec 2026',
         location: 'Seattle, WA',
         highlight:
@@ -62,6 +64,7 @@ export const rosterTabs: Roster[] = [
         organization: 'DraftKings',
         role: 'Software Engineering Intern',
         category: 'Experience',
+        cardMetadata: 'Jun 2026 - Present',
         dates: 'Jun 2026 - Present',
         location: 'Boston, MA',
         highlight:
@@ -76,6 +79,7 @@ export const rosterTabs: Roster[] = [
         organization: 'ProcureMate AI',
         role: 'Software Development Engineering Intern',
         category: 'Experience',
+        cardMetadata: 'Jan 2026 - May 2026',
         dates: 'Jan 2026 - May 2026',
         location: 'Boston, MA',
         highlight:
@@ -90,6 +94,7 @@ export const rosterTabs: Roster[] = [
         organization: 'Johnson & Johnson',
         role: 'Software Engineering Co-op',
         category: 'Experience',
+        cardMetadata: 'Jun 2025 - Dec 2025',
         dates: 'Jun 2025 - Dec 2025',
         location: 'Raritan, NJ',
         highlight:
@@ -104,6 +109,7 @@ export const rosterTabs: Roster[] = [
         organization: 'WPS Data Lab',
         role: 'Data Science Research Assistant',
         category: 'Experience',
+        cardMetadata: 'Oct 2024 - Present',
         dates: 'Oct 2024 - Present',
         location: 'Boston, MA',
         highlight:
@@ -124,6 +130,7 @@ export const rosterTabs: Roster[] = [
         organization: 'Remetra',
         role: 'Autoimmune symptom-tracking application',
         category: 'Project',
+        cardMetadata: 'React · Supabase · FastAPI',
         highlight:
           'Built a cross-platform autoimmune symptom-tracking app used by 250 users logging 10K+ entries.',
         professionalType: 'Health Technology',
@@ -136,6 +143,7 @@ export const rosterTabs: Roster[] = [
         organization: 'ForgetMeNot',
         role: 'AI dementia-care platform',
         category: 'Project',
+        cardMetadata: 'FastAPI · Gemini · OpenCV',
         highlight: 'Placed 2nd at HackRU among 300 teams with an AI dementia-care platform.',
         professionalType: 'AI Application',
         moves: moves('FastAPI', 'Gemini', 'ElevenLabs', 'OpenCV', 'Next.js', 'Snowflake'),
@@ -147,6 +155,7 @@ export const rosterTabs: Roster[] = [
         organization: 'BreatheEasy',
         role: 'Lower-pollution navigation application',
         category: 'Project',
+        cardMetadata: 'Flutter · Dart · Google Maps',
         highlight:
           'Placed 1st at CSBase Hacks among 250 teams with a lower-pollution navigation app.',
         professionalType: 'Mobile Engineering',

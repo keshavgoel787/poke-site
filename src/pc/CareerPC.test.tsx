@@ -98,8 +98,9 @@ describe('CareerPC', () => {
     expect(screen.getAllByRole('listitem', { name: /move:/i }).length).toBeGreaterThan(0);
   });
 
-  it('presents each party member with professional details and a completion bar', () => {
-    renderCareerPC('/pokemon/experience/draftkings');
+  it('presents each party member with curated metadata and a completion bar', async () => {
+    const user = userEvent.setup();
+    renderCareerPC('/pokemon/experience');
     const draftKings = screen.getByRole('button', {
       name: 'DraftKings',
       hidden: true,
@@ -109,10 +110,17 @@ describe('CareerPC', () => {
     expect(within(draftKings).getAllByText('DraftKings')).toHaveLength(1);
     expect(draftKings).not.toHaveTextContent('Draftion');
     expect(draftKings).toHaveTextContent('Software Engineering Intern');
-    expect(draftKings).toHaveTextContent('Experience');
+    expect(draftKings).toHaveTextContent('Jun 2026 - Present');
     expect(draftKings).toHaveAccessibleName('DraftKings');
     expect(draftKings).toHaveAccessibleDescription('Entry complete');
     expect(draftKings).not.toHaveTextContent(/\b(?:HP|level|gender)\b/i);
+
+    await user.click(screen.getByRole('tab', { name: 'Projects' }));
+
+    expect(screen.getByText('React · Supabase · FastAPI')).toBeVisible();
+    expect(screen.getByText('FastAPI · Gemini · OpenCV')).toBeVisible();
+    expect(screen.getByText('Flutter · Dart · Google Maps')).toBeVisible();
+    expect(screen.queryByText('Project')).not.toBeInTheDocument();
   });
 
   it('renders sprites in the creature grid and selected entry', () => {
@@ -384,16 +392,17 @@ describe('CareerPC', () => {
 
   it('reconstructs the selected entry dialog from a direct URL', () => {
     renderCareerPC('/pokemon/experience/draftkings');
+    const dialog = screen.getByRole('dialog', { name: 'DraftKings details' });
 
-    expect(screen.getByRole('dialog', { name: 'DraftKings details' })).toBeVisible();
+    expect(dialog).toBeVisible();
     expect(screen.getByRole('tabpanel', { hidden: true })).toHaveAttribute('inert');
     expect(screen.getByRole('tabpanel', { hidden: true })).toHaveAttribute(
       'aria-hidden',
       'true',
     );
     expect(screen.getByRole('heading', { name: 'DraftKings' })).toBeVisible();
-    expect(screen.getByText('Jun 2026 - Present')).toBeVisible();
-    expect(screen.getByText('Boston, MA')).toBeVisible();
+    expect(within(dialog).getByText('Jun 2026 - Present')).toBeVisible();
+    expect(within(dialog).getByText('Boston, MA')).toBeVisible();
   });
 
   it('closes the dialog with Escape to the active tab route using replace', async () => {

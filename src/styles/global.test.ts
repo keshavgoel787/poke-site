@@ -313,7 +313,7 @@ describe('handheld reference visual system', () => {
     );
   });
 
-  it('keeps semantic metadata rows from overriding the compact completion indicator', () => {
+  it('keeps concise metadata rows from overriding the compact completion indicator', () => {
     const metadataRule = globalStyles.match(
       /([^{}]*\.party-card__organization[^{}]*)\{([^{}]*background: var\(--screen-white\);[^{}]*)\}/,
     );
@@ -324,7 +324,11 @@ describe('handheld reference visual system', () => {
     expect(metadataRule).not.toBeNull();
     expect(metadataRule?.[1]).toContain('.party-card__organization');
     expect(metadataRule?.[1]).toContain('.party-card__role');
-    expect(metadataRule?.[1]).toContain('.party-card__category');
+    expect(metadataRule?.[1]).toContain('.party-card__metadata');
+    expect(metadataRule?.[1]).not.toContain('.party-card__category');
+    expect(metadataRule?.[2]).toMatch(/overflow:\s*hidden;/);
+    expect(metadataRule?.[2]).toMatch(/text-overflow:\s*ellipsis;/);
+    expect(metadataRule?.[2]).toMatch(/white-space:\s*nowrap;/);
     expect(metadataRule?.[1]).not.toContain('.party-card__completion');
     expect(completionRule?.[1]).toMatch(/position:\s*absolute;/);
     expect(completionRule?.[1]).toMatch(/color:\s*var\(--status-green\);/);

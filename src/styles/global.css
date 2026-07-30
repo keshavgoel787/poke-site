@@ -494,7 +494,7 @@ ul {
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button
-  > .party-card__category {
+  > .party-card__metadata {
   grid-column: 2;
   min-width: 0;
   width: 100%;
@@ -503,6 +503,9 @@ ul {
   color: var(--ink);
   font-size: clamp(0.66rem, 2.5vw, 0.82rem);
   line-height: 1.1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   overflow-wrap: anywhere;
 }
 
