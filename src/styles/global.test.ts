@@ -12,6 +12,13 @@ const documentSource = readFileSync(new URL('../../index.html', import.meta.url)
 const trainerStripSource = readFileSync(
   new URL('../../public/trainer-walk.png', import.meta.url),
 );
+const pixelifyFontSource: Uint8Array = readFileSync(
+  new URL('../../public/fonts/PixelifySans-Variable.ttf', import.meta.url),
+);
+const pixelifyLicense: string = readFileSync(
+  new URL('../../public/fonts/OFL.txt', import.meta.url),
+  'utf8',
+);
 
 function declarationsFor(selector: string) {
   return Array.from(globalStyles.matchAll(/([^{}]+)\{([^{}]*)\}/g))
@@ -122,6 +129,10 @@ describe('handheld reference visual system', () => {
     expect(globalStyles).toMatch(
       /@font-face\s*{[^}]*font-family:\s*"Pixelify Sans";[^}]*src:\s*url\("\/fonts\/PixelifySans-Variable\.ttf"\)\s*format\("truetype"\);[^}]*font-style:\s*normal;[^}]*font-weight:\s*400 700;[^}]*font-display:\s*swap;/,
     );
+    expect(pixelifyFontSource.byteLength).toBeGreaterThan(0);
+    expect(pixelifyLicense).toMatch(
+      /^Copyright 2021 The Pixelify Sans Project Authors \(https:\/\/github\.com\/eifetx\/Pixelify-Sans\)\r?\n\r?\nThis Font Software is licensed under the SIL Open Font License, Version 1\.1\./,
+    );
   });
 
   it('inherits Pixelify Sans across document text and controls', () => {
@@ -154,7 +165,6 @@ describe('handheld reference visual system', () => {
           '.trainer-card__fields dt',
           '.party-card__metadata',
           'dialog.pokedex-entry > .pokedex-entry__category',
-          'dialog.pokedex-entry > .pokedex-entry__meta',
           'dialog.pokedex-entry > div[aria-label="Types"] span',
         ],
       ],
@@ -163,6 +173,7 @@ describe('handheld reference visual system', () => {
         [
           '.trainer-card__fields dd',
           '.party-card__role',
+          'dialog.pokedex-entry > .pokedex-entry__meta',
           'dialog.pokedex-entry > .pokedex-entry__highlight',
           'dialog.pokedex-entry > ul[aria-label="Moves"]',
         ],
@@ -176,6 +187,12 @@ describe('handheld reference visual system', () => {
         );
       }
     }
+  });
+
+  it('keeps visible technology names at the regular popup text weight', () => {
+    expect(
+      declarationsFor('dialog.pokedex-entry > ul[aria-label="Moves"] strong'),
+    ).toMatch(/font-weight:\s*400;/);
   });
 
   it('tightens major headings and keeps text-heavy dialog content readable', () => {

@@ -693,7 +693,7 @@ dialog.pokedex-entry > .pokedex-entry__meta {
   border-left: 0.35rem solid var(--status-green);
   color: var(--ink);
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 400;
   text-transform: uppercase;
 }
 
@@ -749,6 +749,10 @@ dialog.pokedex-entry > ul[aria-label="Moves"] li {
 dialog.pokedex-entry > ul[aria-label="Moves"] strong,
 dialog.pokedex-entry > ul[aria-label="Moves"] span {
   overflow-wrap: anywhere;
+}
+
+dialog.pokedex-entry > ul[aria-label="Moves"] strong {
+  font-weight: 400;
 }
 
 dialog.pokedex-entry > ul[aria-label="Moves"] span {
