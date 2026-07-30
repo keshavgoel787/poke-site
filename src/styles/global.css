@@ -16,7 +16,14 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-  background: var(--ink);
+  background-color: var(--ink);
+  background-image:
+    linear-gradient(rgba(12, 23, 32, 0.28), rgba(12, 23, 32, 0.28)),
+    url("/pixel-landscape-bg.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
   color: var(--screen-white);
   font-family: "Courier New", Courier, monospace;
   font-size: 1rem;
@@ -77,6 +84,8 @@ ul {
 }
 
 #root {
+  position: relative;
+  z-index: 1;
   width: min(100%, 90rem);
   margin-inline: auto;
   padding: clamp(0.5rem, 2vw, 1.5rem);
