@@ -11,6 +11,14 @@ describe('pokemonPath', () => {
 });
 
 describe('resolvePokemonRoute', () => {
+  it('uses Experience without recovery when no tab is supplied for the root page', () => {
+    expect(resolvePokemonRoute()).toEqual({
+      tab: 'experience',
+      entryId: undefined,
+      recovered: false,
+    });
+  });
+
   it('accepts a known entry in its roster tab', () => {
     expect(resolvePokemonRoute('projects', 'forgetmenot')).toEqual({
       tab: 'projects',
@@ -27,7 +35,15 @@ describe('resolvePokemonRoute', () => {
     });
   });
 
-  it('recovers an unknown tab to the first available roster tab', () => {
+  it('recovers an explicitly invalid tab to Experience', () => {
+    expect(resolvePokemonRoute('missing')).toEqual({
+      tab: 'experience',
+      entryId: undefined,
+      recovered: true,
+    });
+  });
+
+  it('recovers an unknown tab and entry to the first available roster tab', () => {
     expect(resolvePokemonRoute('trainer', 'interests')).toEqual({
       tab: 'experience',
       entryId: undefined,

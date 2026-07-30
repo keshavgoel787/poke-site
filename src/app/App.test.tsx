@@ -24,10 +24,24 @@ function renderApp(path: string) {
   );
 }
 
-it('renders the complete Trainer Card on the root route', () => {
+it('renders the Trainer Card and Experience roster together on the root route', () => {
   renderApp('/');
 
   expect(screen.getByRole('heading', { name: 'Trainer Card' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: "Keshav's Pokémon" })).toBeVisible();
+  expect(screen.getByRole('tab', { name: 'Experience' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+  expect(screen.getByRole('button', { name: 'Draftion: DraftKings' })).toBeVisible();
+  expect(screen.queryByRole('link', { name: "Keshav's Pokémon" })).not.toBeInTheDocument();
+  expect(screen.getAllByRole('main')).toHaveLength(1);
+  expect(screen.getByTestId('current-route')).toHaveTextContent(/^\/$/);
+});
+
+it('keeps the Trainer Card content on the root route', () => {
+  renderApp('/');
+
   expect(screen.getByRole('heading', { name: 'Keshav Goel' })).toBeVisible();
   expect(screen.getByText('Northeastern University')).toBeVisible();
   expect(screen.getByText('May 2028')).toBeVisible();
@@ -47,10 +61,6 @@ it('renders the complete Trainer Card on the root route', () => {
     'href',
     'mailto:kgoel9657@gmail.com',
   );
-  expect(screen.getByRole('link', { name: "Keshav's Pokémon" })).toHaveAttribute(
-    'href',
-    '/pokemon/experience',
-  );
 });
 
 it('reconstructs the DraftKings dialog from its direct route', () => {
@@ -58,6 +68,8 @@ it('reconstructs the DraftKings dialog from its direct route', () => {
 
   const dialog = screen.getByRole('dialog', { name: 'Draftion details' });
 
+  expect(screen.getByRole('heading', { name: 'Trainer Card', hidden: true })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: "Keshav's Pokémon", hidden: true })).toBeInTheDocument();
   expect(screen.getByTestId('current-route')).toHaveTextContent(
     '/pokemon/experience/draftkings',
   );
@@ -74,6 +86,8 @@ it('reconstructs the Remetra dialog from its direct route', () => {
 
   const dialog = screen.getByRole('dialog', { name: 'Remetrix details' });
 
+  expect(screen.getByRole('heading', { name: 'Trainer Card', hidden: true })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: "Keshav's Pokémon", hidden: true })).toBeInTheDocument();
   expect(screen.getByRole('tab', { name: 'Projects' })).toHaveAttribute(
     'aria-selected',
     'true',

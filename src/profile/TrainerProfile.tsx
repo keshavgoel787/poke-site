@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { trainerProfile } from '../data/portfolioData';
-import { pokemonPath } from '../navigation/routes';
+import { CareerPC } from '../pc/CareerPC';
 import { usePreferences } from '../preferences/usePreferences';
 import { TrainerWalkScene } from './TrainerWalkScene';
 
@@ -70,9 +70,7 @@ export function TrainerProfile(): JSX.Element {
         </nav>
       </section>
 
-      <a className="trainer-roster-card" href={pokemonPath('experience')}>
-        Keshav&apos;s Pokémon
-      </a>
+      <CareerPC />
     </main>
   );
 }

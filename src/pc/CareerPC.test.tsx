@@ -207,17 +207,16 @@ describe('CareerPC', () => {
     );
   });
 
-  it('shows only the roster return and sound controls above the party', () => {
+  it('renders an embeddable roster section with sound controls', () => {
     renderCareerPC('/pokemon/experience');
 
-    const backLink = screen.getByRole('link', { name: /back to trainer card/i });
-
-    expect(backLink).toHaveAttribute('href', '/');
-    expect(backLink.parentElement).toHaveClass('career-pc__utility-bar');
-    expect(screen.getByRole('button', { name: /sound/i })).toBeVisible();
+    expect(screen.getByRole('region', { name: "Keshav's Pokémon", hidden: true })).toHaveClass(
+      'career-pc',
+    );
+    expect(screen.queryByRole('link', { name: /back to trainer card/i })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /sound/i, hidden: true })).toBeVisible();
     expect(screen.queryByRole('navigation', { name: /quick menu/i })).not.toBeInTheDocument();
-    expect(screen.getByRole('main')).toHaveAttribute('data-reduced-motion', 'false');
-    expect(screen.getByRole('main')).toHaveAttribute('data-booting');
+    expect(screen.queryByRole('main')).not.toBeInTheDocument();
   });
 
   it('opens a box route from its tab', async () => {

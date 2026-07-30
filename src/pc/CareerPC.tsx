@@ -28,7 +28,7 @@ export function CareerPC() {
   const launchingCardRef = useRef<HTMLButtonElement | null>(null);
   const launchingEntryIdRef = useRef<string | null>(null);
   const previousEntryIdRef = useRef(resolvedRoute.entryId);
-  const { soundEnabled, setSoundEnabled, reducedMotion } = usePreferences();
+  const { soundEnabled, setSoundEnabled } = usePreferences();
 
   const playEnabledBleep = () => {
     if (soundEnabled) {
@@ -140,17 +140,13 @@ export function CareerPC() {
   };
 
   return (
-    <main data-reduced-motion={reducedMotion} data-booting>
-      <h1>Keshav's PC</h1>
-
-      <div className="career-pc__utility-bar">
-        <Link to="/" onClick={playEnabledBleep}>
-          Back to Trainer Card
-        </Link>
+    <section className="career-pc" data-booting aria-labelledby="career-pc-title">
+      <header className="career-pc__header">
+        <h2 id="career-pc-title">Keshav&apos;s Pokémon</h2>
         <button type="button" aria-pressed={soundEnabled} onClick={toggleSound}>
           Sound
         </button>
-      </div>
+      </header>
 
       {showRecoveryMessage ? (
         <p role="status">
@@ -197,6 +193,6 @@ export function CareerPC() {
         />
       </section>
       {selectedEntry ? <PokedexEntry entry={selectedEntry} onClose={closeEntry} /> : null}
-    </main>
+    </section>
   );
 }

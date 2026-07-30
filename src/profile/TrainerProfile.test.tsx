@@ -36,13 +36,12 @@ it('presents Keshav\'s Trainer Card and professional destinations', () => {
     '/gengar-companion.svg',
   );
   expect(screen.getByRole('link', { name: /résumé/i })).toHaveAttribute('href', '/resume.pdf');
-  expect(screen.getByRole('link', { name: "Keshav's Pokémon" })).toHaveAttribute(
-    'href',
-    '/pokemon/experience',
+  expect(screen.getByRole('heading', { name: "Keshav's Pokémon" })).toBeVisible();
+  expect(screen.getByRole('tab', { name: 'Experience' })).toHaveAttribute(
+    'aria-selected',
+    'true',
   );
-  expect(screen.getByRole('link', { name: "Keshav's Pokémon" })).toHaveClass(
-    'trainer-roster-card',
-  );
+  expect(screen.getByRole('tab', { name: 'Projects' })).toBeVisible();
   expect(screen.getByRole('link', { name: /github/i })).toHaveAttribute(
     'href',
     expect.stringContaining('github.com'),
