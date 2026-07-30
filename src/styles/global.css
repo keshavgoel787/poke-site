@@ -1042,6 +1042,7 @@ dialog.pokedex-entry > button {
 
   .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
     gap: 0.25rem;
     min-height: 0;
   }
