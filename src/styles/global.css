@@ -953,6 +953,120 @@ dialog.pokedex-entry > button {
   }
 }
 
+@media (min-width: 64rem) and (max-height: 56.25rem) {
+  #root {
+    padding: 0.5rem;
+  }
+
+  .trainer-screen {
+    height: calc(100dvh - 1rem);
+    grid-template-rows: minmax(0, 19rem) minmax(0, 1fr);
+    gap: 0.4rem;
+  }
+
+  .trainer-card {
+    min-height: 0;
+    padding: 0.5rem 0.75rem;
+    border-width: 0.35rem;
+  }
+
+  .trainer-card > h1 {
+    margin-bottom: 0.25rem;
+    font-size: 2rem;
+  }
+
+  .trainer-card__body {
+    grid-template-columns: minmax(0, 1fr) 10rem;
+    gap: 0.5rem;
+  }
+
+  .trainer-card__fields {
+    gap: 0.2rem;
+  }
+
+  .trainer-card__fields dt,
+  .trainer-card__fields dd {
+    padding: 0.18rem 0.4rem;
+  }
+
+  .trainer-card__walk-viewport {
+    width: min(100%, 10rem);
+    padding: 0.35rem;
+    border-width: 0.25rem;
+  }
+
+  .trainer-card nav {
+    margin-top: 0.3rem;
+    padding: 0.2rem;
+  }
+
+  .trainer-card nav ul {
+    gap: 0.15rem;
+  }
+
+  .trainer-card nav a {
+    padding: 0.15rem 0.1rem;
+  }
+
+  .career-pc {
+    min-height: 0;
+  }
+
+  .career-pc__header > h2 {
+    padding: 0.3rem 0.6rem;
+    font-size: 1.5rem;
+  }
+
+  .career-pc__header > button {
+    margin-right: 0.35rem;
+    padding: 0.25rem 0.45rem;
+    font-size: 0.75rem;
+  }
+
+  .career-pc > [role="status"] {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .career-pc > nav[aria-label="Professional roster"] {
+    padding: 0.2rem 0.3rem 0;
+  }
+
+  [role="tablist"] {
+    gap: 0.2rem;
+  }
+
+  [role="tablist"] [role="tab"] {
+    padding: 0.2rem;
+    font-size: 0.78rem;
+  }
+
+  .career-pc > [role="tabpanel"] {
+    min-height: 0;
+    padding: 0.3rem;
+  }
+
+  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    gap: 0.25rem;
+    min-height: 0;
+  }
+
+  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] button {
+    grid-template-columns: 4rem minmax(0, 1fr);
+    grid-template-rows: repeat(4, minmax(1rem, auto));
+    min-height: 6rem;
+    height: 6rem;
+    padding: 0.3rem;
+  }
+
+  .career-pc .pixel-sprite {
+    width: 3.75rem;
+    height: 3.75rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

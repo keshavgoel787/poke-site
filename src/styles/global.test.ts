@@ -185,6 +185,74 @@ describe('handheld reference visual system', () => {
     expect(Number(desktopTrainerTrack?.[1])).toBeGreaterThanOrEqual(21.5);
   });
 
+  it('compacts laptop-height desktops with targeted rules instead of scaling the interface', () => {
+    const compactDesktopStart = globalStyles.indexOf(
+      '@media (min-width: 64rem) and (max-height: 56.25rem)',
+    );
+
+    expect(compactDesktopStart).not.toBe(-1);
+
+    const nextMediaStart = globalStyles.indexOf('@media', compactDesktopStart + 1);
+    const compactDesktopStyles = globalStyles.slice(
+      compactDesktopStart,
+      nextMediaStart === -1 ? undefined : nextMediaStart,
+    );
+
+    expect(compactDesktopStyles).toMatch(/#root\s*{[^}]*padding: 0\.5rem;/);
+    expect(compactDesktopStyles).toMatch(
+      /\.trainer-screen\s*{[^}]*height: calc\(100dvh - 1rem\);[^}]*grid-template-rows: minmax\(0, 19rem\) minmax\(0, 1fr\);[^}]*gap: 0\.4rem;/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\.trainer-card\s*{[^}]*padding: 0\.5rem 0\.75rem;/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\.trainer-card > h1\s*{[^}]*margin-bottom: 0\.25rem;/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\.trainer-card__body\s*{[^}]*gap: 0\.5rem;/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\.trainer-card__fields\s*{[^}]*gap: 0\.2rem;/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\.trainer-card__fields dt,\s*\.trainer-card__fields dd\s*{[^}]*padding: 0\.18rem 0\.4rem;/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\.trainer-card__walk-viewport\s*{[^}]*width: min\(100%, 10rem\);/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\.trainer-card nav\s*{[^}]*margin-top: 0\.3rem;[^}]*padding: 0\.2rem;/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\.career-pc__header > h2\s*{[^}]*padding: 0\.3rem 0\.6rem;/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\.career-pc > nav\[aria-label="Professional roster"\]\s*{[^}]*padding: 0\.2rem 0\.3rem 0;/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\[role="tablist"\]\s*{[^}]*gap: 0\.2rem;/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\[role="tablist"\] \[role="tab"\]\s*{[^}]*padding: 0\.2rem;/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\.career-pc > \[role="tabpanel"\]\s*{[^}]*padding: 0\.3rem;/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\.career-pc > \[role="tabpanel"\] > ul\[aria-label="Career entries"\]\s*{[^}]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);[^}]*gap: 0\.25rem;/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\.career-pc > \[role="tabpanel"\] > ul\[aria-label="Career entries"\] button\s*{[^}]*min-height: 6rem;[^}]*padding: 0\.3rem;/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\.career-pc \.pixel-sprite\s*{[^}]*width: 3\.75rem;[^}]*height: 3\.75rem;/,
+    );
+    expect(compactDesktopStyles).not.toMatch(
+      /transform:[^;{}]*scale(?:X|Y)?\s*\(/,
+    );
+    expect(compactDesktopStyles).not.toMatch(/\bzoom\s*:/);
+  });
+
   it('keeps the trainer-only scene proportional, centered, pixelated, and facing right', () => {
     expect(globalStyles).toMatch(
       /\.trainer-card__walk-viewport\s*{[^}]*aspect-ratio: 1;/,
