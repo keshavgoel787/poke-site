@@ -200,7 +200,10 @@ describe('handheld reference visual system', () => {
 
     expect(compactDesktopStyles).toMatch(/#root\s*{[^}]*padding: 0\.5rem;/);
     expect(compactDesktopStyles).toMatch(
-      /\.trainer-screen\s*{[^}]*height: calc\(100dvh - 1rem\);[^}]*grid-template-rows: minmax\(0, 19rem\) minmax\(0, 1fr\);[^}]*gap: 0\.4rem;/,
+      /\.trainer-screen\s*{[^}]*height: auto;[^}]*grid-template-rows: minmax\(0, 19rem\) auto;[^}]*align-content: start;[^}]*gap: 0\.4rem;/,
+    );
+    expect(compactDesktopStyles).not.toContain(
+      'grid-template-rows: minmax(0, 19rem) minmax(0, 1fr)',
     );
     expect(compactDesktopStyles).toMatch(
       /\.trainer-card\s*{[^}]*padding: 0\.5rem 0\.75rem;/,

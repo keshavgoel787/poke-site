@@ -952,8 +952,9 @@ dialog.pokedex-entry > button {
   }
 
   .trainer-screen {
-    height: calc(100dvh - 1rem);
-    grid-template-rows: minmax(0, 19rem) minmax(0, 1fr);
+    height: auto;
+    grid-template-rows: minmax(0, 19rem) auto;
+    align-content: start;
     gap: 0.4rem;
   }
 
