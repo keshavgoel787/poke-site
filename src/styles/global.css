@@ -212,17 +212,25 @@ ul {
   animation: trainer-walk-cycle 900ms steps(3) infinite;
 }
 
-.trainer-walk-companion {
+.trainer-walk-companion-frame {
   position: absolute;
-  bottom: 0.75rem;
-  left: 0.5rem;
+  left: 4%;
+  bottom: 12%;
   z-index: 1;
+  width: 42%;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.trainer-walk-companion-strip {
+  position: absolute;
+  inset: 0 auto 0 0;
   display: block;
-  width: 1.75rem;
-  height: auto;
+  width: 400%;
+  max-width: none;
+  height: 100%;
   image-rendering: pixelated;
-  transform: scaleX(1);
-  animation: trainer-companion-bob 900ms steps(2, end) infinite;
+  animation: gengar-walk-cycle 800ms steps(4) infinite;
 }
 
 .trainer-card nav {
@@ -840,9 +848,9 @@ dialog.pokedex-entry > button {
   }
 }
 
-@keyframes trainer-companion-bob {
-  50% {
-    transform: translateY(-0.2rem) scaleX(1);
+@keyframes gengar-walk-cycle {
+  to {
+    transform: translateX(-100%);
   }
 }
 
@@ -981,7 +989,7 @@ dialog.pokedex-entry > button {
 
   .trainer-card,
   .trainer-walk-strip,
-  .trainer-walk-companion,
+  .trainer-walk-companion-strip,
   .trainer-roster-card,
   #root > main[data-booting],
   #root > main[data-booting] > [role="tabpanel"] button,
@@ -992,7 +1000,7 @@ dialog.pokedex-entry > button {
 
   .trainer-card,
   .trainer-walk-strip,
-  .trainer-walk-companion,
+  .trainer-walk-companion-strip,
   .trainer-roster-card,
   #root > main[data-booting] > [role="tabpanel"] button {
     transform: none !important;
@@ -1025,7 +1033,7 @@ dialog.pokedex-entry > button {
 
 [data-reduced-motion="true"] .trainer-card,
 [data-reduced-motion="true"] .trainer-walk-strip,
-[data-reduced-motion="true"] .trainer-walk-companion,
+[data-reduced-motion="true"] .trainer-walk-companion-strip,
 [data-reduced-motion="true"] .trainer-roster-card,
 [data-reduced-motion="true"] > [role="tabpanel"] button,
 [data-reduced-motion="true"] > dialog.pokedex-entry[open] {
@@ -1035,7 +1043,7 @@ dialog.pokedex-entry > button {
 
 [data-reduced-motion="true"] .trainer-card,
 [data-reduced-motion="true"] .trainer-walk-strip,
-[data-reduced-motion="true"] .trainer-walk-companion,
+[data-reduced-motion="true"] .trainer-walk-companion-strip,
 [data-reduced-motion="true"] .trainer-roster-card,
 [data-reduced-motion="true"] > [role="tabpanel"] button {
   transform: none !important;

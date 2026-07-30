@@ -33,7 +33,7 @@ it('presents Keshav\'s Trainer Card and professional destinations', () => {
   expect(screen.getByTestId('trainer-walk-strip')).toHaveAttribute('src', '/trainer-walk.png');
   expect(screen.getByTestId('trainer-companion')).toHaveAttribute(
     'src',
-    '/gengar-companion.svg',
+    '/gengar-walk.svg',
   );
   expect(screen.getByRole('link', { name: /résumé/i })).toHaveAttribute('href', '/resume.pdf');
   expect(screen.getByRole('heading', { name: "Keshav's Pokémon" })).toBeVisible();

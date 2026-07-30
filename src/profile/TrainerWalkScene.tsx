@@ -23,13 +23,15 @@ export function TrainerWalkScene({
 
   return (
     <div className="trainer-walk-scene" role="img" aria-label={label}>
-      <img
-        data-testid="trainer-companion"
-        className="trainer-walk-companion"
-        src={companionSrc}
-        alt=""
-        onError={() => setFailed(true)}
-      />
+      <div className="trainer-walk-companion-frame">
+        <img
+          data-testid="trainer-companion"
+          className="trainer-walk-companion-strip"
+          src={companionSrc}
+          alt=""
+          onError={() => setFailed(true)}
+        />
+      </div>
       <div className="trainer-walk-trainer">
         <img
           data-testid="trainer-walk-strip"

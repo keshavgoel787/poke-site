@@ -9,7 +9,7 @@ const globalStyles = readFileSync(new URL('./global.css', import.meta.url), 'utf
 const tokens = readFileSync(new URL('./tokens.css', import.meta.url), 'utf8');
 const mainSource = readFileSync(new URL('../main.tsx', import.meta.url), 'utf8');
 const documentSource = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
-const companionUrl = new URL('../../public/gengar-companion.svg', import.meta.url);
+const companionUrl = new URL('../../public/gengar-walk.svg', import.meta.url);
 const companionSource = existsSync(companionUrl) ? readFileSync(companionUrl, 'utf8') : '';
 const trainerStripSource = readFileSync(
   new URL('../../public/trainer-walk.png', import.meta.url),
@@ -171,7 +171,13 @@ describe('handheld reference visual system', () => {
       /\.trainer-walk-strip\s*{[^}]*width: 300%;[^}]*height: 3rem;[^}]*image-rendering: pixelated;[^}]*transform: scaleX\(1\);/,
     );
     expect(globalStyles).toMatch(
-      /\.trainer-walk-companion\s*{[^}]*bottom: 0\.75rem;[^}]*left: 0\.5rem;[^}]*z-index: 1;[^}]*width: 1\.75rem;[^}]*image-rendering: pixelated;[^}]*transform: scaleX\(1\);/,
+      /\.trainer-walk-companion-frame\s*{[^}]*overflow: hidden;/,
+    );
+    expect(globalStyles).toMatch(
+      /\.trainer-walk-companion-strip\s*{[^}]*width: 400%;[^}]*image-rendering: pixelated;[^}]*animation: gengar-walk-cycle 800ms steps\(4\) infinite;/,
+    );
+    expect(globalStyles).toMatch(
+      /@keyframes gengar-walk-cycle\s*{[\s\S]*transform: translateX\(-100%\);/,
     );
   });
 
@@ -189,7 +195,7 @@ describe('handheld reference visual system', () => {
   });
 
   it('uses the repo-native crisp-edge block companion asset', () => {
-    expect(companionSource).toContain('viewBox="0 0 32 32"');
+    expect(companionSource).toContain('viewBox="0 0 128 32"');
     expect(companionSource).toContain('shape-rendering="crispEdges"');
     expect(companionSource).toContain('<rect');
     expect(companionSource).not.toMatch(/<(?:path|circle|ellipse|polygon|image)\b/);
@@ -272,10 +278,10 @@ describe('handheld reference visual system', () => {
       /data-reduced-motion="true"[\s\S]*\.pixel-sprite__frame--b[\s\S]*opacity: 0 !important/,
     );
     expect(globalStyles).toMatch(
-      /prefers-reduced-motion:[\s\S]*\.trainer-walk-strip,[\s\S]*\.trainer-walk-companion[\s\S]*animation: none !important/,
+      /prefers-reduced-motion:[\s\S]*\.trainer-walk-strip,[\s\S]*\.trainer-walk-companion-strip[\s\S]*animation: none !important/,
     );
     expect(globalStyles).toMatch(
-      /data-reduced-motion="true"[\s\S]*\.trainer-walk-strip,[\s\S]*\.trainer-walk-companion[\s\S]*animation: none !important/,
+      /data-reduced-motion="true"[\s\S]*\.trainer-walk-strip,[\s\S]*\.trainer-walk-companion-strip[\s\S]*animation: none !important/,
     );
   });
 

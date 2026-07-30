@@ -5,7 +5,7 @@ const renderScene = () =>
   render(
     <TrainerWalkScene
       trainerSrc="/trainer-walk.png"
-      companionSrc="/gengar-companion.svg"
+      companionSrc="/gengar-walk.svg"
       label="Keshav walking with Gengar"
     />,
   );
@@ -20,11 +20,16 @@ it('renders the walking scene with stable layer classes', () => {
     'trainer-walk-trainer',
   );
   expect(screen.getByTestId('trainer-walk-strip')).toHaveClass('trainer-walk-strip');
-  expect(screen.getByTestId('trainer-companion')).toHaveClass('trainer-walk-companion');
+  expect(screen.getByTestId('trainer-companion').parentElement).toHaveClass(
+    'trainer-walk-companion-frame',
+  );
+  expect(screen.getByTestId('trainer-companion')).toHaveClass(
+    'trainer-walk-companion-strip',
+  );
   expect(screen.getByTestId('trainer-walk-strip')).toHaveAttribute('src', '/trainer-walk.png');
   expect(screen.getByTestId('trainer-companion')).toHaveAttribute(
     'src',
-    '/gengar-companion.svg',
+    '/gengar-walk.svg',
   );
 });
 

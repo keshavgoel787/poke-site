@@ -48,7 +48,7 @@ export function TrainerProfile(): JSX.Element {
           <div className="trainer-card__walk-viewport">
             <TrainerWalkScene
               trainerSrc="/trainer-walk.png"
-              companionSrc="/gengar-companion.svg"
+              companionSrc="/gengar-walk.svg"
               label="Keshav walking with Gengar"
             />
           </div>
