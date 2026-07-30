@@ -5,7 +5,6 @@ import wpsDataLabB from './wps-data-lab-b.svg?raw';
 
 const approvedPalette = new Set([
   '#0c1720',
-  '#172032',
   '#5596df',
   '#2877c8',
   '#a9d8f3',
