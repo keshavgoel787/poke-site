@@ -192,10 +192,10 @@ describe('handheld reference visual system', () => {
       /\.trainer-card__walk-viewport\s*{[^}]*aspect-ratio: 1;/,
     );
     expect(globalStyles).toMatch(
-      /\.trainer-walk-scene\s*{[^}]*width: 88%;[^}]*aspect-ratio: 4 \/ 3;[^}]*overflow: hidden;/,
+      /\.trainer-walk-scene\s*{[^}]*overflow: hidden;/,
     );
     expect(globalStyles).toMatch(
-      /\.trainer-walk-trainer\s*{[^}]*top: 0;[^}]*right: 2%;[^}]*bottom: 0;[^}]*z-index: 2;[^}]*width: 50%;[^}]*height: 100%;[^}]*overflow: hidden;/,
+      /\.trainer-walk-trainer\s*{[^}]*top: 0;[^}]*right: 2%;[^}]*bottom: 0;[^}]*z-index: 2;[^}]*height: 100%;[^}]*overflow: hidden;/,
     );
     expect(globalStyles).toMatch(
       /\.trainer-walk-strip\s*{[^}]*width: 300%;[^}]*height: 100%;[^}]*image-rendering: pixelated;[^}]*transform: scaleX\(1\);/,
@@ -209,6 +209,18 @@ describe('handheld reference visual system', () => {
     expect(globalStyles).toMatch(
       /@keyframes gengar-walk-cycle\s*{[\s\S]*transform: translateX\(-100%\);/,
     );
+  });
+
+  it('fills the square picture panel while preserving the trainer frame aspect ratio', () => {
+    const sceneRule = globalStyles.match(/\.trainer-walk-scene\s*{([^}]*)}/)?.[1] ?? '';
+    const trainerRule =
+      globalStyles.match(/\.trainer-walk-trainer\s*{([^}]*)}/)?.[1] ?? '';
+    const trainerWidth = trainerRule.match(/width:\s*([\d.]+)%/)?.[1];
+
+    expect(sceneRule).toMatch(/width:\s*100%;/);
+    expect(sceneRule).toMatch(/aspect-ratio:\s*1;/);
+    expect(trainerWidth).toBeDefined();
+    expect(Number(trainerWidth)).toBeCloseTo((2 / 3) * 100, 3);
   });
 
   it('normalizes three equal trainer frames to a 32-to-48-pixel visible chibi', () => {
