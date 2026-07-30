@@ -244,6 +244,9 @@ describe('handheld reference visual system', () => {
     expect(compactDesktopStyles).toMatch(
       /\.career-pc > \[role="tabpanel"\] > ul\[aria-label="Career entries"\]\s*{[^}]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);[^}]*gap: 0\.25rem;/,
     );
+    expect(compactDesktopStyles).not.toContain(
+      'grid-template-rows: repeat(3, minmax(0, 1fr))',
+    );
     expect(compactDesktopStyles).toMatch(
       /\.career-pc > \[role="tabpanel"\] > ul\[aria-label="Career entries"\] button\s*{[^}]*min-height: 6rem;[^}]*padding: 0\.3rem;/,
     );
