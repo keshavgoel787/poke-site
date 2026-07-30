@@ -49,7 +49,7 @@ export function CreatureGrid({ entries, selectedId, onSelect }: CreatureGridProp
               <PixelSprite
                 spriteId={entry.spriteId}
                 label={entry.creatureName}
-                animate={selected}
+                animate
               />
               <span>{entry.creatureName}</span>
               {entry.organization !== entry.creatureName ? <span>{entry.organization}</span> : null}

@@ -122,6 +122,23 @@ describe('CareerPC', () => {
     expect(screen.getByRole('img', { name: 'DraftKings', hidden: true })).toBeVisible();
   });
 
+  it('animates every roster sprite before and after selecting another entry', async () => {
+    const user = userEvent.setup();
+    renderCareerPC('/pokemon/experience');
+    const careerEntries = screen.getByRole('list', { name: 'Career entries' });
+
+    expect(careerEntries.querySelectorAll('.pixel-sprite')).not.toHaveLength(0);
+    for (const sprite of careerEntries.querySelectorAll('.pixel-sprite')) {
+      expect(sprite).toHaveAttribute('data-animate', 'true');
+    }
+
+    await user.click(screen.getByRole('button', { name: 'DraftKings' }));
+
+    for (const sprite of careerEntries.querySelectorAll('.pixel-sprite')) {
+      expect(sprite).toHaveAttribute('data-animate', 'true');
+    }
+  });
+
   it('keeps sound off until the quick menu sound control is clicked', async () => {
     const user = userEvent.setup();
     const audio = installWorkingAudioContext();
