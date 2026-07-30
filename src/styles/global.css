@@ -172,6 +172,7 @@ ul {
   place-items: center;
   width: min(100%, 18rem);
   min-width: 0;
+  aspect-ratio: 1;
   margin-inline: auto;
   padding: 0.5rem;
   border: 0.35rem solid var(--steel-dark);
@@ -183,8 +184,8 @@ ul {
 
 .trainer-walk-scene {
   position: relative;
-  width: 4rem;
-  height: 3rem;
+  width: 88%;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--panel-cyan);
 }
@@ -192,11 +193,11 @@ ul {
 .trainer-walk-trainer {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 2%;
   bottom: 0;
   z-index: 2;
-  width: 2rem;
-  height: 3rem;
+  width: 50%;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -206,7 +207,7 @@ ul {
   display: block;
   width: 300%;
   max-width: none;
-  height: 3rem;
+  height: 100%;
   image-rendering: pixelated;
   transform: scaleX(1);
   animation: trainer-walk-cycle 900ms steps(3) infinite;
@@ -273,61 +274,8 @@ ul {
   line-height: 1;
 }
 
-.trainer-roster-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: min(100%, 36rem);
-  margin: 0 auto;
-  padding: 0.7rem 0.85rem;
-  border: 0.35rem solid var(--steel-dark);
-  background: var(--steel-dark);
-  color: var(--screen-white);
-  box-shadow:
-    inset 0 0 0 0.18rem var(--steel-light),
-    0.35rem 0.35rem 0 var(--ink);
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: transform 80ms steps(1, end), box-shadow 80ms steps(1, end);
-}
-
-.trainer-roster-card::before {
-  width: 1.4rem;
-  height: 0.55rem;
-  background: var(--status-green);
-  content: "";
-}
-
-.trainer-roster-card::after {
-  color: var(--screen-white);
-  content: "▶";
-}
-
-.trainer-roster-card:hover {
-  background: var(--screen-blue);
-  color: var(--ink);
-  box-shadow:
-    inset 0 0 0 0.18rem var(--steel-light),
-    0.15rem 0.15rem 0 var(--ink);
-  transform: translate(0.2rem, 0.2rem);
-}
-
-.trainer-roster-card:hover::after {
-  color: var(--ink);
-}
-
-.trainer-roster-card:active {
-  box-shadow: inset 0 0 0 0.18rem var(--steel-light);
-  transform: translate(0.35rem, 0.35rem);
-}
-
-.trainer-roster-card:focus-visible {
-  outline: 4px solid var(--focus);
-  outline-offset: 3px;
-}
-
 /* Party roster */
-#root > main[data-booting] {
+.career-pc {
   width: 100%;
   min-width: 0;
   overflow: hidden;
@@ -340,36 +288,33 @@ ul {
   animation: boot 320ms steps(4, end) both;
 }
 
-#root > main[data-booting] > h1 {
-  margin: 0;
-  padding: 0.7rem 0.8rem;
+.career-pc__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
   border-bottom: 0.35rem solid var(--steel-dark);
   background: var(--screen-blue);
+}
+
+.career-pc__header > h2 {
+  margin: 0;
+  padding: 0.7rem 0.8rem;
   color: var(--ink);
   font-size: clamp(1.5rem, 7vw, 3rem);
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
-#root > main[data-booting] > .career-pc__utility-bar {
+.career-pc__header > button {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  padding: 0.55rem;
-  border-bottom: var(--pixel-border) solid var(--steel-light);
-  background: var(--steel-dark);
-}
-
-#root > main[data-booting] > .career-pc__utility-bar a,
-#root > main[data-booting] > .career-pc__utility-bar button {
-  display: flex;
-  flex: 1 1 10rem;
   align-items: center;
   justify-content: center;
+  margin-right: 0.55rem;
   padding: 0.45rem 0.6rem;
   border: var(--pixel-border) solid var(--ink);
   background: var(--screen-white);
   color: var(--ink);
+  cursor: pointer;
   font-size: 0.8rem;
   font-weight: 700;
   text-align: center;
@@ -377,13 +322,7 @@ ul {
   text-transform: uppercase;
 }
 
-#root > main[data-booting] > .career-pc__utility-bar button {
-  cursor: pointer;
-}
-
-#root > main[data-booting]
-  > .career-pc__utility-bar
-  button[aria-pressed="true"] {
+.career-pc__header > button[aria-pressed="true"] {
   background: var(--steel-dark);
   color: var(--screen-white);
   box-shadow:
@@ -391,19 +330,15 @@ ul {
     inset 0 -0.35rem 0 var(--status-green);
 }
 
-#root > main[data-booting]
-  > .career-pc__utility-bar
-  button[aria-pressed="true"]::after {
+.career-pc__header > button[aria-pressed="true"]::after {
   content: " ON";
 }
 
-#root > main[data-booting]
-  > .career-pc__utility-bar
-  button[aria-pressed="false"]::after {
+.career-pc__header > button[aria-pressed="false"]::after {
   content: " OFF";
 }
 
-#root > main[data-booting] > [role="status"] {
+.career-pc > [role="status"] {
   margin: 0;
   padding: 0.65rem 0.8rem;
   border-bottom: var(--pixel-border) solid var(--steel-light);
@@ -412,7 +347,7 @@ ul {
   font-weight: 700;
 }
 
-#root > main[data-booting] > nav[aria-label="Professional roster"] {
+.career-pc > nav[aria-label="Professional roster"] {
   padding: 0.55rem 0.55rem 0;
 }
 
@@ -452,13 +387,13 @@ ul {
   content: "▶";
 }
 
-#root > main[data-booting] > [role="tabpanel"] {
+.career-pc > [role="tabpanel"] {
   display: grid;
   min-width: 0;
   padding: 0.55rem;
 }
 
-#root > main[data-booting] > [role="tabpanel"] > ul[aria-label="Career entries"] {
+.career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-content: start;
@@ -466,7 +401,7 @@ ul {
   min-width: 0;
 }
 
-#root > main[data-booting]
+.career-pc
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button {
@@ -489,7 +424,7 @@ ul {
   transition: transform 80ms steps(1, end), background-color 80ms steps(1, end);
 }
 
-#root > main[data-booting]
+.career-pc
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button::after {
@@ -502,7 +437,7 @@ ul {
   content: "";
 }
 
-#root > main[data-booting]
+.career-pc
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button:hover {
@@ -510,7 +445,7 @@ ul {
   transform: translate(-2px, -2px);
 }
 
-#root > main[data-booting]
+.career-pc
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button[aria-pressed="true"] {
@@ -522,7 +457,7 @@ ul {
     inset 0 -0.5rem 0 var(--status-green);
 }
 
-#root > main[data-booting]
+.career-pc
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button[aria-pressed="true"]::before {
@@ -535,7 +470,7 @@ ul {
   animation: cursor-hop 520ms steps(2, end) infinite;
 }
 
-#root > main[data-booting]
+.career-pc
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button
@@ -545,7 +480,7 @@ ul {
   justify-self: center;
 }
 
-#root > main[data-booting]
+.career-pc
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button
@@ -566,14 +501,14 @@ ul {
   text-transform: uppercase;
 }
 
-#root > main[data-booting]
+.career-pc
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button
   > .pixel-sprite
   + span
   + span,
-#root > main[data-booting]
+.career-pc
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button
@@ -581,7 +516,7 @@ ul {
   + span
   + span
   + span,
-#root > main[data-booting]
+.career-pc
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button
@@ -947,33 +882,100 @@ dialog.pokedex-entry > button {
     gap: 1.5rem;
   }
 
-  #root > main[data-booting] > .career-pc__utility-bar {
-    flex-wrap: nowrap;
-  }
-
   [role="tablist"] [role="tab"] {
     font-size: 0.95rem;
   }
 
-  #root > main[data-booting] > [role="tabpanel"] {
+  .career-pc > [role="tabpanel"] {
     padding: 0.8rem;
   }
 
-  #root > main[data-booting] > [role="tabpanel"] > ul[aria-label="Career entries"] {
+  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.8rem;
   }
 
-  #root > main[data-booting]
-    > [role="tabpanel"]
-    > ul[aria-label="Career entries"]
-    button {
+  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] button {
     min-height: 10.25rem;
   }
 
   .pixel-sprite {
     width: 7rem;
     height: 7rem;
+  }
+}
+
+@media (min-width: 90rem) and (min-height: 56.25rem) {
+  #root {
+    padding: 1rem;
+  }
+
+  .trainer-screen {
+    width: min(100%, 78rem);
+    height: calc(100dvh - 2rem);
+    grid-template-rows: minmax(0, 19rem) minmax(0, 1fr);
+    gap: 0.65rem;
+  }
+
+  .trainer-card {
+    min-height: 0;
+    padding: 0.75rem 1rem;
+    border-width: 0.4rem;
+  }
+
+  .trainer-card > h1 {
+    margin-bottom: 0.45rem;
+    font-size: 2.25rem;
+  }
+
+  .trainer-card__body {
+    grid-template-columns: minmax(0, 1fr) 12rem;
+    gap: 0.75rem;
+  }
+
+  .trainer-card__fields {
+    gap: 0.25rem;
+  }
+
+  .trainer-card__fields dt,
+  .trainer-card__fields dd {
+    padding: 0.24rem 0.45rem;
+  }
+
+  .trainer-card nav {
+    margin-top: 0.45rem;
+  }
+
+  .career-pc {
+    min-height: 0;
+  }
+
+  .career-pc > nav[aria-label="Professional roster"] {
+    padding: 0.3rem 0.4rem 0;
+  }
+
+  .career-pc > [role="tabpanel"] {
+    min-height: 0;
+    padding: 0.4rem;
+  }
+
+  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    gap: 0.35rem;
+    min-height: 0;
+  }
+
+  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] button {
+    min-height: 0;
+    height: 6.75rem;
+    grid-template-columns: 4.75rem minmax(0, 1fr);
+    padding: 0.35rem;
+  }
+
+  .career-pc .pixel-sprite {
+    width: 4.5rem;
+    height: 4.5rem;
   }
 }
 
@@ -990,9 +992,8 @@ dialog.pokedex-entry > button {
   .trainer-card,
   .trainer-walk-strip,
   .trainer-walk-companion-strip,
-  .trainer-roster-card,
-  #root > main[data-booting],
-  #root > main[data-booting] > [role="tabpanel"] button,
+  .career-pc,
+  .career-pc > [role="tabpanel"] button,
   dialog.pokedex-entry[open] {
     animation: none !important;
     transition: none !important;
@@ -1001,8 +1002,7 @@ dialog.pokedex-entry > button {
   .trainer-card,
   .trainer-walk-strip,
   .trainer-walk-companion-strip,
-  .trainer-roster-card,
-  #root > main[data-booting] > [role="tabpanel"] button {
+  .career-pc > [role="tabpanel"] button {
     transform: none !important;
   }
 
@@ -1034,9 +1034,9 @@ dialog.pokedex-entry > button {
 [data-reduced-motion="true"] .trainer-card,
 [data-reduced-motion="true"] .trainer-walk-strip,
 [data-reduced-motion="true"] .trainer-walk-companion-strip,
-[data-reduced-motion="true"] .trainer-roster-card,
-[data-reduced-motion="true"] > [role="tabpanel"] button,
-[data-reduced-motion="true"] > dialog.pokedex-entry[open] {
+[data-reduced-motion="true"] .career-pc,
+[data-reduced-motion="true"] .career-pc > [role="tabpanel"] button,
+[data-reduced-motion="true"] dialog.pokedex-entry[open] {
   animation: none !important;
   transition: none !important;
 }
@@ -1044,8 +1044,7 @@ dialog.pokedex-entry > button {
 [data-reduced-motion="true"] .trainer-card,
 [data-reduced-motion="true"] .trainer-walk-strip,
 [data-reduced-motion="true"] .trainer-walk-companion-strip,
-[data-reduced-motion="true"] .trainer-roster-card,
-[data-reduced-motion="true"] > [role="tabpanel"] button {
+[data-reduced-motion="true"] .career-pc > [role="tabpanel"] button {
   transform: none !important;
 }
 
@@ -1059,6 +1058,6 @@ dialog.pokedex-entry > button {
   opacity: 0 !important;
 }
 
-[data-reduced-motion="true"] > dialog.pokedex-entry > .pokedex-entry__highlight {
+[data-reduced-motion="true"] dialog.pokedex-entry > .pokedex-entry__highlight {
   clip-path: inset(0) !important;
 }

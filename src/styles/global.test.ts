@@ -149,7 +149,7 @@ describe('handheld reference visual system', () => {
     );
   });
 
-  it('styles the framed Trainer Card, cyan field rows, avatar panel, and roster control', () => {
+  it('styles the unified Trainer Card and embedded career PC', () => {
     expect(globalStyles).toMatch(/\.trainer-card\s*{[\s\S]*?background: var\(--screen-blue\);/);
     expect(globalStyles).toMatch(
       /\.trainer-card__fields\s*>\s*div\s*{[\s\S]*?background: var\(--panel-cyan\);/,
@@ -157,21 +157,42 @@ describe('handheld reference visual system', () => {
     expect(globalStyles).toMatch(
       /\.trainer-card__walk-viewport\s*{[\s\S]*?border: 0\.35rem solid var\(--steel-dark\);/,
     );
-    expect(globalStyles).toMatch(/\.trainer-roster-card\s*{[\s\S]*?display: flex;/);
+    expect(globalStyles).toMatch(
+      /\.trainer-screen\s*{[^}]*display: grid;[^}]*gap:/,
+    );
+    expect(globalStyles).toMatch(
+      /\.career-pc\s*{[^}]*overflow: hidden;[^}]*background: var\(--ink\);/,
+    );
+    expect(globalStyles).not.toMatch(/\.trainer-roster-card\s*{/);
+    expect(globalStyles).toMatch(
+      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)\s*{[\s\S]*?\.trainer-screen\s*{[^}]*height: calc\(100dvh - 2rem\);[^}]*grid-template-rows: minmax\(0, 19rem\) minmax\(0, 1fr\);/,
+    );
+    expect(globalStyles).toMatch(
+      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.career-pc[^}]*min-height: 0;/,
+    );
+    expect(globalStyles).toMatch(
+      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.career-pc [^{]*ul\[aria-label="Career entries"\]\s*{[^}]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/,
+    );
+    expect(globalStyles).toMatch(
+      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.career-pc [^{]*button\s*{[^}]*min-height: 0;[^}]*height: 6\.75rem;/,
+    );
   });
 
-  it('keeps the chibi scene compact, pixelated, layered, and facing right', () => {
+  it('keeps the enlarged chibi scene proportional, pixelated, layered, and facing right', () => {
     expect(globalStyles).toMatch(
-      /\.trainer-walk-scene\s*{[^}]*width: 4rem;[^}]*height: 3rem;[^}]*overflow: hidden;/,
+      /\.trainer-card__walk-viewport\s*{[^}]*aspect-ratio: 1;/,
     );
     expect(globalStyles).toMatch(
-      /\.trainer-walk-trainer\s*{[^}]*right: 0;[^}]*z-index: 2;[^}]*width: 2rem;[^}]*height: 3rem;[^}]*overflow: hidden;/,
+      /\.trainer-walk-scene\s*{[^}]*width: 88%;[^}]*aspect-ratio: 4 \/ 3;[^}]*overflow: hidden;/,
     );
     expect(globalStyles).toMatch(
-      /\.trainer-walk-strip\s*{[^}]*width: 300%;[^}]*height: 3rem;[^}]*image-rendering: pixelated;[^}]*transform: scaleX\(1\);/,
+      /\.trainer-walk-trainer\s*{[^}]*top: 0;[^}]*right: 2%;[^}]*bottom: 0;[^}]*z-index: 2;[^}]*width: 50%;[^}]*height: 100%;[^}]*overflow: hidden;/,
     );
     expect(globalStyles).toMatch(
-      /\.trainer-walk-companion-frame\s*{[^}]*overflow: hidden;/,
+      /\.trainer-walk-strip\s*{[^}]*width: 300%;[^}]*height: 100%;[^}]*image-rendering: pixelated;[^}]*transform: scaleX\(1\);/,
+    );
+    expect(globalStyles).toMatch(
+      /\.trainer-walk-companion-frame\s*{[^}]*z-index: 1;[^}]*overflow: hidden;/,
     );
     expect(globalStyles).toMatch(
       /\.trainer-walk-companion-strip\s*{[^}]*width: 400%;[^}]*image-rendering: pixelated;[^}]*animation: gengar-walk-cycle 800ms steps\(4\) infinite;/,
@@ -206,13 +227,10 @@ describe('handheld reference visual system', () => {
       /\.trainer-card\s*>\s*h1\s*{[^}]*color: var\(--ink\);/,
     );
     expect(globalStyles).toMatch(
-      /main\[data-booting\]\s*>\s*h1\s*{[^}]*background: var\(--screen-blue\);[^}]*color: var\(--ink\);/,
+      /\.career-pc__header\s*{[^}]*background: var\(--screen-blue\);/,
     );
     expect(globalStyles).toMatch(
-      /\.trainer-roster-card\s*{[^}]*background: var\(--steel-dark\);[^}]*color: var\(--screen-white\);/,
-    );
-    expect(globalStyles).toMatch(
-      /\.trainer-roster-card:hover::after\s*{[^}]*color: var\(--ink\);/,
+      /\.career-pc__header\s*>\s*h2\s*{[^}]*color: var\(--ink\);/,
     );
     expect(globalStyles).toMatch(
       /\.pixel-sprite\s*\+\s*span\s*{[^}]*color: var\(--screen-white\);[^}]*-2px 0 var\(--ink\)[^}]*2px 0 var\(--ink\)[^}]*0 -2px var\(--ink\)[^}]*0 2px var\(--ink\)/,
