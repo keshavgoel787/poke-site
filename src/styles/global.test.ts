@@ -212,8 +212,9 @@ describe('handheld reference visual system', () => {
 
   it('renders the selected pixel landscape as a fixed, covered page background', () => {
     expect(globalStyles).toMatch(
-      /body\s*{[^}]*background-color: var\(--ink\);[^}]*background-image:\s*linear-gradient\(rgba\(12, 23, 32, 0\.28\), rgba\(12, 23, 32, 0\.28\)\),\s*url\("\/pixel-landscape-bg\.png"\);[^}]*background-position: center center;[^}]*background-repeat: no-repeat;[^}]*background-size: cover;[^}]*background-attachment: fixed;/,
+      /html:root\s*{[^}]*background-color: var\(--ink\);[^}]*background-image:\s*linear-gradient\(rgba\(12, 23, 32, 0\.28\), rgba\(12, 23, 32, 0\.28\)\),\s*url\("\/pixel-landscape-bg\.png"\);[^}]*background-position: center center;[^}]*background-repeat: no-repeat;[^}]*background-size: cover;[^}]*background-attachment: fixed;/,
     );
+    expect(declarationsFor('body')).toMatch(/background:\s*transparent;/);
     expect(globalStyles).toMatch(
       /#root\s*{[^}]*position: relative;[^}]*z-index: 1;/,
     );

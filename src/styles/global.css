@@ -12,18 +12,9 @@
   box-sizing: border-box;
 }
 
-html {
+html:root {
   min-width: 320px;
   min-height: 100%;
-  background: var(--ink);
-  color: var(--screen-white);
-  font-size: 16px;
-}
-
-body {
-  min-width: 320px;
-  min-height: 100vh;
-  margin: 0;
   background-color: var(--ink);
   background-image:
     linear-gradient(rgba(12, 23, 32, 0.28), rgba(12, 23, 32, 0.28)),
@@ -32,6 +23,15 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
+  color: var(--screen-white);
+  font-size: 16px;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: transparent;
   color: var(--screen-white);
   font-family: "Pixelify Sans", "Courier New", Courier, monospace;
   font-size: 1rem;
