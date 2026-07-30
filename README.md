@@ -18,13 +18,6 @@ The published résumé at `public/resume.pdf` is sourced from the updated
 `/Users/keshavgoel/Downloads/Keshav_Goel_Resume.pdf` file and is checked byte-for-byte
 as part of release verification.
 
-## Artwork policy
-
-Trainer and roster artwork in this repository is original project artwork. Gengar appears
-only as the user-requested companion; `public/gengar-companion.svg` is newly drawn,
-repo-native crisp-edge artwork, not an asset extracted from a Pokémon game. Do not
-substitute official game sprites, screenshots, or third-party fan art.
-
 ## Local development
 
 ```sh
