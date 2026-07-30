@@ -231,7 +231,7 @@ ul {
   max-width: none;
   height: 100%;
   image-rendering: pixelated;
-  animation: gengar-walk-cycle 800ms steps(4) infinite;
+  animation: gengar-walk-cycle 900ms steps(4) infinite;
 }
 
 .trainer-card nav {

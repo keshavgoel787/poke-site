@@ -204,11 +204,22 @@ describe('handheld reference visual system', () => {
       /\.trainer-walk-companion-frame\s*{[^}]*z-index: 1;[^}]*overflow: hidden;/,
     );
     expect(globalStyles).toMatch(
-      /\.trainer-walk-companion-strip\s*{[^}]*width: 400%;[^}]*image-rendering: pixelated;[^}]*animation: gengar-walk-cycle 800ms steps\(4\) infinite;/,
+      /\.trainer-walk-companion-strip\s*{[^}]*width: 400%;[^}]*image-rendering: pixelated;/,
     );
     expect(globalStyles).toMatch(
       /@keyframes gengar-walk-cycle\s*{[\s\S]*transform: translateX\(-100%\);/,
     );
+  });
+
+  it('keeps the trainer and Gengar on a shared 900ms full-cycle cadence', () => {
+    const trainerDuration = globalStyles.match(
+      /\.trainer-walk-strip\s*{[^}]*animation: trainer-walk-cycle ([\d.]+ms) steps\(3\) infinite;/,
+    )?.[1];
+    const gengarDuration = globalStyles.match(
+      /\.trainer-walk-companion-strip\s*{[^}]*animation: gengar-walk-cycle ([\d.]+ms) steps\(4\) infinite;/,
+    )?.[1];
+
+    expect([trainerDuration, gengarDuration]).toEqual(['900ms', '900ms']);
   });
 
   it('fills the square picture panel while preserving the trainer frame aspect ratio', () => {
