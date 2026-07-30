@@ -39,7 +39,7 @@ export function CreatureGrid({ entries, selectedId, onSelect }: CreatureGridProp
                 itemRefs.current[index] = element;
               }}
               type="button"
-              aria-label={`${entry.creatureName}: ${entry.organization}`}
+              aria-label={entry.creatureName}
               aria-describedby={completionId}
               aria-pressed={selected}
               tabIndex={selected ? 0 : -1}
@@ -52,7 +52,7 @@ export function CreatureGrid({ entries, selectedId, onSelect }: CreatureGridProp
                 animate={selected}
               />
               <span>{entry.creatureName}</span>
-              <span>{entry.organization}</span>
+              {entry.organization !== entry.creatureName ? <span>{entry.organization}</span> : null}
               <span>{entry.role}</span>
               <span>{entry.category}</span>
               <span className="party-card__completion" role="img" aria-label="Entry complete">

@@ -33,7 +33,7 @@ it('renders the Trainer Card and Experience roster together on the root route', 
     'aria-selected',
     'true',
   );
-  expect(screen.getByRole('button', { name: 'Draftion: DraftKings' })).toBeVisible();
+  expect(screen.getByRole('button', { name: 'DraftKings' })).toBeVisible();
   expect(screen.queryByRole('link', { name: "Keshav's Pokémon" })).not.toBeInTheDocument();
   expect(screen.getAllByRole('main')).toHaveLength(1);
   expect(screen.getByTestId('current-route')).toHaveTextContent(/^\/$/);
@@ -66,7 +66,7 @@ it('keeps the Trainer Card content on the root route', () => {
 it('reconstructs the DraftKings dialog from its direct route', () => {
   renderApp('/pokemon/experience/draftkings');
 
-  const dialog = screen.getByRole('dialog', { name: 'Draftion details' });
+  const dialog = screen.getByRole('dialog', { name: 'DraftKings details' });
 
   expect(screen.getByRole('heading', { name: 'Trainer Card', hidden: true })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: "Keshav's Pokémon", hidden: true })).toBeInTheDocument();
@@ -84,7 +84,7 @@ it('reconstructs the DraftKings dialog from its direct route', () => {
 it('reconstructs the Remetra dialog from its direct route', () => {
   renderApp('/pokemon/projects/remetra');
 
-  const dialog = screen.getByRole('dialog', { name: 'Remetrix details' });
+  const dialog = screen.getByRole('dialog', { name: 'Remetra details' });
 
   expect(screen.getByRole('heading', { name: 'Trainer Card', hidden: true })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: "Keshav's Pokémon", hidden: true })).toBeInTheDocument();
@@ -110,7 +110,7 @@ it('recovers an unknown project route to the Projects roster', () => {
     'aria-selected',
     'true',
   );
-  expect(screen.getByRole('button', { name: 'Remetrix: Remetra' })).toBeVisible();
+  expect(screen.getByRole('button', { name: 'Remetra' })).toBeVisible();
 });
 
 it('redirects the retained DraftKings legacy route to its pokemon dialog', () => {
@@ -119,7 +119,7 @@ it('redirects the retained DraftKings legacy route to its pokemon dialog', () =>
   expect(screen.getByTestId('current-route')).toHaveTextContent(
     '/pokemon/experience/draftkings',
   );
-  const dialog = screen.getByRole('dialog', { name: 'Draftion details' });
+  const dialog = screen.getByRole('dialog', { name: 'DraftKings details' });
   expect(within(dialog).getByRole('heading', { name: 'DraftKings' })).toBeVisible();
 });
 

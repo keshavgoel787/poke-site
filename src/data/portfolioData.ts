@@ -44,7 +44,7 @@ export const rosterTabs: Roster[] = [
     entries: [
       {
         id: 'amazon',
-        creatureName: 'Amazoar',
+        creatureName: 'Amazon',
         organization: 'Amazon',
         role: 'Incoming Software Engineering Intern',
         category: 'Experience',
@@ -58,7 +58,7 @@ export const rosterTabs: Roster[] = [
       },
       {
         id: 'draftkings',
-        creatureName: 'Draftion',
+        creatureName: 'DraftKings',
         organization: 'DraftKings',
         role: 'Software Engineering Intern',
         category: 'Experience',
@@ -72,7 +72,7 @@ export const rosterTabs: Roster[] = [
       },
       {
         id: 'procuremateai',
-        creatureName: 'Procura',
+        creatureName: 'ProcureMate AI',
         organization: 'ProcureMate AI',
         role: 'Software Development Engineering Intern',
         category: 'Experience',
@@ -86,7 +86,7 @@ export const rosterTabs: Roster[] = [
       },
       {
         id: 'johnson-johnson',
-        creatureName: 'JandJay',
+        creatureName: 'Johnson & Johnson',
         organization: 'Johnson & Johnson',
         role: 'Software Engineering Co-op',
         category: 'Experience',
@@ -100,7 +100,7 @@ export const rosterTabs: Roster[] = [
       },
       {
         id: 'wps-data-lab',
-        creatureName: 'Datavire',
+        creatureName: 'WPS Data Lab',
         organization: 'WPS Data Lab',
         role: 'Data Science Research Assistant',
         category: 'Experience',
@@ -120,7 +120,7 @@ export const rosterTabs: Roster[] = [
     entries: [
       {
         id: 'remetra',
-        creatureName: 'Remetrix',
+        creatureName: 'Remetra',
         organization: 'Remetra',
         role: 'Autoimmune symptom-tracking application',
         category: 'Project',
@@ -132,7 +132,7 @@ export const rosterTabs: Roster[] = [
       },
       {
         id: 'forgetmenot',
-        creatureName: 'Memorai',
+        creatureName: 'ForgetMeNot',
         organization: 'ForgetMeNot',
         role: 'AI dementia-care platform',
         category: 'Project',
@@ -143,7 +143,7 @@ export const rosterTabs: Roster[] = [
       },
       {
         id: 'breathe-easy',
-        creatureName: 'AeroRoute',
+        creatureName: 'BreatheEasy',
         organization: 'BreatheEasy',
         role: 'Lower-pollution navigation application',
         category: 'Project',

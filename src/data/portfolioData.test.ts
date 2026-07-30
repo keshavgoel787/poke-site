@@ -16,6 +16,16 @@ it('provides exactly the approved roster tabs and visible entries', () => {
     'ForgetMeNot',
     'BreatheEasy',
   ]);
+  expect(visibleEntries().map((entry) => entry.creatureName)).toEqual([
+    'Amazon',
+    'DraftKings',
+    'ProcureMate AI',
+    'Johnson & Johnson',
+    'WPS Data Lab',
+    'Remetra',
+    'ForgetMeNot',
+    'BreatheEasy',
+  ]);
 });
 
 it('removes stale experience entries from the visible roster', () => {

@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { beforeEach, vi } from 'vitest';
@@ -90,26 +90,27 @@ describe('CareerPC', () => {
       'true',
     );
     expect(
-      screen.getByRole('button', { name: 'Draftion: DraftKings', hidden: true }),
+      screen.getByRole('button', { name: 'DraftKings', hidden: true }),
     ).toBeVisible();
     expect(screen.queryByText('Generate')).not.toBeInTheDocument();
     expect(screen.queryByText('VDart')).not.toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /amazon/i })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Amazon details' })).toBeVisible();
     expect(screen.getAllByRole('listitem', { name: /move:/i }).length).toBeGreaterThan(0);
   });
 
   it('presents each party member with professional details and a completion bar', () => {
     renderCareerPC('/pokemon/experience/draftkings');
     const draftKings = screen.getByRole('button', {
-      name: 'Draftion: DraftKings',
+      name: 'DraftKings',
       hidden: true,
     });
 
-    expect(draftKings).toHaveTextContent('Draftion');
     expect(draftKings).toHaveTextContent('DraftKings');
+    expect(within(draftKings).getAllByText('DraftKings')).toHaveLength(1);
+    expect(draftKings).not.toHaveTextContent('Draftion');
     expect(draftKings).toHaveTextContent('Software Engineering Intern');
     expect(draftKings).toHaveTextContent('Experience');
-    expect(draftKings).toHaveAccessibleName('Draftion: DraftKings');
+    expect(draftKings).toHaveAccessibleName('DraftKings');
     expect(draftKings).toHaveAccessibleDescription('Entry complete');
     expect(draftKings).not.toHaveTextContent(/\b(?:HP|level|gender)\b/i);
   });
@@ -117,8 +118,8 @@ describe('CareerPC', () => {
   it('renders sprites in the creature grid and selected entry', () => {
     renderCareerPC('/pokemon/experience/amazon');
 
-    expect(screen.getAllByRole('img', { name: 'Amazoar', hidden: true })).toHaveLength(2);
-    expect(screen.getByRole('img', { name: 'Draftion', hidden: true })).toBeVisible();
+    expect(screen.getAllByRole('img', { name: 'Amazon', hidden: true })).toHaveLength(2);
+    expect(screen.getByRole('img', { name: 'DraftKings', hidden: true })).toBeVisible();
   });
 
   it('keeps sound off until the quick menu sound control is clicked', async () => {
@@ -154,7 +155,7 @@ describe('CareerPC', () => {
 
     await user.click(screen.getByRole('button', { name: /sound/i }));
     await user.click(screen.getByRole('tab', { name: /projects/i }));
-    await user.click(screen.getByRole('button', { name: /memorai: forgetmenot/i }));
+    await user.click(screen.getByRole('button', { name: 'ForgetMeNot' }));
 
     expect(audio.AudioContext).toHaveBeenCalledTimes(3);
   });
@@ -230,9 +231,9 @@ describe('CareerPC', () => {
       'aria-selected',
       'true',
     );
-    expect(screen.getByRole('button', { name: 'Remetrix: Remetra' })).toBeVisible();
-    expect(screen.getByRole('button', { name: 'Memorai: ForgetMeNot' })).toBeVisible();
-    expect(screen.getByRole('button', { name: 'AeroRoute: BreatheEasy' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Remetra' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'ForgetMeNot' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'BreatheEasy' })).toBeVisible();
   });
 
   it('keeps every box tab associated with the mounted active panel', () => {
@@ -296,8 +297,8 @@ describe('CareerPC', () => {
   it('moves grid focus with the arrow keys', async () => {
     const user = userEvent.setup();
     renderCareerPC('/pokemon/experience');
-    const amazon = screen.getByRole('button', { name: /amazoar: amazon/i });
-    const draftKings = screen.getByRole('button', { name: /draftion: draftkings/i });
+    const amazon = screen.getByRole('button', { name: 'Amazon' });
+    const draftKings = screen.getByRole('button', { name: 'DraftKings' });
 
     amazon.focus();
     await user.keyboard('{ArrowRight}');
@@ -308,8 +309,8 @@ describe('CareerPC', () => {
   it('selects a focused grid item with Enter', async () => {
     const user = userEvent.setup();
     renderCareerPC('/pokemon/experience');
-    const amazon = screen.getByRole('button', { name: /amazoar: amazon/i });
-    const draftKings = screen.getByRole('button', { name: /draftion: draftkings/i });
+    const amazon = screen.getByRole('button', { name: 'Amazon' });
+    const draftKings = screen.getByRole('button', { name: 'DraftKings' });
 
     amazon.focus();
     await user.keyboard('{ArrowRight}{Enter}');
@@ -318,14 +319,14 @@ describe('CareerPC', () => {
     expect(screen.getByTestId('current-route')).toHaveTextContent(
       '/pokemon/experience/draftkings',
     );
-    expect(screen.getByRole('dialog', { name: 'Draftion details' })).toBeVisible();
+    expect(screen.getByRole('dialog', { name: 'DraftKings details' })).toBeVisible();
   });
 
   it('wraps grid focus and selects a focused item with Space', async () => {
     const user = userEvent.setup();
     renderCareerPC('/pokemon/projects');
-    const breatheEasy = screen.getByRole('button', { name: /aeroroute: breatheeasy/i });
-    const forgetMeNot = screen.getByRole('button', { name: /memorai: forgetmenot/i });
+    const breatheEasy = screen.getByRole('button', { name: 'BreatheEasy' });
+    const forgetMeNot = screen.getByRole('button', { name: 'ForgetMeNot' });
 
     breatheEasy.focus();
     await user.keyboard('{ArrowLeft} ');
@@ -367,7 +368,7 @@ describe('CareerPC', () => {
   it('reconstructs the selected entry dialog from a direct URL', () => {
     renderCareerPC('/pokemon/experience/draftkings');
 
-    expect(screen.getByRole('dialog', { name: 'Draftion details' })).toBeVisible();
+    expect(screen.getByRole('dialog', { name: 'DraftKings details' })).toBeVisible();
     expect(screen.getByRole('tabpanel', { hidden: true })).toHaveAttribute('inert');
     expect(screen.getByRole('tabpanel', { hidden: true })).toHaveAttribute(
       'aria-hidden',
@@ -382,7 +383,7 @@ describe('CareerPC', () => {
     const user = userEvent.setup();
     renderCareerPC('/pokemon/experience/draftkings', '/before-pc');
     const selectedCard = screen.getByRole('button', {
-      name: 'Draftion: DraftKings',
+      name: 'DraftKings',
       hidden: true,
     });
 
@@ -400,7 +401,7 @@ describe('CareerPC', () => {
     const user = userEvent.setup();
     renderCareerPC('/pokemon/projects/remetra');
     const selectedCard = screen.getByRole('button', {
-      name: 'Remetrix: Remetra',
+      name: 'Remetra',
       hidden: true,
     });
 
@@ -415,7 +416,7 @@ describe('CareerPC', () => {
   it('restores focus to the launching card after the Close route update', async () => {
     const user = userEvent.setup();
     renderCareerPC('/pokemon/experience');
-    const launcher = screen.getByRole('button', { name: 'Draftion: DraftKings' });
+    const launcher = screen.getByRole('button', { name: 'DraftKings' });
 
     await user.click(launcher);
     expect(screen.getByRole('button', { name: 'Close' })).toHaveFocus();
@@ -434,13 +435,13 @@ describe('CareerPC', () => {
     const user = userEvent.setup();
     renderCareerPC('/pokemon/experience');
 
-    await user.click(screen.getByRole('button', { name: 'Draftion: DraftKings' }));
-    expect(screen.getByRole('dialog', { name: 'Draftion details' })).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'DraftKings' }));
+    expect(screen.getByRole('dialog', { name: 'DraftKings details' })).toBeVisible();
 
     act(() => screen.getByRole('button', { name: /back in history/i, hidden: true }).click());
 
     expect(screen.getByTestId('current-route')).toHaveTextContent(/^\/pokemon\/experience$/);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Draftion: DraftKings' })).toHaveFocus();
+    expect(screen.getByRole('button', { name: 'DraftKings' })).toHaveFocus();
   });
 });

@@ -40,7 +40,7 @@ export function TrainerProfile(): JSX.Element {
               <dd>{trainerProfile.major}</dd>
             </div>
             <div>
-              <dt>Hometown</dt>
+              <dt>Current Location</dt>
               <dd>{trainerProfile.hometown}</dd>
             </div>
           </dl>

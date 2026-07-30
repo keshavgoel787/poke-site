@@ -27,6 +27,7 @@ it('presents Keshav\'s Trainer Card and professional destinations', () => {
   expect(screen.getByText('Northeastern University')).toBeVisible();
   expect(screen.getByText('May 2028')).toBeVisible();
   expect(screen.getByText('Data Science')).toBeVisible();
+  expect(screen.getByText('Current Location')).toBeVisible();
   expect(screen.getByText('Boston, MA')).toBeVisible();
   expect(screen.getByRole('img', { name: 'Keshav walking' })).toBeVisible();
   expect(screen.getByRole('main')).toHaveAttribute('data-reduced-motion', 'false');

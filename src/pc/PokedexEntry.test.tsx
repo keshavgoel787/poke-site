@@ -10,12 +10,14 @@ const draftKings = rosterTabs[0].entries[1];
 describe('PokedexEntry', () => {
   it('presents the selected experience as an accessible dialog', () => {
     render(<PokedexEntry entry={draftKings} onClose={vi.fn()} />);
-    const entry = screen.getByRole('dialog', { name: 'Draftion details' });
+    const entry = screen.getByRole('dialog', { name: 'DraftKings details' });
 
     expect(entry.tagName).toBe('DIALOG');
     expect(entry).toHaveAttribute('open');
     expect(entry).toHaveClass('pokedex-entry');
-    expect(within(entry).getByText('Draftion')).toBeVisible();
+    expect(
+      within(entry).getByRole('heading', { name: 'DraftKings details', level: 2 }),
+    ).toBeVisible();
     expect(within(entry).getByRole('heading', { name: 'DraftKings' })).toBeVisible();
     expect(within(entry).getByText('Jun 2026 - Present')).toBeVisible();
     expect(within(entry).getByText('Boston, MA')).toBeVisible();
