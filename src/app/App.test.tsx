@@ -47,7 +47,7 @@ it('keeps the Trainer Card content on the root route', () => {
   expect(screen.getByText('May 2028')).toBeVisible();
   expect(screen.getByText('Data Science')).toBeVisible();
   expect(screen.getByText('Boston, MA')).toBeVisible();
-  expect(screen.getByRole('img', { name: 'Keshav walking with Gengar' })).toBeVisible();
+  expect(screen.getByRole('img', { name: 'Keshav walking' })).toBeVisible();
   expect(screen.getByRole('link', { name: /résumé/i })).toHaveAttribute('href', '/resume.pdf');
   expect(screen.getByRole('link', { name: /github/i })).toHaveAttribute(
     'href',

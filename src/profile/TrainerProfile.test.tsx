@@ -28,13 +28,10 @@ it('presents Keshav\'s Trainer Card and professional destinations', () => {
   expect(screen.getByText('May 2028')).toBeVisible();
   expect(screen.getByText('Data Science')).toBeVisible();
   expect(screen.getByText('Boston, MA')).toBeVisible();
-  expect(screen.getByRole('img', { name: 'Keshav walking with Gengar' })).toBeVisible();
+  expect(screen.getByRole('img', { name: 'Keshav walking' })).toBeVisible();
   expect(screen.getByRole('main')).toHaveAttribute('data-reduced-motion', 'false');
   expect(screen.getByTestId('trainer-walk-strip')).toHaveAttribute('src', '/trainer-walk.png');
-  expect(screen.getByTestId('trainer-companion')).toHaveAttribute(
-    'src',
-    '/gengar-walk.svg',
-  );
+  expect(screen.queryByTestId('trainer-companion')).not.toBeInTheDocument();
   expect(screen.getByRole('link', { name: /résumé/i })).toHaveAttribute('href', '/resume.pdf');
   expect(screen.getByRole('heading', { name: "Keshav's Pokémon" })).toBeVisible();
   expect(screen.getByRole('tab', { name: 'Experience' })).toHaveAttribute(

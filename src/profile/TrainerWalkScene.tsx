@@ -2,13 +2,11 @@ import { useState, type JSX } from 'react';
 
 type TrainerWalkSceneProps = {
   trainerSrc: string;
-  companionSrc: string;
   label: string;
 };
 
 export function TrainerWalkScene({
   trainerSrc,
-  companionSrc,
   label,
 }: TrainerWalkSceneProps): JSX.Element {
   const [failed, setFailed] = useState(false);
@@ -23,15 +21,6 @@ export function TrainerWalkScene({
 
   return (
     <div className="trainer-walk-scene" role="img" aria-label={label}>
-      <div className="trainer-walk-companion-frame">
-        <img
-          data-testid="trainer-companion"
-          className="trainer-walk-companion-strip"
-          src={companionSrc}
-          alt=""
-          onError={() => setFailed(true)}
-        />
-      </div>
       <div className="trainer-walk-trainer">
         <img
           data-testid="trainer-walk-strip"

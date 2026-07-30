@@ -1,7 +1,7 @@
 // @vitest-environment node
 
 // @ts-expect-error Vitest provides this built-in; the app intentionally omits Node globals.
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 // @ts-expect-error Vitest provides this built-in; the app intentionally omits Node globals.
 import { inflateSync } from 'node:zlib';
 
@@ -9,8 +9,6 @@ const globalStyles = readFileSync(new URL('./global.css', import.meta.url), 'utf
 const tokens = readFileSync(new URL('./tokens.css', import.meta.url), 'utf8');
 const mainSource = readFileSync(new URL('../main.tsx', import.meta.url), 'utf8');
 const documentSource = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
-const companionUrl = new URL('../../public/gengar-walk.svg', import.meta.url);
-const companionSource = existsSync(companionUrl) ? readFileSync(companionUrl, 'utf8') : '';
 const trainerStripSource = readFileSync(
   new URL('../../public/trainer-walk.png', import.meta.url),
 );
@@ -187,7 +185,7 @@ describe('handheld reference visual system', () => {
     expect(Number(desktopTrainerTrack?.[1])).toBeGreaterThanOrEqual(21.5);
   });
 
-  it('keeps the enlarged chibi scene proportional, pixelated, layered, and facing right', () => {
+  it('keeps the trainer-only scene proportional, centered, pixelated, and facing right', () => {
     expect(globalStyles).toMatch(
       /\.trainer-card__walk-viewport\s*{[^}]*aspect-ratio: 1;/,
     );
@@ -195,31 +193,13 @@ describe('handheld reference visual system', () => {
       /\.trainer-walk-scene\s*{[^}]*overflow: hidden;/,
     );
     expect(globalStyles).toMatch(
-      /\.trainer-walk-trainer\s*{[^}]*top: 0;[^}]*right: 2%;[^}]*bottom: 0;[^}]*z-index: 2;[^}]*height: 100%;[^}]*overflow: hidden;/,
+      /\.trainer-walk-trainer\s*{[^}]*top: 0;[^}]*bottom: 0;[^}]*left: 50%;[^}]*z-index: 2;[^}]*width: 66\.6667%;[^}]*height: 100%;[^}]*overflow: hidden;[^}]*transform: translateX\(-50%\);/,
     );
     expect(globalStyles).toMatch(
       /\.trainer-walk-strip\s*{[^}]*width: 300%;[^}]*height: 100%;[^}]*image-rendering: pixelated;[^}]*transform: scaleX\(1\);/,
     );
-    expect(globalStyles).toMatch(
-      /\.trainer-walk-companion-frame\s*{[^}]*z-index: 1;[^}]*overflow: hidden;/,
-    );
-    expect(globalStyles).toMatch(
-      /\.trainer-walk-companion-strip\s*{[^}]*width: 400%;[^}]*image-rendering: pixelated;/,
-    );
-    expect(globalStyles).toMatch(
-      /@keyframes gengar-walk-cycle\s*{[\s\S]*transform: translateX\(-100%\);/,
-    );
-  });
-
-  it('keeps the trainer and Gengar on a shared 900ms full-cycle cadence', () => {
-    const trainerDuration = globalStyles.match(
-      /\.trainer-walk-strip\s*{[^}]*animation: trainer-walk-cycle ([\d.]+ms) steps\(3\) infinite;/,
-    )?.[1];
-    const gengarDuration = globalStyles.match(
-      /\.trainer-walk-companion-strip\s*{[^}]*animation: gengar-walk-cycle ([\d.]+ms) steps\(4\) infinite;/,
-    )?.[1];
-
-    expect([trainerDuration, gengarDuration]).toEqual(['900ms', '900ms']);
+    expect(globalStyles).not.toMatch(/trainer-walk-companion/);
+    expect(globalStyles).not.toMatch(/gengar-walk-cycle/);
   });
 
   it('fills the square picture panel while preserving the trainer frame aspect ratio', () => {
@@ -245,13 +225,6 @@ describe('handheld reference visual system', () => {
     expect(visibleHeightAt48Pixels).toBeGreaterThanOrEqual(32);
     expect(visibleHeightAt48Pixels).toBeLessThanOrEqual(48);
     expect(visibleHeightAt48Pixels).toBeCloseTo(40, 0);
-  });
-
-  it('uses the repo-native crisp-edge block companion asset', () => {
-    expect(companionSource).toContain('viewBox="0 0 128 32"');
-    expect(companionSource).toContain('shape-rendering="crispEdges"');
-    expect(companionSource).toContain('<rect');
-    expect(companionSource).not.toMatch(/<(?:path|circle|ellipse|polygon|image)\b/);
   });
 
   it('uses contrast-safe text or complete outlines on blue surfaces', () => {
@@ -328,10 +301,10 @@ describe('handheld reference visual system', () => {
       /data-reduced-motion="true"[\s\S]*\.pixel-sprite__frame--b[\s\S]*opacity: 0 !important/,
     );
     expect(globalStyles).toMatch(
-      /prefers-reduced-motion:[\s\S]*\.trainer-walk-strip,[\s\S]*\.trainer-walk-companion-strip[\s\S]*animation: none !important/,
+      /prefers-reduced-motion:[\s\S]*\.trainer-walk-strip[\s\S]*animation: none !important/,
     );
     expect(globalStyles).toMatch(
-      /data-reduced-motion="true"[\s\S]*\.trainer-walk-strip,[\s\S]*\.trainer-walk-companion-strip[\s\S]*animation: none !important/,
+      /data-reduced-motion="true"[\s\S]*\.trainer-walk-strip[\s\S]*animation: none !important/,
     );
   });
 
