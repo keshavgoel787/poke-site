@@ -464,8 +464,7 @@ ul {
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button
-  > .pixel-sprite
-  + span {
+  > .party-card__name {
   align-self: end;
   padding-right: 2rem;
   color: var(--screen-white);
@@ -485,26 +484,17 @@ ul {
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button
-  > .pixel-sprite
-  + span
-  + span,
+  > .party-card__organization,
 .career-pc
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button
-  > .pixel-sprite
-  + span
-  + span
-  + span,
+  > .party-card__role,
 .career-pc
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button
-  > .pixel-sprite
-  + span
-  + span
-  + span
-  + span {
+  > .party-card__category {
   grid-column: 2;
   min-width: 0;
   width: 100%;

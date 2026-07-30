@@ -306,11 +306,30 @@ describe('handheld reference visual system', () => {
       /\.career-pc__header\s*>\s*h2\s*{[^}]*color: var\(--ink\);/,
     );
     expect(globalStyles).toMatch(
-      /\.pixel-sprite\s*\+\s*span\s*{[^}]*color: var\(--screen-white\);[^}]*-2px 0 var\(--ink\)[^}]*2px 0 var\(--ink\)[^}]*0 -2px var\(--ink\)[^}]*0 2px var\(--ink\)/,
+      /\.party-card__name\s*{[^}]*color: var\(--screen-white\);[^}]*-2px 0 var\(--ink\)[^}]*2px 0 var\(--ink\)[^}]*0 -2px var\(--ink\)[^}]*0 2px var\(--ink\)/,
     );
     expect(globalStyles).toMatch(
       /\.pokedex-entry__organization\s*{[^}]*color: var\(--ink\);/,
     );
+  });
+
+  it('keeps semantic metadata rows from overriding the compact completion indicator', () => {
+    const metadataRule = globalStyles.match(
+      /([^{}]*\.party-card__organization[^{}]*)\{([^{}]*background: var\(--screen-white\);[^{}]*)\}/,
+    );
+    const completionRule = globalStyles.match(
+      /\.party-card__completion\s*\{([^}]*)\}/,
+    );
+
+    expect(metadataRule).not.toBeNull();
+    expect(metadataRule?.[1]).toContain('.party-card__organization');
+    expect(metadataRule?.[1]).toContain('.party-card__role');
+    expect(metadataRule?.[1]).toContain('.party-card__category');
+    expect(metadataRule?.[1]).not.toContain('.party-card__completion');
+    expect(completionRule?.[1]).toMatch(/position:\s*absolute;/);
+    expect(completionRule?.[1]).toMatch(/color:\s*var\(--status-green\);/);
+    expect(completionRule?.[1]).toMatch(/font-size:\s*0\.65rem;/);
+    expect(completionRule?.[1]).toMatch(/line-height:\s*1;/);
   });
 
   it('gives sprite fallbacks a stable high-contrast backplate on every surface', () => {
