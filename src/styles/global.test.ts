@@ -5,13 +5,25 @@ import { readFileSync } from 'node:fs';
 // @ts-expect-error Vitest provides this built-in; the app intentionally omits Node globals.
 import { inflateSync } from 'node:zlib';
 
-const globalStyles = readFileSync(new URL('./global.css', import.meta.url), 'utf8');
+const globalStyles: string = readFileSync(new URL('./global.css', import.meta.url), 'utf8');
 const tokens = readFileSync(new URL('./tokens.css', import.meta.url), 'utf8');
 const mainSource = readFileSync(new URL('../main.tsx', import.meta.url), 'utf8');
 const documentSource = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
 const trainerStripSource = readFileSync(
   new URL('../../public/trainer-walk.png', import.meta.url),
 );
+
+function declarationsFor(selector: string) {
+  return Array.from(globalStyles.matchAll(/([^{}]+)\{([^{}]*)\}/g))
+    .filter(([, selectorList]) =>
+      selectorList
+        .split(',')
+        .map((candidate) => candidate.trim())
+        .includes(selector),
+    )
+    .map(([, , declarations]) => declarations)
+    .join('\n');
+}
 
 function inspectRgbaPng(source: Uint8Array) {
   const view = new DataView(source.buffer, source.byteOffset, source.byteLength);
@@ -106,6 +118,81 @@ function inspectRgbaPng(source: Uint8Array) {
 }
 
 describe('handheld reference visual system', () => {
+  it('delivers the local Pixelify Sans variable font', () => {
+    expect(globalStyles).toMatch(
+      /@font-face\s*{[^}]*font-family:\s*"Pixelify Sans";[^}]*src:\s*url\("\/fonts\/PixelifySans-Variable\.ttf"\)\s*format\("truetype"\);[^}]*font-style:\s*normal;[^}]*font-weight:\s*400 700;[^}]*font-display:\s*swap;/,
+    );
+  });
+
+  it('inherits Pixelify Sans across document text and controls', () => {
+    expect(declarationsFor('body')).toContain(
+      'font-family: "Pixelify Sans", "Courier New", Courier, monospace;',
+    );
+    expect(declarationsFor('button')).toContain('font: inherit;');
+    expect(declarationsFor('button')).toContain('font-family: inherit;');
+    expect(declarationsFor('a')).toContain('font-family: inherit;');
+  });
+
+  it('applies the approved semantic font-weight hierarchy', () => {
+    const weights = new Map<number, string[]>([
+      [
+        700,
+        [
+          'h1',
+          'h2',
+          'h3',
+          '.trainer-card nav a',
+          '.career-pc__header > button',
+          '[role="tablist"] [role="tab"]',
+          '.party-card__name',
+          'dialog.pokedex-entry > button',
+        ],
+      ],
+      [
+        600,
+        [
+          '.trainer-card__fields dt',
+          '.party-card__metadata',
+          'dialog.pokedex-entry > .pokedex-entry__category',
+          'dialog.pokedex-entry > .pokedex-entry__meta',
+          'dialog.pokedex-entry > div[aria-label="Types"] span',
+        ],
+      ],
+      [
+        400,
+        [
+          '.trainer-card__fields dd',
+          '.party-card__role',
+          'dialog.pokedex-entry > .pokedex-entry__highlight',
+          'dialog.pokedex-entry > ul[aria-label="Moves"]',
+        ],
+      ],
+    ]);
+
+    for (const [weight, selectors] of weights) {
+      for (const selector of selectors) {
+        expect(declarationsFor(selector), selector).toMatch(
+          new RegExp(`font-weight:\\s*${weight};`),
+        );
+      }
+    }
+  });
+
+  it('tightens major headings and keeps text-heavy dialog content readable', () => {
+    expect(declarationsFor('h1')).toContain('letter-spacing: -0.04em;');
+    expect(declarationsFor('h2')).toContain('letter-spacing: -0.04em;');
+    expect(declarationsFor('h3')).toContain('letter-spacing: -0.04em;');
+    expect(declarationsFor('.career-pc__header > h2')).toContain(
+      'letter-spacing: -0.04em;',
+    );
+    expect(
+      declarationsFor('dialog.pokedex-entry > .pokedex-entry__highlight'),
+    ).toMatch(/line-height:\s*(?:1\.[2-9]|[2-9](?:\.\d+)?);/);
+    expect(
+      declarationsFor('dialog.pokedex-entry > ul[aria-label="Moves"]'),
+    ).toMatch(/line-height:\s*(?:1\.[2-9]|[2-9](?:\.\d+)?);/);
+  });
+
   it('renders the selected pixel landscape as a fixed, covered page background', () => {
     expect(globalStyles).toMatch(
       /body\s*{[^}]*background-color: var\(--ink\);[^}]*background-image:\s*linear-gradient\(rgba\(12, 23, 32, 0\.28\), rgba\(12, 23, 32, 0\.28\)\),\s*url\("\/pixel-landscape-bg\.png"\);[^}]*background-position: center center;[^}]*background-repeat: no-repeat;[^}]*background-size: cover;[^}]*background-attachment: fixed;/,

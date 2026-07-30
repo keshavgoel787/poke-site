@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Pixelify Sans";
+  src: url("/fonts/PixelifySans-Variable.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+}
+
 *,
 *::before,
 *::after {
@@ -25,7 +33,7 @@ body {
   background-size: cover;
   background-attachment: fixed;
   color: var(--screen-white);
-  font-family: "Courier New", Courier, monospace;
+  font-family: "Pixelify Sans", "Courier New", Courier, monospace;
   font-size: 1rem;
   line-height: 1.4;
 }
@@ -34,6 +42,7 @@ button,
 a {
   min-width: 44px;
   min-height: 44px;
+  font-family: inherit;
   touch-action: manipulation;
 }
 
@@ -44,7 +53,6 @@ button {
 
 a {
   color: inherit;
-  font-weight: 700;
   text-underline-offset: 0.2em;
   text-decoration-thickness: 2px;
 }
@@ -74,6 +82,8 @@ dd {
 h1,
 h2,
 h3 {
+  font-weight: 700;
+  letter-spacing: -0.04em;
   line-height: 1.1;
 }
 
@@ -162,14 +172,17 @@ ul {
   border-right: var(--pixel-border) solid var(--ink);
   background: var(--steel-light);
   font-size: clamp(0.7rem, 2.5vw, 0.9rem);
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
 }
 
 .trainer-card__fields dd,
 .trainer-card__fields h2 {
   font-size: clamp(0.78rem, 3vw, 1.05rem);
-  font-weight: 700;
+}
+
+.trainer-card__fields dd {
+  font-weight: 400;
 }
 
 .trainer-card__fields h2 {
@@ -247,6 +260,7 @@ ul {
   background: var(--screen-white);
   color: var(--ink);
   font-size: clamp(0.56rem, 2.2vw, 0.78rem);
+  font-weight: 700;
   line-height: 1.1;
   text-align: center;
   text-decoration: none;
@@ -290,7 +304,7 @@ ul {
   padding: 0.7rem 0.8rem;
   color: var(--ink);
   font-size: clamp(1.5rem, 7vw, 3rem);
-  letter-spacing: 0.02em;
+  letter-spacing: -0.04em;
   text-transform: uppercase;
 }
 
@@ -356,6 +370,7 @@ ul {
   background: var(--steel-dark);
   color: var(--screen-white);
   font-size: clamp(0.68rem, 3.2vw, 0.95rem);
+  font-weight: 700;
   line-height: 1.15;
   text-align: center;
   text-decoration: none;
@@ -518,6 +533,18 @@ ul {
   overflow-wrap: anywhere;
 }
 
+.party-card__name {
+  font-weight: 700;
+}
+
+.party-card__role {
+  font-weight: 400;
+}
+
+.party-card__metadata {
+  font-weight: 600;
+}
+
 .party-card__completion {
   position: absolute;
   right: 0.55rem;
@@ -653,10 +680,10 @@ dialog.pokedex-entry > .pokedex-entry__category,
 dialog.pokedex-entry > .pokedex-entry__role {
   color: var(--ink);
   font-size: 0.78rem;
-  font-weight: 700;
 }
 
 dialog.pokedex-entry > .pokedex-entry__category {
+  font-weight: 600;
   text-transform: uppercase;
 }
 
@@ -666,7 +693,7 @@ dialog.pokedex-entry > .pokedex-entry__meta {
   border-left: 0.35rem solid var(--status-green);
   color: var(--ink);
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
 }
 
@@ -677,6 +704,8 @@ dialog.pokedex-entry > .pokedex-entry__highlight {
   border: var(--pixel-border) solid var(--ink);
   background: var(--panel-cyan);
   color: var(--ink);
+  font-weight: 400;
+  line-height: 1.2;
   animation: dialogue-reveal 620ms steps(8, end) both;
 }
 
@@ -694,7 +723,7 @@ dialog.pokedex-entry > div[aria-label="Types"] span {
   background: var(--screen-white);
   color: var(--ink);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
 }
 
@@ -703,6 +732,8 @@ dialog.pokedex-entry > ul[aria-label="Moves"] {
   grid-column: 1 / -1;
   gap: 0.35rem;
   margin-top: 0.3rem;
+  font-weight: 400;
+  line-height: 1.2;
 }
 
 dialog.pokedex-entry > ul[aria-label="Moves"] li {
