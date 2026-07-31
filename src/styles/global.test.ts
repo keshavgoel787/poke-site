@@ -129,6 +129,9 @@ function inspectRgbaPng(source: Uint8Array) {
 
 describe('handheld reference visual system', () => {
   it('delivers the self-hosted Pokemon DS font and attribution', () => {
+    expect(globalStyles).toMatch(
+      /@font-face\s*{[^}]*font-family:\s*"Pokemon DPPT";[^}]*src:\s*url\("\/fonts\/pokemon_dppt-dppt\.woff2"\)\s*format\("woff2"\),\s*url\("\/fonts\/pokemon_dppt-dppt\.woff"\)\s*format\("woff"\);[^}]*font-style:\s*normal;[^}]*font-weight:\s*400;[^}]*font-display:\s*swap;/,
+    );
     expect(pokemonDsWoff2.byteLength).toBeGreaterThan(0);
     expect(pokemonDsWoff.byteLength).toBeGreaterThan(0);
     expect(pokemonDsNotice).toContain('Pokemon DS Webfont');
@@ -138,58 +141,25 @@ describe('handheld reference visual system', () => {
     );
   });
 
-  it('inherits Pixelify Sans across document text and controls', () => {
+  it('inherits Pokemon DPPT across document text and controls', () => {
     expect(declarationsFor('body')).toContain(
-      'font-family: "Pixelify Sans", "Courier New", Courier, monospace;',
+      'font-family: "Pokemon DPPT", "Courier New", Courier, monospace;',
+    );
+    expect(declarationsFor('body')).toMatch(
+      /line-height:\s*(?:1\.3[5-9]|1\.[4-9]|[2-9]);/,
     );
     expect(declarationsFor('button')).toContain('font: inherit;');
     expect(declarationsFor('button')).toContain('font-family: inherit;');
     expect(declarationsFor('a')).toContain('font-family: inherit;');
+    expect(globalStyles).not.toContain('Pixelify Sans');
   });
 
-  it('applies the approved semantic font-weight hierarchy', () => {
-    const weights = new Map<number, string[]>([
-      [
-        700,
-        [
-          'h1',
-          'h2',
-          'h3',
-          '.trainer-card nav a',
-          '.career-pc__header > button',
-          '[role="tablist"] [role="tab"]',
-          '.party-card__name',
-          'dialog.pokedex-entry > button',
-        ],
-      ],
-      [
-        600,
-        [
-          '.trainer-card__fields dt',
-          '.party-card__metadata',
-          'dialog.pokedex-entry > .pokedex-entry__category',
-          'dialog.pokedex-entry > div[aria-label="Types"] span',
-        ],
-      ],
-      [
-        400,
-        [
-          '.trainer-card__fields dd',
-          '.party-card__role',
-          'dialog.pokedex-entry > .pokedex-entry__meta',
-          'dialog.pokedex-entry > .pokedex-entry__highlight',
-          'dialog.pokedex-entry > ul[aria-label="Moves"]',
-        ],
-      ],
-    ]);
+  it('uses the native regular font weight throughout the interface', () => {
+    const declaredWeights = [
+      ...globalStyles.matchAll(/font-weight:\s*(\d+);/g),
+    ].map((match) => match[1]);
 
-    for (const [weight, selectors] of weights) {
-      for (const selector of selectors) {
-        expect(declarationsFor(selector), selector).toMatch(
-          new RegExp(`font-weight:\\s*${weight};`),
-        );
-      }
-    }
+    expect(new Set(declaredWeights)).toEqual(new Set(['400']));
   });
 
   it('keeps visible technology names at the regular popup text weight', () => {
@@ -198,12 +168,23 @@ describe('handheld reference visual system', () => {
     ).toMatch(/font-weight:\s*400;/);
   });
 
-  it('tightens major headings and keeps text-heavy dialog content readable', () => {
-    expect(declarationsFor('h1')).toContain('letter-spacing: -0.04em;');
-    expect(declarationsFor('h2')).toContain('letter-spacing: -0.04em;');
-    expect(declarationsFor('h3')).toContain('letter-spacing: -0.04em;');
-    expect(declarationsFor('.career-pc__header > h2')).toContain(
-      'letter-spacing: -0.04em;',
+  it('uses a restrained DS heading shadow and readable dialog spacing', () => {
+    for (const selector of [
+      'h1',
+      'h2',
+      'h3',
+      '.career-pc__header > h2',
+    ]) {
+      expect(declarationsFor(selector)).toContain(
+        'text-shadow: 1px 1px 0 var(--steel-dark);',
+      );
+      expect(declarationsFor(selector)).not.toMatch(
+        /letter-spacing:\s*-\d/,
+      );
+    }
+    expect(declarationsFor('.party-card__name')).not.toContain('text-shadow');
+    expect(globalStyles).toMatch(
+      /\.party-card__metadata\s*{[^}]*font-size: clamp\(0\.7rem, 2\.5vw, 0\.82rem\);/,
     );
     expect(
       declarationsFor('dialog.pokedex-entry > .pokedex-entry__highlight'),
@@ -429,7 +410,10 @@ describe('handheld reference visual system', () => {
       /\.career-pc__header\s*>\s*h2\s*{[^}]*color: var\(--ink\);/,
     );
     expect(globalStyles).toMatch(
-      /\.party-card__name\s*{[^}]*color: var\(--screen-white\);[^}]*-2px 0 var\(--ink\)[^}]*2px 0 var\(--ink\)[^}]*0 -2px var\(--ink\)[^}]*0 2px var\(--ink\)/,
+      /ul\[aria-label="Career entries"\]\s*button\s*{[^}]*background: var\(--steel-dark\);/,
+    );
+    expect(globalStyles).toMatch(
+      /\.party-card__name\s*{[^}]*color: var\(--screen-white\);/,
     );
     expect(globalStyles).toMatch(
       /\.pokedex-entry__organization\s*{[^}]*color: var\(--ink\);/,

@@ -1,8 +1,10 @@
 @font-face {
-  font-family: "Pixelify Sans";
-  src: url("/fonts/PixelifySans-Variable.ttf") format("truetype");
+  font-family: "Pokemon DPPT";
+  src:
+    url("/fonts/pokemon_dppt-dppt.woff2") format("woff2"),
+    url("/fonts/pokemon_dppt-dppt.woff") format("woff");
   font-style: normal;
-  font-weight: 400 700;
+  font-weight: 400;
   font-display: swap;
 }
 
@@ -33,7 +35,7 @@ body {
   margin: 0;
   background: transparent;
   color: var(--screen-white);
-  font-family: "Pixelify Sans", "Courier New", Courier, monospace;
+  font-family: "Pokemon DPPT", "Courier New", Courier, monospace;
   font-size: 1rem;
   line-height: 1.4;
 }
@@ -82,9 +84,15 @@ dd {
 h1,
 h2,
 h3 {
-  font-weight: 700;
-  letter-spacing: -0.04em;
+  font-weight: 400;
   line-height: 1.1;
+}
+
+h1,
+h2,
+h3,
+.career-pc__header > h2 {
+  text-shadow: 1px 1px 0 var(--steel-dark);
 }
 
 ul {
@@ -128,7 +136,6 @@ ul {
   margin: 0 0 1rem;
   color: var(--ink);
   font-size: clamp(2rem, 8vw, 5rem);
-  letter-spacing: -0.06em;
   text-transform: uppercase;
 }
 
@@ -172,7 +179,7 @@ ul {
   border-right: var(--pixel-border) solid var(--ink);
   background: var(--steel-light);
   font-size: clamp(0.7rem, 2.5vw, 0.9rem);
-  font-weight: 600;
+  font-weight: 400;
   text-transform: uppercase;
 }
 
@@ -260,7 +267,7 @@ ul {
   background: var(--screen-white);
   color: var(--ink);
   font-size: clamp(0.56rem, 2.2vw, 0.78rem);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.1;
   text-align: center;
   text-decoration: none;
@@ -304,7 +311,6 @@ ul {
   padding: 0.7rem 0.8rem;
   color: var(--ink);
   font-size: clamp(1.5rem, 7vw, 3rem);
-  letter-spacing: -0.04em;
   text-transform: uppercase;
 }
 
@@ -319,7 +325,7 @@ ul {
   color: var(--ink);
   cursor: pointer;
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 400;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
@@ -347,7 +353,7 @@ ul {
   border-bottom: var(--pixel-border) solid var(--steel-light);
   background: var(--panel-cyan);
   color: var(--ink);
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .career-pc > nav[aria-label="Professional roster"] {
@@ -370,7 +376,7 @@ ul {
   background: var(--steel-dark);
   color: var(--screen-white);
   font-size: clamp(0.68rem, 3.2vw, 0.95rem);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.15;
   text-align: center;
   text-decoration: none;
@@ -493,14 +499,9 @@ ul {
   padding-right: 2rem;
   color: var(--screen-white);
   font-size: clamp(0.9rem, 3.5vw, 1.2rem);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.05;
   overflow-wrap: anywhere;
-  text-shadow:
-    -2px 0 var(--ink),
-    2px 0 var(--ink),
-    0 -2px var(--ink),
-    0 2px var(--ink);
   text-transform: uppercase;
 }
 
@@ -525,7 +526,7 @@ ul {
   padding: 0.1rem 0.25rem;
   background: var(--screen-white);
   color: var(--ink);
-  font-size: clamp(0.66rem, 2.5vw, 0.82rem);
+  font-size: clamp(0.7rem, 2.5vw, 0.82rem);
   line-height: 1.1;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -534,7 +535,7 @@ ul {
 }
 
 .party-card__name {
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .party-card__role {
@@ -542,7 +543,7 @@ ul {
 }
 
 .party-card__metadata {
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .party-card__completion {
@@ -608,7 +609,7 @@ ul {
 
 .pixel-sprite--fallback > [aria-hidden="true"] {
   font-size: 1.8rem;
-  font-weight: 700;
+  font-weight: 400;
 }
 
 /* Route-driven Pokédex detail dialog */
@@ -683,7 +684,7 @@ dialog.pokedex-entry > .pokedex-entry__role {
 }
 
 dialog.pokedex-entry > .pokedex-entry__category {
-  font-weight: 600;
+  font-weight: 400;
   text-transform: uppercase;
 }
 
@@ -723,7 +724,7 @@ dialog.pokedex-entry > div[aria-label="Types"] span {
   background: var(--screen-white);
   color: var(--ink);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 400;
   text-transform: uppercase;
 }
 
@@ -778,7 +779,7 @@ dialog.pokedex-entry > button {
 dialog.pokedex-entry > button {
   width: 100%;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 400;
   text-transform: uppercase;
 }
 
