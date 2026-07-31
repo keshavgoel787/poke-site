@@ -12,11 +12,14 @@ const documentSource = readFileSync(new URL('../../index.html', import.meta.url)
 const trainerStripSource = readFileSync(
   new URL('../../public/trainer-walk.png', import.meta.url),
 );
-const pixelifyFontSource: Uint8Array = readFileSync(
-  new URL('../../public/fonts/PixelifySans-Variable.ttf', import.meta.url),
+const pokemonDsWoff2: Uint8Array = readFileSync(
+  new URL('../../public/fonts/pokemon_dppt-dppt.woff2', import.meta.url),
 );
-const pixelifyLicense: string = readFileSync(
-  new URL('../../public/fonts/OFL.txt', import.meta.url),
+const pokemonDsWoff: Uint8Array = readFileSync(
+  new URL('../../public/fonts/pokemon_dppt-dppt.woff', import.meta.url),
+);
+const pokemonDsNotice: string = readFileSync(
+  new URL('../../public/fonts/Pokemon-DS-NOTICE.txt', import.meta.url),
   'utf8',
 );
 
@@ -125,13 +128,13 @@ function inspectRgbaPng(source: Uint8Array) {
 }
 
 describe('handheld reference visual system', () => {
-  it('delivers the local Pixelify Sans variable font', () => {
-    expect(globalStyles).toMatch(
-      /@font-face\s*{[^}]*font-family:\s*"Pixelify Sans";[^}]*src:\s*url\("\/fonts\/PixelifySans-Variable\.ttf"\)\s*format\("truetype"\);[^}]*font-style:\s*normal;[^}]*font-weight:\s*400 700;[^}]*font-display:\s*swap;/,
-    );
-    expect(pixelifyFontSource.byteLength).toBeGreaterThan(0);
-    expect(pixelifyLicense).toMatch(
-      /^Copyright 2021 The Pixelify Sans Project Authors \(https:\/\/github\.com\/eifetx\/Pixelify-Sans\)\r?\n\r?\nThis Font Software is licensed under the SIL Open Font License, Version 1\.1\./,
+  it('delivers the self-hosted Pokemon DS font and attribution', () => {
+    expect(pokemonDsWoff2.byteLength).toBeGreaterThan(0);
+    expect(pokemonDsWoff.byteLength).toBeGreaterThan(0);
+    expect(pokemonDsNotice).toContain('Pokemon DS Webfont');
+    expect(pokemonDsNotice).toContain('Lewis Wright');
+    expect(pokemonDsNotice).toContain(
+      'https://bouncebag.com/Downloads/Webfonts.html',
     );
   });
 
