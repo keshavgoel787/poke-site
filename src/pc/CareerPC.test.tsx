@@ -50,17 +50,26 @@ function HistoryBack() {
   return <button onClick={() => navigate(-1)}>Back in history</button>;
 }
 
+function HistoryForward() {
+  const navigate = useNavigate();
+
+  return <button onClick={() => navigate(1)}>Forward in history</button>;
+}
+
 function NavigateToProjects() {
   const navigate = useNavigate();
 
   return <button onClick={() => navigate('/pokemon/projects')}>Navigate to projects</button>;
 }
 
-function renderCareerPC(path: string, priorPath?: string) {
-  const entries = priorPath ? [priorPath, path] : [path];
+function renderCareerPC(path: string, priorPath?: string, nextPath?: string) {
+  const entries = [priorPath, path, nextPath].filter(
+    (entry): entry is string => entry !== undefined,
+  );
+  const initialIndex = priorPath ? 1 : 0;
 
   return render(
-    <MemoryRouter initialEntries={entries} initialIndex={entries.length - 1}>
+    <MemoryRouter initialEntries={entries} initialIndex={initialIndex}>
       <Routes>
         <Route
           path="/pokemon/:tab/:entryId?"
@@ -69,6 +78,7 @@ function renderCareerPC(path: string, priorPath?: string) {
               <CareerPC />
               <LocationProbe />
               <HistoryBack />
+              <HistoryForward />
               <NavigateToProjects />
             </>
           }
@@ -457,7 +467,7 @@ describe('CareerPC', () => {
 
   it('closes a locally selected dialog without changing history and restores launcher focus', async () => {
     const user = userEvent.setup();
-    renderCareerPC('/pokemon/experience');
+    renderCareerPC('/pokemon/experience', '/before-pc');
     const launcher = screen.getByRole('button', { name: 'DraftKings' });
 
     await user.click(launcher);
@@ -472,6 +482,98 @@ describe('CareerPC', () => {
       'aria-selected',
       'true',
     );
+
+    await user.click(screen.getByRole('button', { name: 'Back in history' }));
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/before-pc');
+  });
+
+  it('closes a locally selected dialog with Escape without changing history and restores launcher focus', async () => {
+    const user = userEvent.setup();
+    renderCareerPC('/pokemon/experience', '/before-pc');
+    const launcher = screen.getByRole('button', { name: 'DraftKings' });
+
+    await user.click(launcher);
+    await user.keyboard('{Escape}');
+
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/experience');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(launcher).toHaveFocus();
+
+    await user.click(screen.getByRole('button', { name: 'Back in history' }));
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/before-pc');
+  });
+
+  it('closes a locally selected dialog from its backdrop without changing history and restores launcher focus', async () => {
+    const user = userEvent.setup();
+    renderCareerPC('/pokemon/experience', '/before-pc');
+    const launcher = screen.getByRole('button', { name: 'DraftKings' });
+
+    await user.click(launcher);
+    const dialog = screen.getByRole('dialog', { name: 'DraftKings details' });
+    vi.spyOn(dialog, 'getBoundingClientRect').mockReturnValue({
+      left: 100,
+      right: 500,
+      top: 100,
+      bottom: 500,
+      width: 400,
+      height: 400,
+      x: 100,
+      y: 100,
+      toJSON: () => ({}),
+    });
+
+    fireEvent.click(dialog, { clientX: 50, clientY: 50 });
+
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/experience');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(launcher).toHaveFocus();
+
+    await user.click(screen.getByRole('button', { name: 'Back in history' }));
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/before-pc');
+  });
+
+  it('clears local selection across same-tab history navigation to direct entry routes', async () => {
+    const user = userEvent.setup();
+    renderCareerPC(
+      '/pokemon/experience',
+      '/pokemon/experience/amazon',
+      '/pokemon/experience/draftkings',
+    );
+
+    await user.click(screen.getByRole('button', { name: 'DraftKings' }));
+    await user.click(screen.getByRole('button', { name: 'Back in history' }));
+
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/experience/amazon');
+    expect(screen.getByRole('dialog', { name: 'Amazon details' })).toBeVisible();
+
+    await user.click(screen.getByRole('button', { name: 'Forward in history' }));
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/experience');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Forward in history' }));
+    expect(screen.getByTestId('current-route')).toHaveTextContent(
+      '/pokemon/experience/draftkings',
+    );
+    expect(screen.getByRole('dialog', { name: 'DraftKings details' })).toBeVisible();
+
+    await user.click(screen.getByRole('button', { name: 'Close' }));
+
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/experience');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('clears local selection before recovering a same-tab invalid entry route', async () => {
+    const user = userEvent.setup();
+    renderCareerPC('/pokemon/experience', '/pokemon/experience/missing');
+
+    await user.click(screen.getByRole('button', { name: 'DraftKings' }));
+    await user.click(screen.getByRole('button', { name: 'Back in history' }));
+
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/experience');
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'That PC entry could not be found. Showing Experience.',
+    );
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   it('clears a local dialog when navigating to another tab route', async () => {

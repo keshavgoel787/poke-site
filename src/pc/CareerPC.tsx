@@ -21,9 +21,10 @@ export function CareerPC() {
     (entry) => entry.id === resolvedRoute.entryId,
   );
   const [localSelectedEntryId, setLocalSelectedEntryId] = useState<string | null>(null);
-  const localSelectedEntry = box.entries.find(
-    (entry) => entry.id === localSelectedEntryId,
-  );
+  const hasEntryUrlSegment = entryId !== undefined;
+  const localSelectedEntry = hasEntryUrlSegment
+    ? undefined
+    : box.entries.find((entry) => entry.id === localSelectedEntryId);
   const selectedEntry = routeSelectedEntry ?? localSelectedEntry;
   const selectedCardId = selectedEntry?.id ?? box.entries[0].id;
   const recoveryState = location.state as RecoveryLocationState | null;
@@ -65,6 +66,12 @@ export function CareerPC() {
     setFocusedBoxId(box.id);
     setLocalSelectedEntryId(null);
   }, [box.id]);
+
+  useEffect(() => {
+    if (hasEntryUrlSegment) {
+      setLocalSelectedEntryId(null);
+    }
+  }, [hasEntryUrlSegment]);
 
   useEffect(() => {
     if (selectedEntry) {
