@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { rosterTabs, type CareerEntry } from '../data/portfolioData';
@@ -109,5 +109,52 @@ describe('PokedexEntry', () => {
     await user.keyboard('{Escape}');
 
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('requests close only when a click lands outside the dialog bounds', () => {
+    const onClose = vi.fn();
+    render(<PokedexEntry entry={amazon} onClose={onClose} />);
+    const dialog = screen.getByRole('dialog', { name: 'Amazon details' });
+
+    vi.spyOn(dialog, 'getBoundingClientRect').mockReturnValue({
+      left: 100,
+      right: 500,
+      top: 100,
+      bottom: 500,
+      width: 400,
+      height: 400,
+      x: 100,
+      y: 100,
+      toJSON: () => ({}),
+    });
+
+    fireEvent.click(dialog, { clientX: 50, clientY: 50 });
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not request close when clicking visible dialog content', () => {
+    const onClose = vi.fn();
+    render(<PokedexEntry entry={amazon} onClose={onClose} />);
+    const dialog = screen.getByRole('dialog', { name: 'Amazon details' });
+
+    vi.spyOn(dialog, 'getBoundingClientRect').mockReturnValue({
+      left: 100,
+      right: 500,
+      top: 100,
+      bottom: 500,
+      width: 400,
+      height: 400,
+      x: 100,
+      y: 100,
+      toJSON: () => ({}),
+    });
+
+    fireEvent.click(screen.getByText(/incoming intern scoped to build/i), {
+      clientX: 200,
+      clientY: 200,
+    });
+
+    expect(onClose).not.toHaveBeenCalled();
   });
 });

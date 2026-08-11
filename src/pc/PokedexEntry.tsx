@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, type KeyboardEvent } from 'react';
+import { useEffect, useId, useRef, type KeyboardEvent, type MouseEvent } from 'react';
 import type { CareerEntry } from '../data/portfolioData';
 import { PixelSprite } from './PixelSprite';
 
@@ -39,6 +39,23 @@ export function PokedexEntry({ entry, onClose }: PokedexEntryProps) {
     };
   }, []);
 
+  const closeFromBackdrop = (event: MouseEvent<HTMLDialogElement>) => {
+    if (event.target !== event.currentTarget) {
+      return;
+    }
+
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const outside =
+      event.clientX < bounds.left ||
+      event.clientX > bounds.right ||
+      event.clientY < bounds.top ||
+      event.clientY > bounds.bottom;
+
+    if (outside) {
+      onClose();
+    }
+  };
+
   const containFocus = (event: KeyboardEvent<HTMLDialogElement>) => {
     if (event.key === 'Escape') {
       event.preventDefault();
@@ -75,6 +92,7 @@ export function PokedexEntry({ entry, onClose }: PokedexEntryProps) {
       className="pokedex-entry"
       aria-modal="true"
       aria-labelledby={titleId}
+      onClick={closeFromBackdrop}
       onKeyDown={containFocus}
       onCancel={(event) => {
         event.preventDefault();
