@@ -17,7 +17,14 @@ export function CareerPC() {
   const navigate = useNavigate();
   const resolvedRoute = resolvePokemonRoute(tab, entryId);
   const box = getRoster(resolvedRoute.tab) ?? rosterTabs[0];
-  const selectedEntry = box.entries.find((entry) => entry.id === resolvedRoute.entryId);
+  const routeSelectedEntry = box.entries.find(
+    (entry) => entry.id === resolvedRoute.entryId,
+  );
+  const [localSelectedEntryId, setLocalSelectedEntryId] = useState<string | null>(null);
+  const localSelectedEntry = box.entries.find(
+    (entry) => entry.id === localSelectedEntryId,
+  );
+  const selectedEntry = routeSelectedEntry ?? localSelectedEntry;
   const selectedCardId = selectedEntry?.id ?? box.entries[0].id;
   const recoveryState = location.state as RecoveryLocationState | null;
   const showRecoveryMessage =
@@ -27,7 +34,7 @@ export function CareerPC() {
   const boxPanelRef = useRef<HTMLElement>(null);
   const launchingCardRef = useRef<HTMLButtonElement | null>(null);
   const launchingEntryIdRef = useRef<string | null>(null);
-  const previousEntryIdRef = useRef(resolvedRoute.entryId);
+  const previousEntryIdRef = useRef(selectedEntry?.id);
   const { soundEnabled, setSoundEnabled } = usePreferences();
 
   const playEnabledBleep = () => {
@@ -56,6 +63,7 @@ export function CareerPC() {
 
   useEffect(() => {
     setFocusedBoxId(box.id);
+    setLocalSelectedEntryId(null);
   }, [box.id]);
 
   useEffect(() => {
@@ -66,10 +74,10 @@ export function CareerPC() {
 
   useEffect(() => {
     const previousEntryId = previousEntryIdRef.current;
-    previousEntryIdRef.current = resolvedRoute.entryId;
+    previousEntryIdRef.current = selectedEntry?.id;
 
     if (
-      resolvedRoute.entryId ||
+      selectedEntry?.id ||
       !previousEntryId ||
       launchingEntryIdRef.current !== previousEntryId
     ) {
@@ -89,7 +97,7 @@ export function CareerPC() {
     card?.focus({ preventScroll: true });
     launchingEntryIdRef.current = null;
     launchingCardRef.current = null;
-  }, [resolvedRoute.entryId]);
+  }, [selectedEntry?.id]);
 
   const selectEntry = (selectedId: string) => {
     const expectedDescriptionId = `party-card-${selectedId}-completion`;
@@ -99,11 +107,16 @@ export function CareerPC() {
         (button) => button.getAttribute('aria-describedby') === expectedDescriptionId,
       ) ?? null;
     playEnabledBleep();
-    navigate(pokemonPath(box.id, selectedId));
+    setLocalSelectedEntryId(selectedId);
   };
 
   const closeEntry = () => {
-    navigate(pokemonPath(resolvedRoute.tab), { replace: true });
+    if (routeSelectedEntry) {
+      navigate(pokemonPath(resolvedRoute.tab), { replace: true });
+      return;
+    }
+
+    setLocalSelectedEntryId(null);
   };
 
   const moveTabFocus = (event: KeyboardEvent<HTMLAnchorElement>, currentIndex: number) => {
