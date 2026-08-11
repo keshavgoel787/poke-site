@@ -204,6 +204,21 @@ describe('handheld reference visual system', () => {
     );
   });
 
+  it('locks the site to one viewport and reserves overflow for dialogs', () => {
+    expect(declarationsFor('html:root')).toMatch(/height:\s*100dvh;/);
+    expect(declarationsFor('html:root')).toMatch(/overflow:\s*hidden;/);
+    expect(declarationsFor('body')).toMatch(/height:\s*100dvh;/);
+    expect(declarationsFor('body')).toMatch(/overflow:\s*hidden;/);
+    expect(declarationsFor('#root')).toMatch(/height:\s*100dvh;/);
+    expect(declarationsFor('#root')).toMatch(/overflow:\s*hidden;/);
+    expect(declarationsFor('dialog.pokedex-entry[open]')).toMatch(
+      /max-height:\s*calc\(100dvh - 1rem\);/,
+    );
+    expect(declarationsFor('dialog.pokedex-entry[open]')).toMatch(
+      /overflow:\s*auto;/,
+    );
+  });
+
   it('defines the exact approved shared palette and pixel border', () => {
     expect(tokens).toContain('--ink: #0c1720');
     expect(tokens).toContain('--screen-blue: #5596df');
