@@ -60,7 +60,13 @@ export function TrainerProfile(): JSX.Element {
           <ul>
             {trainerProfile.links.map((link) => (
               <li key={link.label}>
-                <a href={link.href}>
+                <a
+                  href={link.href}
+                  {...(!link.href.startsWith('mailto:') && {
+                    target: '_blank',
+                    rel: 'noopener noreferrer',
+                  })}
+                >
                   <span className="trainer-card__link-icon" aria-hidden="true">
                     {professionalLinkIcons[link.label] ?? '↗'}
                   </span>

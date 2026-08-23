@@ -54,6 +54,13 @@ it('presents Keshav\'s Trainer Card and professional destinations', () => {
     expect.stringMatching(/^mailto:/),
   );
 
+  for (const label of [/résumé/i, /github/i, /linkedin/i]) {
+    const link = screen.getByRole('link', { name: label });
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+  }
+  expect(screen.getByRole('link', { name: /email/i })).not.toHaveAttribute('target');
+
   const trainerCard = screen.getByRole('region', { name: 'Trainer Card' });
   expect(trainerCard).toContainElement(screen.getByRole('navigation', { name: 'Professional links' }));
 });
