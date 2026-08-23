@@ -253,35 +253,33 @@ describe('handheld reference visual system', () => {
     expect(globalStyles).toContain('[aria-selected="true"]');
   });
 
-  it('keeps small selected-control labels on a high-contrast steel/white pair', () => {
+  it('keeps selected controls on the shared DS blue, yellow, and ink palette', () => {
     expect(globalStyles).toMatch(
-      /button\[aria-pressed="true"\]\s*{[^}]*background: var\(--steel-dark\);[^}]*color: var\(--screen-white\);/,
+      /button\[aria-pressed="true"\]\s*{[^}]*background: #71b9ee;[^}]*color: var\(--ink\);/,
     );
     expect(globalStyles).toMatch(
-      /\[role="tab"\]\[aria-selected="true"\]\s*{[^}]*background: var\(--steel-dark\);[^}]*color: var\(--screen-white\);/,
+      /\[role="tab"\]\[aria-selected="true"\]\s*{[^}]*background: #71b9ee;[^}]*color: var\(--ink\);/,
     );
     expect(globalStyles).toMatch(
-      /div\[aria-label="Types"\]\s*span\s*{[^}]*background: var\(--screen-white\);[^}]*color: var\(--ink\);/,
+      /div\[aria-label="Types"\]\s*span\s*{[^}]*background: #f3df28;[^}]*color: var\(--ink\);/,
     );
   });
 
   it('styles the unified Trainer Card and embedded career PC', () => {
-    expect(globalStyles).toMatch(/\.trainer-card\s*{[\s\S]*?background: var\(--screen-blue\);/);
-    expect(globalStyles).toMatch(
-      /\.trainer-card__fields\s*>\s*div\s*{[\s\S]*?background: var\(--panel-cyan\);/,
-    );
-    expect(globalStyles).toMatch(
-      /\.trainer-card__walk-viewport\s*{[\s\S]*?border: 0\.35rem solid var\(--steel-dark\);/,
-    );
+    expect(declarationsFor('.trainer-card')).toContain('#f3df28');
+    expect(declarationsFor('.trainer-card__fields > div')).toContain('background: transparent');
+    expect(declarationsFor('.trainer-card__walk-viewport')).toContain('border-radius: 50%');
     expect(globalStyles).toMatch(
       /\.trainer-screen\s*{[^}]*display: grid;[^}]*gap:/,
     );
     expect(globalStyles).toMatch(
-      /\.career-pc\s*{[^}]*overflow: hidden;[^}]*background: var\(--ink\);/,
+      /\/\* Party roster \*\/\s*\.career-pc\s*{[^}]*#f3df28;/,
     );
+    expect(declarationsFor('.career-pc__header')).toContain('#f3df28');
+    expect(declarationsFor('dialog.pokedex-entry[open]')).toContain('#fffbd8');
     expect(globalStyles).not.toMatch(/\.trainer-roster-card\s*{/);
     expect(globalStyles).toMatch(
-      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)\s*{[\s\S]*?\.trainer-screen\s*{[^}]*height: calc\(100dvh - 2rem\);[^}]*grid-template-rows: minmax\(0, 21\.5rem\) minmax\(0, 1fr\);/,
+      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)\s*{[\s\S]*?\.trainer-screen\s*{[^}]*height: calc\(100dvh - 2rem\);[^}]*grid-template-rows: minmax\(0, 22\.25rem\) minmax\(0, 1fr\);/,
     );
     expect(globalStyles).toMatch(
       /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.career-pc[^}]*min-height: 0;/,
@@ -300,7 +298,7 @@ describe('handheld reference visual system', () => {
     );
 
     expect(desktopTrainerTrack).not.toBeNull();
-    expect(Number(desktopTrainerTrack?.[1])).toBeGreaterThanOrEqual(21.5);
+    expect(Number(desktopTrainerTrack?.[1])).toBeGreaterThanOrEqual(22.25);
   });
 
   it('compacts laptop-height desktops with targeted rules instead of scaling the interface', () => {
@@ -318,16 +316,16 @@ describe('handheld reference visual system', () => {
 
     expect(compactDesktopStyles).toMatch(/#root\s*{[^}]*padding: 0\.5rem;/);
     expect(compactDesktopStyles).toMatch(
-      /\.trainer-screen\s*{[^}]*height: auto;[^}]*grid-template-rows: minmax\(0, 19rem\) auto;[^}]*align-content: start;[^}]*gap: 0\.4rem;/,
+      /\.trainer-screen\s*{[^}]*height: auto;[^}]*grid-template-rows: minmax\(0, 19\.5rem\) auto;[^}]*align-content: start;[^}]*gap: 0\.4rem;/,
     );
     expect(compactDesktopStyles).not.toContain(
-      'grid-template-rows: minmax(0, 19rem) minmax(0, 1fr)',
+      'grid-template-rows: minmax(0, 19.5rem) minmax(0, 1fr)',
     );
     expect(compactDesktopStyles).toMatch(
       /\.trainer-card\s*{[^}]*padding: 0\.5rem 0\.75rem;/,
     );
     expect(compactDesktopStyles).toMatch(
-      /\.trainer-card > h1\s*{[^}]*margin-bottom: 0\.25rem;/,
+      /\.trainer-card__header > h1\s*{[^}]*margin: 0;/,
     );
     expect(compactDesktopStyles).toMatch(
       /\.trainer-card__body\s*{[^}]*gap: 0\.5rem;/,
@@ -342,7 +340,7 @@ describe('handheld reference visual system', () => {
       /\.trainer-card__walk-viewport\s*{[^}]*width: min\(100%, 10rem\);/,
     );
     expect(compactDesktopStyles).toMatch(
-      /\.trainer-card nav\s*{[^}]*margin-top: 0\.3rem;[^}]*padding: 0\.2rem;/,
+      /\.trainer-card nav\s*{[^}]*margin-top: 0;[^}]*padding: 0\.2rem;/,
     );
     expect(compactDesktopStyles).toMatch(
       /\.career-pc__header > h2\s*{[^}]*padding: 0\.3rem 0\.6rem;/,
@@ -419,21 +417,18 @@ describe('handheld reference visual system', () => {
     expect(visibleHeightAt48Pixels).toBeCloseTo(40, 0);
   });
 
-  it('uses contrast-safe text or complete outlines on blue surfaces', () => {
+  it('uses dark readable text throughout the shared DS palette', () => {
     expect(globalStyles).toMatch(
-      /\.trainer-card\s*>\s*h1\s*{[^}]*color: var\(--ink\);/,
+      /\.trainer-card__header\s*>\s*h1\s*{[^}]*color: var\(--ink\);/,
     );
     expect(globalStyles).toMatch(
-      /\.career-pc__header\s*{[^}]*background: var\(--screen-blue\);/,
+      /\.career-pc__header\s*>\s*h2\s*{[^}]*background: #71b9ee;[^}]*color: var\(--ink\);/,
     );
     expect(globalStyles).toMatch(
-      /\.career-pc__header\s*>\s*h2\s*{[^}]*color: var\(--ink\);/,
+      /ul\[aria-label="Career entries"\]\s*button\s*{[^}]*background: #d9c94b;[^}]*color: var\(--ink\);/,
     );
     expect(globalStyles).toMatch(
-      /ul\[aria-label="Career entries"\]\s*button\s*{[^}]*background: var\(--steel-dark\);/,
-    );
-    expect(globalStyles).toMatch(
-      /\.party-card__name\s*{[^}]*color: var\(--screen-white\);/,
+      /\.party-card__name\s*{[^}]*color: var\(--ink\);/,
     );
     expect(globalStyles).toMatch(
       /\.pokedex-entry__organization\s*{[^}]*color: var\(--ink\);/,
@@ -442,7 +437,7 @@ describe('handheld reference visual system', () => {
 
   it('keeps concise metadata rows from overriding the compact completion indicator', () => {
     const metadataRule = globalStyles.match(
-      /([^{}]*\.party-card__organization[^{}]*)\{([^{}]*background: var\(--screen-white\);[^{}]*)\}/,
+      /([^{}]*\.party-card__organization[^{}]*)\{([^{}]*background: #fffbd8;[^{}]*)\}/,
     );
     const completionRule = globalStyles.match(
       /\.party-card__completion\s*\{([^}]*)\}/,
@@ -458,7 +453,7 @@ describe('handheld reference visual system', () => {
     expect(metadataRule?.[2]).toMatch(/white-space:\s*nowrap;/);
     expect(metadataRule?.[1]).not.toContain('.party-card__completion');
     expect(completionRule?.[1]).toMatch(/position:\s*absolute;/);
-    expect(completionRule?.[1]).toMatch(/color:\s*var\(--status-green\);/);
+    expect(completionRule?.[1]).toMatch(/color:\s*#398aca;/);
     expect(completionRule?.[1]).toMatch(/font-size:\s*0\.65rem;/);
     expect(completionRule?.[1]).toMatch(/line-height:\s*1;/);
   });
@@ -497,7 +492,7 @@ describe('handheld reference visual system', () => {
     );
     expect(globalStyles).toMatch(/dialog\.pokedex-entry::backdrop\s*{/);
     expect(globalStyles).toMatch(
-      /dialog\.pokedex-entry\[open\][\s\S]*?background: var\(--screen-blue\);/,
+      /dialog\.pokedex-entry\[open\][\s\S]*?background:[\s\S]*?#fffbd8;/,
     );
     expect(declarationsFor('dialog.pokedex-entry::backdrop')).toMatch(
       /background:\s*rgba\(12,\s*23,\s*32,\s*0\.42\);/,

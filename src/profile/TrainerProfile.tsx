@@ -17,7 +17,10 @@ export function TrainerProfile(): JSX.Element {
   return (
     <main className="trainer-screen" data-reduced-motion={reducedMotion}>
       <section className="trainer-card" aria-labelledby="trainer-card-title">
-        <h1 id="trainer-card-title">Trainer Card</h1>
+        <header className="trainer-card__header">
+          <h1 id="trainer-card-title">Trainer Card</h1>
+          <p>ID KESHAVGOEL787</p>
+        </header>
 
         <div className="trainer-card__body">
           <dl className="trainer-card__fields">

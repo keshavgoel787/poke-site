@@ -23,6 +23,7 @@ it('presents Keshav\'s Trainer Card and professional destinations', () => {
   );
 
   expect(screen.getByRole('heading', { name: 'Trainer Card' })).toBeVisible();
+  expect(screen.getByText('ID KESHAVGOEL787')).toBeVisible();
   expect(screen.getByText('Keshav Goel')).toBeVisible();
   expect(screen.getByText('Northeastern University')).toBeVisible();
   expect(screen.getByText('May 2028')).toBeVisible();
@@ -52,4 +53,7 @@ it('presents Keshav\'s Trainer Card and professional destinations', () => {
     'href',
     expect.stringMatching(/^mailto:/),
   );
+
+  const trainerCard = screen.getByRole('region', { name: 'Trainer Card' });
+  expect(trainerCard).toContainElement(screen.getByRole('navigation', { name: 'Professional links' }));
 });

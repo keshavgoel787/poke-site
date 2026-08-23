@@ -135,22 +135,53 @@ ul {
 .trainer-card {
   width: 100%;
   min-width: 0;
-  padding: clamp(0.75rem, 2.5vw, 1.5rem);
+  padding: clamp(0.7rem, 1.5vw, 1rem);
   overflow: hidden;
-  border: 0.5rem solid var(--steel-dark);
-  background: var(--screen-blue);
-  color: var(--ink);
+  border: 0.45rem solid #687180;
+  border-radius: 1.1rem;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.16) 0 3px,
+      transparent 3px 7px
+    ),
+    #f3df28;
+  color: #59606d;
   box-shadow:
-    inset 0 0 0 0.25rem var(--steel-light),
-    0 0 0 0.25rem var(--steel-light),
-    0.55rem 0.55rem 0 var(--ink);
+    inset 0 0 0 0.24rem #eef1dc,
+    inset 0 0 0 0.46rem #aab2b7,
+    0 0 0 0.2rem #dce5e4,
+    0.4rem 0.4rem 0 var(--ink);
   animation: trainer-card-in 320ms steps(4, end) both;
 }
 
-.trainer-card > h1 {
-  margin: 0 0 1rem;
+.trainer-card__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.15rem clamp(0.45rem, 2vw, 1.5rem) 0.55rem;
+}
+
+.trainer-card__header > h1 {
+  width: fit-content;
+  min-width: min(100%, 15rem);
+  margin: 0;
+  padding: 0.3rem 1rem;
+  border: 0.2rem solid #398aca;
+  background: #71b9ee;
   color: var(--ink);
-  font-size: clamp(2rem, 8vw, 5rem);
+  box-shadow: 0.18rem 0.18rem 0 #397eb1;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.trainer-card__header > p {
+  margin: 0;
+  color: #626773;
+  font-size: clamp(0.85rem, 2vw, 1.4rem);
+  text-shadow: 2px 2px 0 #f9f4c8;
   text-transform: uppercase;
 }
 
@@ -158,8 +189,16 @@ ul {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: stretch;
-  gap: 0.85rem;
+  gap: 0.75rem;
   min-width: 0;
+  padding: 0.65rem clamp(0.45rem, 2vw, 1.5rem);
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(225, 213, 103, 0.28) 0 3px,
+      transparent 3px 8px
+    ),
+    #fffbd8;
 }
 
 .trainer-card__fields {
@@ -175,11 +214,10 @@ ul {
   grid-template-columns: minmax(5.5rem, 0.44fr) minmax(0, 1fr);
   align-items: center;
   min-width: 0;
-  border: var(--pixel-border) solid var(--ink);
-  background: var(--panel-cyan);
-  box-shadow:
-    inset 0.25rem 0 0 var(--steel-light),
-    0.2rem 0.2rem 0 var(--steel-dark);
+  border: 0;
+  border-bottom: 0.18rem solid #c9c5a9;
+  background: transparent;
+  box-shadow: none;
 }
 
 .trainer-card__fields dt,
@@ -191,11 +229,25 @@ ul {
 }
 
 .trainer-card__fields dt {
-  border-right: var(--pixel-border) solid var(--ink);
-  background: var(--steel-light);
+  position: relative;
+  padding-left: 1.25rem;
+  border-right: 0;
+  background: transparent;
   font-size: clamp(0.7rem, 2.5vw, 0.9rem);
   font-weight: 400;
   text-transform: uppercase;
+}
+
+.trainer-card__fields dt::before {
+  position: absolute;
+  top: 50%;
+  left: 0.25rem;
+  width: 0.6rem;
+  height: 0.85rem;
+  background: #e7cf19;
+  box-shadow: inset -0.15rem 0 0 #cdb70d;
+  content: "";
+  transform: translateY(-50%);
 }
 
 .trainer-card__fields dd,
@@ -218,12 +270,13 @@ ul {
   min-width: 0;
   aspect-ratio: 1;
   margin-inline: auto;
-  padding: 0.5rem;
-  border: 0.35rem solid var(--steel-dark);
-  background: var(--screen-white);
-  box-shadow:
-    inset 0 0 0 0.2rem var(--steel-light),
-    0.25rem 0.25rem 0 var(--ink);
+  padding: 12%;
+  border: 0;
+  border-radius: 50%;
+  background:
+    linear-gradient(transparent 42%, #fffbd8 42% 58%, transparent 58%),
+    radial-gradient(circle, #f3df28 0 57%, #d5c20f 58% 100%);
+  box-shadow: none;
 }
 
 .trainer-walk-scene {
@@ -231,7 +284,7 @@ ul {
   width: 100%;
   aspect-ratio: 1;
   overflow: hidden;
-  background: var(--panel-cyan);
+  background: transparent;
 }
 
 .trainer-walk-trainer {
@@ -259,11 +312,11 @@ ul {
 }
 
 .trainer-card nav {
-  margin-top: 1rem;
-  padding: 0.35rem;
-  border: var(--pixel-border) solid var(--ink);
-  background: var(--steel-dark);
-  box-shadow: inset 0 0 0 0.15rem var(--steel-light);
+  margin-top: 0;
+  padding: 0.4rem clamp(0.45rem, 2vw, 1.5rem) 0.15rem;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .trainer-card nav ul {
@@ -278,9 +331,9 @@ ul {
   place-items: center;
   width: 100%;
   padding: 0.25rem 0.1rem;
-  border: 2px solid var(--ink);
-  background: var(--screen-white);
-  color: var(--ink);
+  border: 0.16rem solid #fffbd8;
+  background: #d8c813;
+  color: #525967;
   font-size: clamp(0.56rem, 2.2vw, 0.78rem);
   font-weight: 400;
   line-height: 1.1;
@@ -290,11 +343,11 @@ ul {
 }
 
 .trainer-card nav a:hover {
-  background: var(--panel-cyan);
+  background: #71b9ee;
 }
 
 .trainer-card__link-icon {
-  color: var(--select-blue);
+  color: #59606d;
   font-size: 1.1rem;
   line-height: 1;
 }
@@ -304,12 +357,20 @@ ul {
   width: 100%;
   min-width: 0;
   overflow: hidden;
-  border: 0.5rem solid var(--steel-dark);
-  background: var(--ink);
-  color: var(--screen-white);
+  border: 0.45rem solid #687180;
+  border-radius: 1.1rem;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.16) 0 3px,
+      transparent 3px 7px
+    ),
+    #f3df28;
+  color: #59606d;
   box-shadow:
-    inset 0 0 0 0.25rem var(--steel-light),
-    0 0 0 0.25rem var(--steel-light);
+    inset 0 0 0 0.24rem #eef1dc,
+    inset 0 0 0 0.46rem #aab2b7,
+    0 0 0 0.2rem #dce5e4;
   animation: boot 320ms steps(4, end) both;
 }
 
@@ -317,15 +378,28 @@ ul {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  border-bottom: 0.35rem solid var(--steel-dark);
-  background: var(--screen-blue);
+  padding: 0.45rem 0.65rem;
+  border-bottom: 0.2rem solid #c9b90f;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.16) 0 3px,
+      transparent 3px 7px
+    ),
+    #f3df28;
 }
 
 .career-pc__header > h2 {
+  width: fit-content;
+  min-width: min(100%, 20rem);
   margin: 0;
-  padding: 0.7rem 0.8rem;
+  padding: 0.45rem 1rem;
+  border: 0.2rem solid #398aca;
+  background: #71b9ee;
   color: var(--ink);
-  font-size: clamp(1.5rem, 7vw, 3rem);
+  box-shadow: 0.18rem 0.18rem 0 #397eb1;
+  font-size: clamp(1.2rem, 5vw, 2.2rem);
+  text-align: center;
   text-transform: uppercase;
 }
 
@@ -335,9 +409,9 @@ ul {
   justify-content: center;
   margin-right: 0.55rem;
   padding: 0.45rem 0.6rem;
-  border: var(--pixel-border) solid var(--ink);
-  background: var(--screen-white);
-  color: var(--ink);
+  border: 0.16rem solid #fffbd8;
+  background: #d8c813;
+  color: #525967;
   cursor: pointer;
   font-size: 0.8rem;
   font-weight: 400;
@@ -347,11 +421,11 @@ ul {
 }
 
 .career-pc__header > button[aria-pressed="true"] {
-  background: var(--steel-dark);
-  color: var(--screen-white);
+  background: #71b9ee;
+  color: var(--ink);
   box-shadow:
-    inset 0 0 0 0.2rem var(--select-blue),
-    inset 0 -0.35rem 0 var(--status-green);
+    inset 0 0 0 0.15rem #398aca,
+    inset 0 -0.3rem 0 #d8c813;
 }
 
 .career-pc__header > button[aria-pressed="true"]::after {
@@ -365,14 +439,15 @@ ul {
 .career-pc > [role="status"] {
   margin: 0;
   padding: 0.65rem 0.8rem;
-  border-bottom: var(--pixel-border) solid var(--steel-light);
-  background: var(--panel-cyan);
+  border-bottom: var(--pixel-border) solid #c9c5a9;
+  background: #fffbd8;
   color: var(--ink);
   font-weight: 400;
 }
 
 .career-pc > nav[aria-label="Professional roster"] {
   padding: 0.55rem 0.55rem 0;
+  background: #fffbd8;
 }
 
 [role="tablist"] {
@@ -387,9 +462,9 @@ ul {
   justify-content: center;
   min-width: 0;
   padding: 0.4rem 0.2rem;
-  border: var(--pixel-border) solid var(--steel-light);
-  background: var(--steel-dark);
-  color: var(--screen-white);
+  border: 0.18rem solid #d8c813;
+  background: #f3df28;
+  color: var(--ink);
   font-size: clamp(0.68rem, 3.2vw, 0.95rem);
   font-weight: 400;
   line-height: 1.15;
@@ -399,16 +474,16 @@ ul {
 }
 
 [role="tablist"] [role="tab"][aria-selected="true"] {
-  background: var(--steel-dark);
-  color: var(--screen-white);
+  background: #71b9ee;
+  color: var(--ink);
   box-shadow:
-    inset 0 0 0 0.2rem var(--select-blue),
-    inset 0 -0.45rem 0 var(--status-green);
+    inset 0 0 0 0.16rem #398aca,
+    inset 0 -0.35rem 0 #d8c813;
 }
 
 [role="tablist"] [role="tab"][aria-selected="true"]::before {
   margin-right: 0.25rem;
-  color: var(--screen-white);
+  color: var(--ink);
   content: "▶";
 }
 
@@ -416,6 +491,13 @@ ul {
   display: grid;
   min-width: 0;
   padding: 0.55rem;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(225, 213, 103, 0.25) 0 3px,
+      transparent 3px 8px
+    ),
+    #fffbd8;
 }
 
 .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] {
@@ -440,10 +522,10 @@ ul {
   min-height: 9.25rem;
   padding: 0.55rem;
   overflow: hidden;
-  border: 0.35rem solid var(--steel-dark);
-  background: var(--steel-dark);
+  border: 0.3rem solid #687180;
+  background: #d9c94b;
   color: var(--ink);
-  box-shadow: inset 0 0 0 0.18rem var(--steel-light);
+  box-shadow: inset 0 0 0 0.18rem #eef1dc;
   cursor: pointer;
   text-align: left;
   transition: transform 80ms steps(1, end), background-color 80ms steps(1, end);
@@ -458,7 +540,7 @@ ul {
   right: 0.5rem;
   width: 1.8rem;
   height: 0.55rem;
-  background: var(--status-green);
+  background: #71b9ee;
   content: "";
 }
 
@@ -466,7 +548,7 @@ ul {
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button:hover {
-  background: var(--screen-blue);
+  background: #71b9ee;
   transform: translate(-2px, -2px);
 }
 
@@ -474,12 +556,12 @@ ul {
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button[aria-pressed="true"] {
-  background: var(--steel-dark);
+  background: #f3df28;
   color: var(--ink);
   box-shadow:
-    inset 0 0 0 0.28rem var(--select-blue),
-    inset 0 0 0 0.18rem var(--steel-light),
-    inset 0 -0.5rem 0 var(--status-green);
+    inset 0 0 0 0.28rem #398aca,
+    inset 0 0 0 0.18rem #eef1dc,
+    inset 0 -0.5rem 0 #d8c813;
 }
 
 .career-pc
@@ -490,7 +572,7 @@ ul {
   top: 0.5rem;
   left: 0.5rem;
   z-index: 3;
-  color: var(--screen-white);
+  color: var(--ink);
   content: "▶";
   animation: cursor-hop 520ms steps(2, end) infinite;
 }
@@ -512,7 +594,7 @@ ul {
   > .party-card__name {
   align-self: end;
   padding-right: 2rem;
-  color: var(--screen-white);
+  color: var(--ink);
   font-size: clamp(0.9rem, 3.5vw, 1.2rem);
   font-weight: 400;
   line-height: 1.05;
@@ -539,7 +621,7 @@ ul {
   min-width: 0;
   width: 100%;
   padding: 0.1rem 0.25rem;
-  background: var(--screen-white);
+  background: #fffbd8;
   color: var(--ink);
   font-size: clamp(0.7rem, 2.5vw, 0.82rem);
   line-height: 1.1;
@@ -565,7 +647,7 @@ ul {
   position: absolute;
   right: 0.55rem;
   bottom: 0.5rem;
-  color: var(--status-green);
+  color: #398aca;
   font-size: 0.65rem;
   line-height: 1;
 }
@@ -640,11 +722,18 @@ dialog.pokedex-entry[open] {
   margin: 0;
   overflow: auto;
   padding: 0.65rem;
-  border: 0.45rem solid var(--steel-dark);
-  background: var(--screen-blue);
+  border: 0.45rem solid #687180;
+  border-radius: 1rem;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(225, 213, 103, 0.25) 0 3px,
+      transparent 3px 8px
+    ),
+    #fffbd8;
   color: var(--ink);
   box-shadow:
-    inset 0 0 0 0.2rem var(--steel-light),
+    inset 0 0 0 0.2rem #eef1dc,
     0 0 0 0.2rem var(--ink);
   transform: translate(-50%, -50%);
   animation: dialog-pop 160ms steps(2, end) both;
@@ -681,7 +770,12 @@ dialog.pokedex-entry > .pokedex-entry__creature {
 
 dialog.pokedex-entry > .pokedex-entry__organization {
   margin: 0;
+  width: fit-content;
+  padding: 0.25rem 0.65rem;
+  border: 0.16rem solid #398aca;
+  background: #71b9ee;
   color: var(--ink);
+  box-shadow: 0.14rem 0.14rem 0 #397eb1;
   font-size: clamp(1.05rem, 5vw, 1.8rem);
   overflow-wrap: anywhere;
   text-transform: uppercase;
@@ -705,7 +799,7 @@ dialog.pokedex-entry > .pokedex-entry__category {
 dialog.pokedex-entry > .pokedex-entry__meta {
   align-self: start;
   padding-left: 0.35rem;
-  border-left: 0.35rem solid var(--status-green);
+  border-left: 0.35rem solid #d8c813;
   color: var(--ink);
   font-size: 0.72rem;
   font-weight: 400;
@@ -717,7 +811,7 @@ dialog.pokedex-entry > .pokedex-entry__highlight {
   margin-top: 0.35rem;
   padding: 0.65rem;
   border: var(--pixel-border) solid var(--ink);
-  background: var(--panel-cyan);
+  background: #fffbd8;
   color: var(--ink);
   font-weight: 400;
   line-height: 1.2;
@@ -734,8 +828,8 @@ dialog.pokedex-entry > div[aria-label="Types"] {
 
 dialog.pokedex-entry > div[aria-label="Types"] span {
   padding: 0.25rem 0.4rem;
-  border: 2px solid var(--select-red);
-  background: var(--screen-white);
+  border: 2px solid #d8c813;
+  background: #f3df28;
   color: var(--ink);
   font-size: 0.75rem;
   font-weight: 400;
@@ -755,9 +849,9 @@ dialog.pokedex-entry > ul[aria-label="Moves"] li {
   display: grid;
   min-width: 0;
   padding: 0.45rem 0.55rem;
-  border-left: 0.45rem solid var(--status-green);
-  border-bottom: var(--pixel-border) solid var(--steel-dark);
-  background: var(--screen-white);
+  border-left: 0.45rem solid #71b9ee;
+  border-bottom: var(--pixel-border) solid #c9c5a9;
+  background: #fffbd8;
   color: var(--ink);
 }
 
@@ -783,9 +877,9 @@ dialog.pokedex-entry > button {
   margin-top: 0.35rem;
   padding: 0.45rem 0.65rem;
   border: var(--pixel-border) solid var(--ink);
-  background: var(--steel-light);
+  background: #f3df28;
   color: var(--ink);
-  box-shadow: inset 0.45rem 0 0 var(--select-blue);
+  box-shadow: inset 0.45rem 0 0 #71b9ee;
   text-align: center;
   text-decoration: none;
 }
@@ -939,7 +1033,7 @@ dialog.pokedex-entry > button {
   .trainer-screen {
     width: min(100%, 78rem);
     height: calc(100dvh - 2rem);
-    grid-template-rows: minmax(0, 21.5rem) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 22.25rem) minmax(0, 1fr);
     gap: 0.65rem;
   }
 
@@ -949,8 +1043,8 @@ dialog.pokedex-entry > button {
     border-width: 0.4rem;
   }
 
-  .trainer-card > h1 {
-    margin-bottom: 0.45rem;
+  .trainer-card__header > h1 {
+    margin: 0;
     font-size: 2.25rem;
   }
 
@@ -969,7 +1063,7 @@ dialog.pokedex-entry > button {
   }
 
   .trainer-card nav {
-    margin-top: 0.45rem;
+    margin-top: 0;
   }
 
   .career-pc {
@@ -1012,7 +1106,7 @@ dialog.pokedex-entry > button {
 
   .trainer-screen {
     height: auto;
-    grid-template-rows: minmax(0, 19rem) auto;
+    grid-template-rows: minmax(0, 19.5rem) auto;
     align-content: start;
     gap: 0.4rem;
   }
@@ -1023,9 +1117,9 @@ dialog.pokedex-entry > button {
     border-width: 0.35rem;
   }
 
-  .trainer-card > h1 {
-    margin-bottom: 0.25rem;
-    font-size: 2rem;
+  .trainer-card__header > h1 {
+    margin: 0;
+    font-size: 1.65rem;
   }
 
   .trainer-card__body {
@@ -1044,12 +1138,11 @@ dialog.pokedex-entry > button {
 
   .trainer-card__walk-viewport {
     width: min(100%, 10rem);
-    padding: 0.35rem;
-    border-width: 0.25rem;
+    padding: 12%;
   }
 
   .trainer-card nav {
-    margin-top: 0.3rem;
+    margin-top: 0;
     padding: 0.2rem;
   }
 
