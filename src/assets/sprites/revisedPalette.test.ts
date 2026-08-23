@@ -56,6 +56,13 @@ describe('classic roster sprite style', () => {
     expect(svg).toContain('<rect x="10" y="10" width="12" height="12"/>');
   });
 
+  it('ForgetMeNot changes from a neutral mouth to a smile', () => {
+    expect(forgetMeNotA).toContain('<rect x="14" y="18" width="4" height="2"/>');
+    expect(forgetMeNotB).toContain('<rect x="12" y="18" width="2" height="2"/>');
+    expect(forgetMeNotB).toContain('<rect x="14" y="20" width="4" height="2"/>');
+    expect(forgetMeNotB).toContain('<rect x="18" y="18" width="2" height="2"/>');
+  });
+
   it.each(frames)('$name uses only the shared five-color palette', ({ svg }) => {
     const fills = Array.from(svg.matchAll(/\bfill="(#[0-9a-f]{6})"/gi), ([, fill]) =>
       fill.toLowerCase(),
