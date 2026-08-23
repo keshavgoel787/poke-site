@@ -290,6 +290,9 @@ describe('handheld reference visual system', () => {
     expect(globalStyles).toMatch(
       /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.career-pc [^{]*button\s*{[^}]*min-height: 0;[^}]*height: 6\.75rem;/,
     );
+    expect(globalStyles).toMatch(
+      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.trainer-card__fields dt\s*{[^}]*padding-left: 1\.25rem;/,
+    );
   });
 
   it('allocates enough desktop height to keep Trainer Card links inside the clipped card', () => {
@@ -335,6 +338,9 @@ describe('handheld reference visual system', () => {
     );
     expect(compactDesktopStyles).toMatch(
       /\.trainer-card__fields dt,\s*\.trainer-card__fields dd\s*{[^}]*padding: 0\.18rem 0\.4rem;/,
+    );
+    expect(compactDesktopStyles).toMatch(
+      /\.trainer-card__fields dt\s*{[^}]*padding-left: 1\.25rem;/,
     );
     expect(compactDesktopStyles).toMatch(
       /\.trainer-card__walk-viewport\s*{[^}]*width: min\(100%, 10rem\);/,

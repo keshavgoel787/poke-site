@@ -1062,6 +1062,10 @@ dialog.pokedex-entry > button {
     padding: 0.24rem 0.45rem;
   }
 
+  .trainer-card__fields dt {
+    padding-left: 1.25rem;
+  }
+
   .trainer-card nav {
     margin-top: 0;
   }
@@ -1134,6 +1138,10 @@ dialog.pokedex-entry > button {
   .trainer-card__fields dt,
   .trainer-card__fields dd {
     padding: 0.18rem 0.4rem;
+  }
+
+  .trainer-card__fields dt {
+    padding-left: 1.25rem;
   }
 
   .trainer-card__walk-viewport {
