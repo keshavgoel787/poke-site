@@ -44,6 +44,14 @@ const frames = spritePairs.flatMap(({ name, frameA, frameB }) => [
 ]);
 
 describe('classic roster sprite style', () => {
+  it.each([remetraA, remetraB])('Remetra depicts a simple apple mascot', (svg) => {
+    expect(svg).toContain('<title>Apple mascot</title>');
+  });
+
+  it.each([forgetMeNotA, forgetMeNotB])('ForgetMeNot depicts a full five-petal flower', (svg) => {
+    expect(svg).toContain('<title>Five-petal forget-me-not flower</title>');
+  });
+
   it.each(frames)('$name uses only the shared five-color palette', ({ svg }) => {
     const fills = Array.from(svg.matchAll(/\bfill="(#[0-9a-f]{6})"/gi), ([, fill]) =>
       fill.toLowerCase(),
