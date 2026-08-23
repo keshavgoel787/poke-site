@@ -52,6 +52,10 @@ describe('classic roster sprite style', () => {
     expect(svg).toContain('<title>Five-petal forget-me-not flower</title>');
   });
 
+  it.each([forgetMeNotA, forgetMeNotB])('ForgetMeNot has a large readable face', (svg) => {
+    expect(svg).toContain('<rect x="10" y="10" width="12" height="12"/>');
+  });
+
   it.each(frames)('$name uses only the shared five-color palette', ({ svg }) => {
     const fills = Array.from(svg.matchAll(/\bfill="(#[0-9a-f]{6})"/gi), ([, fill]) =>
       fill.toLowerCase(),
