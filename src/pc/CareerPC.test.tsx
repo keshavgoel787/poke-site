@@ -111,7 +111,7 @@ describe('CareerPC', () => {
     ).toBeVisible();
     expect(screen.queryByText('Generate')).not.toBeInTheDocument();
     expect(screen.queryByText('VDart')).not.toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Amazon details' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'AWS details' })).toBeVisible();
     expect(screen.getAllByRole('listitem', { name: /move:/i }).length).toBeGreaterThan(0);
   });
 
@@ -127,7 +127,7 @@ describe('CareerPC', () => {
     expect(within(draftKings).getAllByText('DraftKings')).toHaveLength(1);
     expect(draftKings).not.toHaveTextContent('Draftion');
     expect(draftKings).toHaveTextContent('Software Engineering Intern');
-    expect(draftKings).toHaveTextContent('Jun 2026 - Present');
+    expect(draftKings).toHaveTextContent('Jun 2026 - Aug 2026');
     expect(draftKings).toHaveAccessibleName('DraftKings');
     expect(draftKings).toHaveAccessibleDescription('Entry complete');
     expect(draftKings).not.toHaveTextContent(/\b(?:HP|level|gender)\b/i);
@@ -135,7 +135,7 @@ describe('CareerPC', () => {
     await user.click(screen.getByRole('tab', { name: 'Projects' }));
 
     expect(screen.getByText('React · Supabase · FastAPI')).toBeVisible();
-    expect(screen.getByText('FastAPI · Gemini · OpenCV')).toBeVisible();
+    expect(screen.getByText('FastAPI · Snowflake · Gemini')).toBeVisible();
     expect(screen.getByText('Flutter · Dart · Google Maps')).toBeVisible();
     expect(screen.queryByText('Project')).not.toBeInTheDocument();
   });
@@ -143,7 +143,7 @@ describe('CareerPC', () => {
   it('renders sprites in the creature grid and selected entry', () => {
     renderCareerPC('/pokemon/experience/amazon');
 
-    expect(screen.getAllByRole('img', { name: 'Amazon', hidden: true })).toHaveLength(2);
+    expect(screen.getAllByRole('img', { name: 'AWS', hidden: true })).toHaveLength(2);
     expect(screen.getByRole('img', { name: 'DraftKings', hidden: true })).toBeVisible();
   });
 
@@ -351,7 +351,7 @@ describe('CareerPC', () => {
   it('moves grid focus with the arrow keys', async () => {
     const user = userEvent.setup();
     renderCareerPC('/pokemon/experience');
-    const amazon = screen.getByRole('button', { name: 'Amazon' });
+    const amazon = screen.getByRole('button', { name: 'AWS' });
     const draftKings = screen.getByRole('button', { name: 'DraftKings' });
 
     amazon.focus();
@@ -363,7 +363,7 @@ describe('CareerPC', () => {
   it('selects a focused grid item with Enter', async () => {
     const user = userEvent.setup();
     renderCareerPC('/pokemon/experience');
-    const amazon = screen.getByRole('button', { name: 'Amazon' });
+    const amazon = screen.getByRole('button', { name: 'AWS' });
     const draftKings = screen.getByRole('button', { name: 'DraftKings' });
 
     amazon.focus();
@@ -427,7 +427,7 @@ describe('CareerPC', () => {
       'true',
     );
     expect(screen.getByRole('heading', { name: 'DraftKings' })).toBeVisible();
-    expect(within(dialog).getByText('Jun 2026 - Present')).toBeVisible();
+    expect(within(dialog).getByText('Jun 2026 - Aug 2026')).toBeVisible();
     expect(within(dialog).getByText('Boston, MA')).toBeVisible();
   });
 
@@ -544,7 +544,7 @@ describe('CareerPC', () => {
     await user.click(screen.getByRole('button', { name: 'Back in history' }));
 
     expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/experience/amazon');
-    expect(screen.getByRole('dialog', { name: 'Amazon details' })).toBeVisible();
+    expect(screen.getByRole('dialog', { name: 'AWS details' })).toBeVisible();
 
     await user.click(screen.getByRole('button', { name: 'Forward in history' }));
     expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/experience');

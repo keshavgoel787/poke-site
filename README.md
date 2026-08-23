@@ -8,14 +8,14 @@ The portfolio has a three-screen flow:
 
 1. The **Trainer Card** introduces Keshav, shows the chibi trainer scene, links to the
    résumé and professional profiles, and provides a separate **Keshav's Pokémon** card.
-2. **Keshav's PC** contains exactly two roster tabs. **Experience** lists Amazon,
+2. **Keshav's PC** contains exactly two roster tabs. **Experience** lists AWS,
    DraftKings, ProcureMate AI, Johnson & Johnson, and WPS Data Lab; **Projects** lists
    Remetra, ForgetMeNot, and BreatheEasy.
 3. Selecting any roster card opens its route-driven Pokédex-style detail dialog. A
    detail can also be opened directly at `/pokemon/:tab/:entryId`.
 
 The published résumé at `public/resume.pdf` is sourced from the updated
-`/Users/keshavgoel/Downloads/Keshav_Goel_Resume.pdf` file and is checked byte-for-byte
+`/Users/keshavgoel/Downloads/KeshavGoel.pdf` file and is checked byte-for-byte
 as part of release verification.
 
 ## Local development

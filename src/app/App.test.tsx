@@ -75,9 +75,9 @@ it('reconstructs the DraftKings dialog from its direct route', () => {
   );
   expect(within(dialog).getByRole('heading', { name: 'DraftKings' })).toBeVisible();
   expect(within(dialog).getByText('Software Engineering Intern')).toBeVisible();
-  expect(within(dialog).getByText('Jun 2026 - Present')).toBeVisible();
+  expect(within(dialog).getByText('Jun 2026 - Aug 2026')).toBeVisible();
   expect(within(dialog).getByText('Boston, MA')).toBeVisible();
-  expect(within(dialog).getByText(/20\+ hrs\/week/i)).toBeVisible();
+  expect(within(dialog).getByText(/20 hrs\/week/i)).toBeVisible();
   expect(within(dialog).getAllByRole('listitem', { name: /move:/i })).toHaveLength(5);
 });
 

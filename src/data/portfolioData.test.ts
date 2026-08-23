@@ -5,7 +5,7 @@ const visibleEntries = () => rosterTabs.flatMap((tab) => tab.entries);
 it('provides exactly the approved roster tabs and visible entries', () => {
   expect(rosterTabs.map((tab) => tab.id)).toEqual(['experience', 'projects']);
   expect(rosterTabs[0].entries.map((entry) => entry.organization)).toEqual([
-    'Amazon',
+    'Amazon Web Services (AWS)',
     'DraftKings',
     'ProcureMate AI',
     'Johnson & Johnson',
@@ -17,7 +17,7 @@ it('provides exactly the approved roster tabs and visible entries', () => {
     'BreatheEasy',
   ]);
   expect(visibleEntries().map((entry) => entry.creatureName)).toEqual([
-    'Amazon',
+    'AWS',
     'DraftKings',
     'ProcureMate AI',
     'Johnson & Johnson',
@@ -49,13 +49,13 @@ it('uses one source-verified highlight and one or more source-verified moves per
   const expectedContent = {
     amazon: {
       highlight:
-        'Incoming intern scoped to build identity-synchronization and telemetry pipelines across AWS, Azure, and Google Cloud.',
-      moves: ['AWS', 'Azure', 'Google Cloud'],
+        'Designing an agentic AI advisor that reduces cloud-access review cycles from 4 weeks to 2 hours.',
+      moves: ['Amazon Bedrock AgentCore', 'Strands', 'RAG', 'Bedrock Guardrails', 'Entra / Google OAuth'],
     },
     draftkings: {
       highlight:
-        'Built a production LangGraph FinOps agent that eliminated 20+ hours per week of manual cloud-cost analysis.',
-      moves: ['LangGraph', 'Kubernetes', 'Terraform', 'DynamoDB', 'Datadog'],
+        'Built a LangGraph agent querying Snowflake across 3 verticals, cutting cloud-cost analysis by 20 hours per week.',
+      moves: ['LangGraph', 'Snowflake', 'Kubernetes', 'Terraform', 'Datadog'],
     },
     procuremateai: {
       highlight:
@@ -64,8 +64,8 @@ it('uses one source-verified highlight and one or more source-verified moves per
     },
     'johnson-johnson': {
       highlight:
-        'Built a GPT-4o and LangChain paper-summarization pipeline that cut literature review from 2 hours to 30 minutes.',
-      moves: ['GPT-4o', 'LangChain', 'Neo4j', 'GraphRAG', 'Streamlit', 'FastAPI'],
+        'Built Node.js Slack microservices delivering trial data on demand, eliminating 15 hours per week of manual exports.',
+      moves: ['Node.js', 'Microsoft Graph', 'SharePoint', 'Kubernetes', 'AWS Athena', 'S3'],
     },
     'wps-data-lab': {
       highlight:
@@ -74,12 +74,12 @@ it('uses one source-verified highlight and one or more source-verified moves per
     },
     remetra: {
       highlight:
-        'Built a cross-platform autoimmune symptom-tracking app used by 250 users logging 10K+ entries.',
+        'Shipped a cross-platform iOS and Android symptom-tracking app used by 250 users logging 10K+ entries.',
       moves: ['React', 'Supabase', 'FastAPI', 'Ollama', 'Neo4j'],
     },
     forgetmenot: {
-      highlight: 'Placed 2nd at HackRU among 300 teams with an AI dementia-care platform.',
-      moves: ['FastAPI', 'Gemini', 'ElevenLabs', 'OpenCV', 'Next.js', 'Snowflake'],
+      highlight: 'Built an AI dementia-care platform that placed 2nd at HackRU among 300 teams.',
+      moves: ['FastAPI', 'Snowflake', 'Gemini', 'Google Cloud', 'React', 'OpenCV'],
     },
     'breathe-easy': {
       highlight: 'Placed 1st at CSBase Hacks among 250 teams with a lower-pollution navigation app.',
@@ -102,6 +102,33 @@ it('provides dates and location for every experience entry', () => {
 
   expect(experienceEntries.every((entry) => entry.dates?.trim())).toBe(true);
   expect(experienceEntries.every((entry) => entry.location?.trim())).toBe(true);
+  expect(experienceEntries.map(({ role, dates, location }) => ({ role, dates, location }))).toEqual([
+    {
+      role: 'Software Development Engineer Intern',
+      dates: 'Aug 2026 - Present',
+      location: 'Seattle, WA',
+    },
+    {
+      role: 'Software Engineering Intern',
+      dates: 'Jun 2026 - Aug 2026',
+      location: 'Boston, MA',
+    },
+    {
+      role: 'Software Engineering Intern',
+      dates: 'Jan 2026 - May 2026',
+      location: 'Boston, MA',
+    },
+    {
+      role: 'Software Engineering Co-op',
+      dates: 'Jun 2025 - Dec 2025',
+      location: 'Raritan, NJ',
+    },
+    {
+      role: 'Data Science Research Assistant',
+      dates: 'Oct 2024 - Present',
+      location: 'Boston, MA',
+    },
+  ]);
 });
 
 it('provides concise roster-card metadata for every entry', () => {
@@ -113,7 +140,7 @@ it('provides concise roster-card metadata for every entry', () => {
   );
   expect(projectEntries.map((entry) => entry.cardMetadata)).toEqual([
     'React · Supabase · FastAPI',
-    'FastAPI · Gemini · OpenCV',
+    'FastAPI · Snowflake · Gemini',
     'Flutter · Dart · Google Maps',
   ]);
 });

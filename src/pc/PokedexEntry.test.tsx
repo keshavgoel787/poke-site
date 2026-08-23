@@ -19,9 +19,9 @@ describe('PokedexEntry', () => {
       within(entry).getByRole('heading', { name: 'DraftKings details', level: 2 }),
     ).toBeVisible();
     expect(within(entry).getByRole('heading', { name: 'DraftKings' })).toBeVisible();
-    expect(within(entry).getByText('Jun 2026 - Present')).toBeVisible();
+    expect(within(entry).getByText('Jun 2026 - Aug 2026')).toBeVisible();
     expect(within(entry).getByText('Boston, MA')).toBeVisible();
-    expect(within(entry).getByText(/20\+ hrs\/week/i)).toBeVisible();
+    expect(within(entry).getByText(/20 hrs\/week/i)).toBeVisible();
     expect(within(entry).getByText('Experience')).toBeVisible();
     expect(within(entry).getByText('Software Engineering Intern')).toBeVisible();
     expect(within(entry).getByText('Software Engineering')).toBeVisible();
@@ -63,9 +63,9 @@ describe('PokedexEntry', () => {
 
   it('renders one visible label when a move name and skill are identical', () => {
     render(<PokedexEntry entry={amazon} onClose={vi.fn()} />);
-    const move = screen.getByRole('listitem', { name: 'Move: AWS' });
+    const move = screen.getByRole('listitem', { name: 'Move: Amazon Bedrock AgentCore' });
 
-    expect(within(move).getAllByText('AWS')).toHaveLength(1);
+    expect(within(move).getAllByText('Amazon Bedrock AgentCore')).toHaveLength(1);
   });
 
   it('keeps a distinct verified skill visible alongside its move name', () => {
@@ -114,7 +114,7 @@ describe('PokedexEntry', () => {
   it('requests close only when a click lands outside the dialog bounds', () => {
     const onClose = vi.fn();
     render(<PokedexEntry entry={amazon} onClose={onClose} />);
-    const dialog = screen.getByRole('dialog', { name: 'Amazon details' });
+    const dialog = screen.getByRole('dialog', { name: 'AWS details' });
 
     vi.spyOn(dialog, 'getBoundingClientRect').mockReturnValue({
       left: 100,
@@ -136,7 +136,7 @@ describe('PokedexEntry', () => {
   it('does not request close when clicking visible dialog content', () => {
     const onClose = vi.fn();
     render(<PokedexEntry entry={amazon} onClose={onClose} />);
-    const dialog = screen.getByRole('dialog', { name: 'Amazon details' });
+    const dialog = screen.getByRole('dialog', { name: 'AWS details' });
 
     vi.spyOn(dialog, 'getBoundingClientRect').mockReturnValue({
       left: 100,
@@ -150,7 +150,7 @@ describe('PokedexEntry', () => {
       toJSON: () => ({}),
     });
 
-    fireEvent.click(screen.getByText(/incoming intern scoped to build/i), {
+    fireEvent.click(screen.getByText(/designing an agentic AI advisor/i), {
       clientX: 200,
       clientY: 200,
     });
