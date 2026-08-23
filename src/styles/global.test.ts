@@ -203,6 +203,7 @@ describe('handheld reference visual system', () => {
       'url("/pixel-landscape-bg.png")',
     );
     expect(declarationsFor('body::before')).toMatch(/background-size:\s*cover;/);
+    expect(declarationsFor('body::before')).toMatch(/image-rendering:\s*pixelated;/);
     expect(declarationsFor('body::before')).toMatch(/pointer-events:\s*none;/);
     expect(globalStyles).toMatch(
       /#root\s*{[^}]*position: relative;[^}]*z-index: 1;/,

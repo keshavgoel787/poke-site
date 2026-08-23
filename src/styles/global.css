@@ -49,6 +49,8 @@ body::before {
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
   content: "";
   pointer-events: none;
 }
