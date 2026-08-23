@@ -195,10 +195,15 @@ describe('handheld reference visual system', () => {
   });
 
   it('renders the selected pixel landscape as a fixed, covered page background', () => {
-    expect(globalStyles).toMatch(
-      /html:root\s*{[^}]*background-color: var\(--ink\);[^}]*background-image:\s*linear-gradient\(rgba\(12, 23, 32, 0\.28\), rgba\(12, 23, 32, 0\.28\)\),\s*url\("\/pixel-landscape-bg\.png"\);[^}]*background-position: center center;[^}]*background-repeat: no-repeat;[^}]*background-size: cover;[^}]*background-attachment: fixed;/,
-    );
+    expect(declarationsFor('html:root')).toContain('background: var(--screen-blue);');
     expect(declarationsFor('body')).toMatch(/background:\s*transparent;/);
+    expect(declarationsFor('body::before')).toMatch(/position:\s*fixed;/);
+    expect(declarationsFor('body::before')).toMatch(/inset:\s*0;/);
+    expect(declarationsFor('body::before')).toContain(
+      'url("/pixel-landscape-bg.png")',
+    );
+    expect(declarationsFor('body::before')).toMatch(/background-size:\s*cover;/);
+    expect(declarationsFor('body::before')).toMatch(/pointer-events:\s*none;/);
     expect(globalStyles).toMatch(
       /#root\s*{[^}]*position: relative;[^}]*z-index: 1;/,
     );
@@ -493,6 +498,9 @@ describe('handheld reference visual system', () => {
     expect(globalStyles).toMatch(/dialog\.pokedex-entry::backdrop\s*{/);
     expect(globalStyles).toMatch(
       /dialog\.pokedex-entry\[open\][\s\S]*?background: var\(--screen-blue\);/,
+    );
+    expect(declarationsFor('dialog.pokedex-entry::backdrop')).toMatch(
+      /background:\s*rgba\(12,\s*23,\s*32,\s*0\.42\);/,
     );
   });
 

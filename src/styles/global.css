@@ -19,14 +19,7 @@ html:root {
   height: 100dvh;
   min-width: 320px;
   overflow: hidden;
-  background-color: var(--ink);
-  background-image:
-    linear-gradient(rgba(12, 23, 32, 0.28), rgba(12, 23, 32, 0.28)),
-    url("/pixel-landscape-bg.png");
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
+  background: var(--screen-blue);
   color: var(--screen-white);
   font-size: 16px;
 }
@@ -43,6 +36,21 @@ body {
   font-family: "Pokemon DPPT", "Courier New", Courier, monospace;
   font-size: 1rem;
   line-height: 1.4;
+}
+
+body::before {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  background-color: var(--screen-blue);
+  background-image:
+    linear-gradient(rgba(12, 23, 32, 0.28), rgba(12, 23, 32, 0.28)),
+    url("/pixel-landscape-bg.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  content: "";
+  pointer-events: none;
 }
 
 button,
@@ -644,7 +652,7 @@ dialog.pokedex-entry[open] {
 }
 
 dialog.pokedex-entry::backdrop {
-  background: var(--ink);
+  background: rgba(12, 23, 32, 0.42);
 }
 
 dialog.pokedex-entry > .pixel-sprite {
