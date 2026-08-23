@@ -17,6 +17,10 @@ import wpsDataLabB from './wps-data-lab-b.svg?raw';
 
 const approvedPalette = new Set([
   '#172032',
+  '#2877c8',
+  '#35d34a',
+  '#5596df',
+  '#a9d8f3',
   '#c74632',
   '#f28c28',
   '#ffd56b',
@@ -24,19 +28,14 @@ const approvedPalette = new Set([
 ]);
 
 const spritePairs = [
-  { name: 'AWS', frameA: amazonA, frameB: amazonB, animation: 'translate' },
-  { name: 'DraftKings', frameA: draftKingsA, frameB: draftKingsB, animation: 'translate' },
-  { name: 'ProcureMate AI', frameA: procureMateA, frameB: procureMateB, animation: 'translate' },
-  {
-    name: 'Johnson & Johnson',
-    frameA: johnsonJohnsonA,
-    frameB: johnsonJohnsonB,
-    animation: 'heartbeat',
-  },
-  { name: 'WPS Data Lab', frameA: wpsDataLabA, frameB: wpsDataLabB, animation: 'translate' },
-  { name: 'Remetra', frameA: remetraA, frameB: remetraB, animation: 'translate' },
-  { name: 'ForgetMeNot', frameA: forgetMeNotA, frameB: forgetMeNotB, animation: 'translate' },
-  { name: 'BreatheEasy', frameA: breatheEasyA, frameB: breatheEasyB, animation: 'translate' },
+  { name: 'AWS', frameA: amazonA, frameB: amazonB },
+  { name: 'DraftKings', frameA: draftKingsA, frameB: draftKingsB },
+  { name: 'ProcureMate AI', frameA: procureMateA, frameB: procureMateB },
+  { name: 'Johnson & Johnson', frameA: johnsonJohnsonA, frameB: johnsonJohnsonB },
+  { name: 'WPS Data Lab', frameA: wpsDataLabA, frameB: wpsDataLabB },
+  { name: 'Remetra', frameA: remetraA, frameB: remetraB },
+  { name: 'ForgetMeNot', frameA: forgetMeNotA, frameB: forgetMeNotB },
+  { name: 'BreatheEasy', frameA: breatheEasyA, frameB: breatheEasyB },
 ] as const;
 
 const frames = spritePairs.flatMap(({ name, frameA, frameB }) => [
@@ -73,13 +72,9 @@ describe('classic roster sprite style', () => {
     }
   });
 
-  it.each(spritePairs)('$name has a visible second animation frame', ({ frameA, frameB, animation }) => {
+  it.each(spritePairs)('$name has a distinct object-specific animation frame', ({ frameA, frameB }) => {
     expect(frameA).not.toBe(frameB);
-
-    if (animation === 'translate') {
-      expect(frameB).toContain('transform="translate(0 -4)"');
-    } else {
-      expect(frameB).not.toContain('transform="translate(0 -4)"');
-    }
+    expect(frameA).not.toContain('transform="translate');
+    expect(frameB).not.toContain('transform="translate');
   });
 });
