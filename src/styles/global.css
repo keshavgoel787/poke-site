@@ -1223,6 +1223,22 @@ dialog.pokedex-entry > button {
   }
 }
 
+@media (max-width: 89.999rem), (max-height: 56.249rem) {
+  html:root,
+  body {
+    height: auto;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  #root {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

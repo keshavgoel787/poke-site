@@ -225,6 +225,15 @@ describe('handheld reference visual system', () => {
     );
   });
 
+  it('allows vertical document scrolling below the large desktop breakpoint', () => {
+    expect(globalStyles).toMatch(
+      /@media \(max-width: 89\.999rem\), \(max-height: 56\.249rem\)\s*{[\s\S]*?html:root,\s*body\s*{[^}]*height: auto;[^}]*min-height: 100dvh;[^}]*overflow-x: hidden;[^}]*overflow-y: auto;/,
+    );
+    expect(globalStyles).toMatch(
+      /@media \(max-width: 89\.999rem\), \(max-height: 56\.249rem\)[\s\S]*?#root\s*{[^}]*height: auto;[^}]*min-height: 100dvh;[^}]*overflow: visible;/,
+    );
+  });
+
   it('defines the exact approved shared palette and pixel border', () => {
     expect(tokens).toContain('--ink: #0c1720');
     expect(tokens).toContain('--screen-blue: #5596df');
