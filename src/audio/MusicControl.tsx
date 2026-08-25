@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import { BackgroundMusic } from './BackgroundMusic';
 
 type MusicControlProps = {
@@ -8,7 +9,7 @@ type MusicControlProps = {
 export function MusicControl({ enabled, setEnabled }: MusicControlProps) {
   const label = enabled ? 'Pause background music' : 'Play background music';
 
-  return (
+  return createPortal(
     <div className="music-control">
       <BackgroundMusic enabled={enabled} />
       <button
@@ -20,6 +21,7 @@ export function MusicControl({ enabled, setEnabled }: MusicControlProps) {
         <span aria-hidden="true">{enabled ? 'Ⅱ' : '▶'}</span>
         <span>Music</span>
       </button>
-    </div>
+    </div>,
+    document.body,
   );
 }

@@ -4,11 +4,13 @@ const SOUND_PREFERENCE_KEY = 'career-pc:sound';
 const MUSIC_PREFERENCE_KEY = 'career-pc:music';
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
-function getStoredPreference(key: string): boolean {
+function getStoredPreference(key: string, defaultValue = false): boolean {
   try {
-    return window.localStorage.getItem(key) === 'on';
+    const storedValue = window.localStorage.getItem(key);
+
+    return storedValue === null ? defaultValue : storedValue === 'on';
   } catch {
-    return false;
+    return defaultValue;
   }
 }
 
@@ -26,10 +28,10 @@ function getReducedMotionPreference() {
 
 export function usePreferences() {
   const [soundEnabled, setSoundEnabledState] = useState(() =>
-    getStoredPreference(SOUND_PREFERENCE_KEY),
+    getStoredPreference(SOUND_PREFERENCE_KEY, true),
   );
   const [musicEnabled, setMusicEnabledState] = useState(() =>
-    getStoredPreference(MUSIC_PREFERENCE_KEY),
+    getStoredPreference(MUSIC_PREFERENCE_KEY, true),
   );
   const [reducedMotion, setReducedMotion] = useState(getReducedMotionPreference);
 

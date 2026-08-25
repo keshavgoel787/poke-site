@@ -18,28 +18,28 @@ describe('usePreferences', () => {
     }));
   });
 
-  it('defaults sound off and persists an enabled preference', () => {
+  it('defaults sound on and persists a disabled preference', () => {
     const { result } = renderHook(() => usePreferences());
 
-    expect(result.current.soundEnabled).toBe(false);
-
-    act(() => result.current.setSoundEnabled(true));
-
-    expect(window.localStorage.getItem('career-pc:sound')).toBe('on');
     expect(result.current.soundEnabled).toBe(true);
+
+    act(() => result.current.setSoundEnabled(false));
+
+    expect(window.localStorage.getItem('career-pc:sound')).toBe('off');
+    expect(result.current.soundEnabled).toBe(false);
   });
 
-  it('stores music independently from interface sound', () => {
+  it('defaults music on and stores it independently from interface sound', () => {
     const { result } = renderHook(() => usePreferences());
 
-    expect(result.current.musicEnabled).toBe(false);
-
-    act(() => result.current.setMusicEnabled(true));
-
-    expect(window.localStorage.getItem('career-pc:music')).toBe('on');
-    expect(window.localStorage.getItem('career-pc:sound')).toBeNull();
     expect(result.current.musicEnabled).toBe(true);
-    expect(result.current.soundEnabled).toBe(false);
+
+    act(() => result.current.setMusicEnabled(false));
+
+    expect(window.localStorage.getItem('career-pc:music')).toBe('off');
+    expect(window.localStorage.getItem('career-pc:sound')).toBeNull();
+    expect(result.current.musicEnabled).toBe(false);
+    expect(result.current.soundEnabled).toBe(true);
   });
 
   it('hydrates the stored music preference independently', () => {
@@ -48,7 +48,15 @@ describe('usePreferences', () => {
     const { result } = renderHook(() => usePreferences());
 
     expect(result.current.musicEnabled).toBe(true);
-    expect(result.current.soundEnabled).toBe(false);
+    expect(result.current.soundEnabled).toBe(true);
+  });
+
+  it('respects a stored disabled music preference', () => {
+    values.set('career-pc:music', 'off');
+
+    const { result } = renderHook(() => usePreferences());
+
+    expect(result.current.musicEnabled).toBe(false);
   });
 
   it('hydrates a stored enabled sound preference without changing storage', () => {
@@ -61,6 +69,14 @@ describe('usePreferences', () => {
     expect(setItem).not.toHaveBeenCalled();
   });
 
+  it('respects a stored disabled sound preference', () => {
+    values.set('career-pc:sound', 'off');
+
+    const { result } = renderHook(() => usePreferences());
+
+    expect(result.current.soundEnabled).toBe(false);
+  });
+
   it('persists switching sound from on back to off', () => {
     values.set('career-pc:sound', 'on');
     const { result } = renderHook(() => usePreferences());
@@ -71,7 +87,7 @@ describe('usePreferences', () => {
     expect(result.current.soundEnabled).toBe(false);
   });
 
-  it('defaults sound off when storage reading throws', () => {
+  it('defaults sound on when storage reading throws', () => {
     vi.stubGlobal('localStorage', {
       getItem: () => {
         throw new DOMException('Storage is unavailable', 'SecurityError');
@@ -81,7 +97,7 @@ describe('usePreferences', () => {
 
     const { result } = renderHook(() => usePreferences());
 
-    expect(result.current.soundEnabled).toBe(false);
+    expect(result.current.soundEnabled).toBe(true);
   });
 
   it('keeps rendering and updates sound when storage writing throws', () => {
@@ -94,9 +110,9 @@ describe('usePreferences', () => {
     const { result } = renderHook(() => usePreferences());
 
     expect(() => {
-      act(() => result.current.setSoundEnabled(true));
+      act(() => result.current.setSoundEnabled(false));
     }).not.toThrow();
-    expect(result.current.soundEnabled).toBe(true);
+    expect(result.current.soundEnabled).toBe(false);
   });
 
   it('reads the active reduced-motion system preference', () => {

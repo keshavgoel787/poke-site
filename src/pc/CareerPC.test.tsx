@@ -92,8 +92,8 @@ function renderCareerPC(path: string, priorPath?: string, nextPath?: string) {
 describe('CareerPC', () => {
   beforeEach(() => {
     const values = new Map<string, string>();
-    vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue();
-    vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => undefined);
+    vi.spyOn(HTMLMediaElement.prototype, 'play').mockClear().mockResolvedValue();
+    vi.spyOn(HTMLMediaElement.prototype, 'pause').mockClear().mockImplementation(() => undefined);
     vi.stubGlobal('localStorage', {
       getItem: (key: string) => values.get(key) ?? null,
       setItem: (key: string, value: string) => values.set(key, value),
@@ -191,20 +191,33 @@ describe('CareerPC', () => {
     const audio = installWorkingAudioContext();
     renderCareerPC('/pokemon/experience');
     const sound = screen.getByRole('button', { name: 'SFX' });
-    const music = screen.getByRole('button', { name: 'Play background music' });
+    const music = screen.getByRole('button', { name: 'Pause background music' });
     const musicPlay = vi.mocked(HTMLMediaElement.prototype.play);
 
-    expect(sound).toHaveAttribute('aria-pressed', 'false');
-    expect(music).toHaveAttribute('aria-pressed', 'false');
+    expect(sound).toHaveAttribute('aria-pressed', 'true');
+    expect(music).toHaveAttribute('aria-pressed', 'true');
     expect(audio.AudioContext).not.toHaveBeenCalled();
-    expect(musicPlay).not.toHaveBeenCalled();
+    expect(musicPlay).toHaveBeenCalledTimes(1);
+
+    await user.click(music);
+
+    expect(sound).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Play background music' })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    );
+    expect(audio.AudioContext).not.toHaveBeenCalled();
+    expect(musicPlay).toHaveBeenCalledTimes(1);
+
+    await user.click(sound);
+
+    expect(sound).toHaveAttribute('aria-pressed', 'false');
+    expect(audio.AudioContext).not.toHaveBeenCalled();
 
     await user.click(sound);
 
     expect(sound).toHaveAttribute('aria-pressed', 'true');
-    expect(music).toHaveAttribute('aria-pressed', 'false');
     expect(audio.AudioContext).toHaveBeenCalledTimes(1);
-    expect(musicPlay).not.toHaveBeenCalled();
     expect(audio.context.createOscillator).toHaveBeenCalledTimes(1);
     expect(audio.context.createGain).toHaveBeenCalledTimes(1);
     expect(audio.oscillator.type).toBe('square');
@@ -217,14 +230,17 @@ describe('CareerPC', () => {
       4.07,
     );
 
-    await user.click(music);
-
-    expect(screen.getByRole('button', { name: 'Pause background music' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
     expect(musicPlay).toHaveBeenCalledTimes(1);
-    expect(audio.AudioContext).toHaveBeenCalledTimes(1);
+  });
+
+  it('anchors the music control to the viewport outside the transformed PC panel', () => {
+    renderCareerPC('/pokemon/experience');
+
+    const music = screen.getByRole('button', { name: 'Pause background music' });
+
+    expect(music.closest('.career-pc')).toBeNull();
+    expect(music.parentElement).toHaveClass('music-control');
+    expect(music.parentElement?.parentElement).toBe(document.body);
   });
 
   it('plays enabled sound only for user-initiated menu, tab, and grid actions', async () => {
@@ -232,11 +248,10 @@ describe('CareerPC', () => {
     const audio = installWorkingAudioContext();
     renderCareerPC('/pokemon/experience');
 
-    await user.click(screen.getByRole('button', { name: 'SFX' }));
     await user.click(screen.getByRole('tab', { name: /projects/i }));
     await user.click(screen.getByRole('button', { name: 'ForgetMeNot' }));
 
-    expect(audio.AudioContext).toHaveBeenCalledTimes(3);
+    expect(audio.AudioContext).toHaveBeenCalledTimes(2);
   });
 
   it('does not play stored-on sound during hydration or recovered navigation', async () => {
@@ -263,6 +278,7 @@ describe('CareerPC', () => {
       throw new DOMException('Audio is blocked', 'NotAllowedError');
     });
     vi.stubGlobal('AudioContext', AudioContext);
+    window.localStorage.setItem('career-pc:sound', 'off');
     renderCareerPC('/pokemon/experience');
 
     await user.click(screen.getByRole('button', { name: 'SFX' }));
@@ -277,6 +293,7 @@ describe('CareerPC', () => {
   it('ignores an unavailable Web Audio API while enabling sound', async () => {
     const user = userEvent.setup();
     vi.stubGlobal('AudioContext', undefined);
+    window.localStorage.setItem('career-pc:sound', 'off');
     renderCareerPC('/pokemon/experience');
 
     await user.click(screen.getByRole('button', { name: 'SFX' }));
@@ -360,13 +377,12 @@ describe('CareerPC', () => {
     renderCareerPC('/pokemon/experience');
     const projects = screen.getByRole('tab', { name: /projects/i });
 
-    await user.click(screen.getByRole('button', { name: 'SFX' }));
     act(() => projects.focus());
 
     expect(fireEvent.keyDown(projects, { key: ' ', code: 'Space' })).toBe(false);
     expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/projects');
     expect(projects).toHaveFocus();
-    expect(audio.AudioContext).toHaveBeenCalledTimes(2);
+    expect(audio.AudioContext).toHaveBeenCalledTimes(1);
   });
 
   it('retains native Enter activation for a focused box tab', async () => {
