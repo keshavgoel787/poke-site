@@ -54,7 +54,7 @@ export function QuickMenu({ soundEnabled, setSoundEnabled }: QuickMenuProps) {
             aria-pressed={soundEnabled}
             onClick={toggleSound}
           >
-            Sound
+            SFX
           </button>
         </li>
       </ul>

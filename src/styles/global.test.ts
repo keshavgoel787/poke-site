@@ -518,6 +518,13 @@ describe('handheld reference visual system', () => {
     );
   });
 
+  it('keeps the compact music control fixed in the bottom-left corner', () => {
+    expect(declarationsFor('.music-control')).toMatch(/position:\s*fixed;/);
+    expect(declarationsFor('.music-control')).toMatch(/left:\s*0\.75rem;/);
+    expect(declarationsFor('.music-control')).toMatch(/bottom:\s*0\.75rem;/);
+    expect(declarationsFor('.music-control')).toMatch(/z-index:\s*20;/);
+  });
+
   it('uses pixel rendering and all four restrained motion treatments', () => {
     expect(globalStyles).toContain('image-rendering: pixelated');
     expect(globalStyles).toContain('@keyframes boot');

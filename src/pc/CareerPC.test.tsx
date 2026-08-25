@@ -186,19 +186,25 @@ describe('CareerPC', () => {
     expect(screen.getByRole('dialog', { name: 'DraftKings details' })).toBeVisible();
   });
 
-  it('keeps sound off until the quick menu sound control is clicked', async () => {
+  it('keeps SFX separate from the bottom-left music control', async () => {
     const user = userEvent.setup();
     const audio = installWorkingAudioContext();
     renderCareerPC('/pokemon/experience');
-    const sound = screen.getByRole('button', { name: /sound/i });
+    const sound = screen.getByRole('button', { name: 'SFX' });
+    const music = screen.getByRole('button', { name: 'Play background music' });
+    const musicPlay = vi.mocked(HTMLMediaElement.prototype.play);
 
     expect(sound).toHaveAttribute('aria-pressed', 'false');
+    expect(music).toHaveAttribute('aria-pressed', 'false');
     expect(audio.AudioContext).not.toHaveBeenCalled();
+    expect(musicPlay).not.toHaveBeenCalled();
 
     await user.click(sound);
 
     expect(sound).toHaveAttribute('aria-pressed', 'true');
+    expect(music).toHaveAttribute('aria-pressed', 'false');
     expect(audio.AudioContext).toHaveBeenCalledTimes(1);
+    expect(musicPlay).not.toHaveBeenCalled();
     expect(audio.context.createOscillator).toHaveBeenCalledTimes(1);
     expect(audio.context.createGain).toHaveBeenCalledTimes(1);
     expect(audio.oscillator.type).toBe('square');
@@ -210,6 +216,15 @@ describe('CareerPC', () => {
       0.0001,
       4.07,
     );
+
+    await user.click(music);
+
+    expect(screen.getByRole('button', { name: 'Pause background music' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    expect(musicPlay).toHaveBeenCalledTimes(1);
+    expect(audio.AudioContext).toHaveBeenCalledTimes(1);
   });
 
   it('plays enabled sound only for user-initiated menu, tab, and grid actions', async () => {
@@ -217,7 +232,7 @@ describe('CareerPC', () => {
     const audio = installWorkingAudioContext();
     renderCareerPC('/pokemon/experience');
 
-    await user.click(screen.getByRole('button', { name: /sound/i }));
+    await user.click(screen.getByRole('button', { name: 'SFX' }));
     await user.click(screen.getByRole('tab', { name: /projects/i }));
     await user.click(screen.getByRole('button', { name: 'ForgetMeNot' }));
 
@@ -231,7 +246,7 @@ describe('CareerPC', () => {
 
     renderCareerPC('/pokemon/projects/missing');
 
-    expect(screen.getByRole('button', { name: /sound/i })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'SFX' })).toHaveAttribute(
       'aria-pressed',
       'true',
     );
@@ -250,10 +265,10 @@ describe('CareerPC', () => {
     vi.stubGlobal('AudioContext', AudioContext);
     renderCareerPC('/pokemon/experience');
 
-    await user.click(screen.getByRole('button', { name: /sound/i }));
+    await user.click(screen.getByRole('button', { name: 'SFX' }));
 
     expect(AudioContext).toHaveBeenCalledTimes(1);
-    expect(screen.getByRole('button', { name: /sound/i })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'SFX' })).toHaveAttribute(
       'aria-pressed',
       'true',
     );
@@ -264,9 +279,9 @@ describe('CareerPC', () => {
     vi.stubGlobal('AudioContext', undefined);
     renderCareerPC('/pokemon/experience');
 
-    await user.click(screen.getByRole('button', { name: /sound/i }));
+    await user.click(screen.getByRole('button', { name: 'SFX' }));
 
-    expect(screen.getByRole('button', { name: /sound/i })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'SFX' })).toHaveAttribute(
       'aria-pressed',
       'true',
     );
@@ -279,7 +294,7 @@ describe('CareerPC', () => {
       'career-pc',
     );
     expect(screen.queryByRole('link', { name: /back to trainer card/i })).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /sound/i, hidden: true })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'SFX', hidden: true })).toBeVisible();
     expect(screen.queryByRole('navigation', { name: /quick menu/i })).not.toBeInTheDocument();
     expect(screen.queryByRole('main')).not.toBeInTheDocument();
   });
@@ -345,7 +360,7 @@ describe('CareerPC', () => {
     renderCareerPC('/pokemon/experience');
     const projects = screen.getByRole('tab', { name: /projects/i });
 
-    await user.click(screen.getByRole('button', { name: /sound/i }));
+    await user.click(screen.getByRole('button', { name: 'SFX' }));
     act(() => projects.focus());
 
     expect(fireEvent.keyDown(projects, { key: ' ', code: 'Space' })).toBe(false);

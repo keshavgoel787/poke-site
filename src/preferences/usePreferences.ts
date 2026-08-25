@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react';
 
 const SOUND_PREFERENCE_KEY = 'career-pc:sound';
+const MUSIC_PREFERENCE_KEY = 'career-pc:music';
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
-function getStoredSoundPreference(): boolean {
+function getStoredPreference(key: string): boolean {
   try {
-    return window.localStorage.getItem(SOUND_PREFERENCE_KEY) === 'on';
+    return window.localStorage.getItem(key) === 'on';
   } catch {
     return false;
   }
 }
 
-function storeSoundPreference(value: boolean): void {
+function storePreference(key: string, value: boolean): void {
   try {
-    window.localStorage.setItem(SOUND_PREFERENCE_KEY, value ? 'on' : 'off');
+    window.localStorage.setItem(key, value ? 'on' : 'off');
   } catch {
     // Preferences are optional; blocked or full storage must not break the UI.
   }
@@ -24,7 +25,12 @@ function getReducedMotionPreference() {
 }
 
 export function usePreferences() {
-  const [soundEnabled, setSoundEnabledState] = useState(getStoredSoundPreference);
+  const [soundEnabled, setSoundEnabledState] = useState(() =>
+    getStoredPreference(SOUND_PREFERENCE_KEY),
+  );
+  const [musicEnabled, setMusicEnabledState] = useState(() =>
+    getStoredPreference(MUSIC_PREFERENCE_KEY),
+  );
   const [reducedMotion, setReducedMotion] = useState(getReducedMotionPreference);
 
   useEffect(() => {
@@ -42,8 +48,19 @@ export function usePreferences() {
 
   const setSoundEnabled = (value: boolean) => {
     setSoundEnabledState(value);
-    storeSoundPreference(value);
+    storePreference(SOUND_PREFERENCE_KEY, value);
   };
 
-  return { soundEnabled, setSoundEnabled, reducedMotion };
+  const setMusicEnabled = (value: boolean) => {
+    setMusicEnabledState(value);
+    storePreference(MUSIC_PREFERENCE_KEY, value);
+  };
+
+  return {
+    soundEnabled,
+    setSoundEnabled,
+    musicEnabled,
+    setMusicEnabled,
+    reducedMotion,
+  };
 }

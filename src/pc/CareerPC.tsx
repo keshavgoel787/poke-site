@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { playBleep } from '../audio/playBleep';
-import { BackgroundMusic } from '../audio/BackgroundMusic';
+import { MusicControl } from '../audio/MusicControl';
 import { getRoster, publishedRosterTabs } from '../data/portfolioData';
 import { pokemonPath, resolvePokemonRoute } from '../navigation/routes';
 import { CreatureGrid } from './CreatureGrid';
@@ -38,7 +38,12 @@ export function CareerPC() {
   const launchingCardRef = useRef<HTMLButtonElement | null>(null);
   const launchingEntryIdRef = useRef<string | null>(null);
   const previousEntryIdRef = useRef(selectedEntry?.id);
-  const { soundEnabled, setSoundEnabled } = usePreferences();
+  const {
+    soundEnabled,
+    setSoundEnabled,
+    musicEnabled,
+    setMusicEnabled,
+  } = usePreferences();
 
   const playEnabledBleep = () => {
     if (soundEnabled) {
@@ -163,11 +168,11 @@ export function CareerPC() {
 
   return (
     <section className="career-pc" data-booting aria-labelledby="career-pc-title">
-      <BackgroundMusic enabled={soundEnabled} />
+      <MusicControl enabled={musicEnabled} setEnabled={setMusicEnabled} />
       <header className="career-pc__header">
         <h2 id="career-pc-title">Keshav&apos;s Pokémon</h2>
         <button type="button" aria-pressed={soundEnabled} onClick={toggleSound}>
-          Sound
+          SFX
         </button>
       </header>
 

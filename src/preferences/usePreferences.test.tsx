@@ -29,6 +29,28 @@ describe('usePreferences', () => {
     expect(result.current.soundEnabled).toBe(true);
   });
 
+  it('stores music independently from interface sound', () => {
+    const { result } = renderHook(() => usePreferences());
+
+    expect(result.current.musicEnabled).toBe(false);
+
+    act(() => result.current.setMusicEnabled(true));
+
+    expect(window.localStorage.getItem('career-pc:music')).toBe('on');
+    expect(window.localStorage.getItem('career-pc:sound')).toBeNull();
+    expect(result.current.musicEnabled).toBe(true);
+    expect(result.current.soundEnabled).toBe(false);
+  });
+
+  it('hydrates the stored music preference independently', () => {
+    values.set('career-pc:music', 'on');
+
+    const { result } = renderHook(() => usePreferences());
+
+    expect(result.current.musicEnabled).toBe(true);
+    expect(result.current.soundEnabled).toBe(false);
+  });
+
   it('hydrates a stored enabled sound preference without changing storage', () => {
     values.set('career-pc:sound', 'on');
     const setItem = vi.spyOn(window.localStorage, 'setItem');
