@@ -454,7 +454,7 @@ ul {
 
 [role="tablist"] {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.3rem;
 }
 
@@ -513,7 +513,11 @@ ul {
 .career-pc
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
-  button {
+  button,
+.career-pc
+  > [role="tabpanel"]
+  > ul[aria-label="Career entries"]
+  .party-card--informational {
   position: relative;
   display: grid;
   grid-template-columns: 6.5rem minmax(0, 1fr);
@@ -528,9 +532,15 @@ ul {
   background: #d9c94b;
   color: var(--ink);
   box-shadow: inset 0 0 0 0.18rem #eef1dc;
-  cursor: pointer;
   text-align: left;
   transition: transform 80ms steps(1, end), background-color 80ms steps(1, end);
+}
+
+.career-pc
+  > [role="tabpanel"]
+  > ul[aria-label="Career entries"]
+  button {
+  cursor: pointer;
 }
 
 .career-pc
@@ -583,6 +593,11 @@ ul {
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button
+  > .pixel-sprite,
+.career-pc
+  > [role="tabpanel"]
+  > ul[aria-label="Career entries"]
+  .party-card--informational
   > .pixel-sprite {
   grid-column: 1;
   grid-row: 1 / span 4;
@@ -593,6 +608,11 @@ ul {
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
   button
+  > .party-card__name,
+.career-pc
+  > [role="tabpanel"]
+  > ul[aria-label="Career entries"]
+  .party-card--informational
   > .party-card__name {
   align-self: end;
   padding-right: 2rem;
@@ -612,12 +632,27 @@ ul {
 .career-pc
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
+  .party-card--informational
+  > .party-card__organization,
+.career-pc
+  > [role="tabpanel"]
+  > ul[aria-label="Career entries"]
   button
   > .party-card__role,
 .career-pc
   > [role="tabpanel"]
   > ul[aria-label="Career entries"]
+  .party-card--informational
+  > .party-card__role,
+.career-pc
+  > [role="tabpanel"]
+  > ul[aria-label="Career entries"]
   button
+  > .party-card__metadata,
+.career-pc
+  > [role="tabpanel"]
+  > ul[aria-label="Career entries"]
+  .party-card--informational
   > .party-card__metadata {
   grid-column: 2;
   min-width: 0;
@@ -631,6 +666,15 @@ ul {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow-wrap: anywhere;
+}
+
+.party-card--informational {
+  cursor: default;
+}
+
+.party-card--informational:hover,
+.party-card--informational:focus-within {
+  transform: none;
 }
 
 .party-card__name {
@@ -1021,6 +1065,13 @@ dialog.pokedex-entry > button {
     min-height: 10.25rem;
   }
 
+  .career-pc
+    > [role="tabpanel"]
+    > ul[aria-label="Career entries"]
+    .party-card--informational {
+    min-height: 10.25rem;
+  }
+
   .pixel-sprite {
     width: 7rem;
     height: 7rem;
@@ -1092,7 +1143,11 @@ dialog.pokedex-entry > button {
     min-height: 0;
   }
 
-  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] button {
+  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] button,
+  .career-pc
+    > [role="tabpanel"]
+    > ul[aria-label="Career entries"]
+    .party-card--informational {
     min-height: 0;
     height: 6.75rem;
     grid-template-columns: 4.75rem minmax(0, 1fr);
@@ -1189,6 +1244,7 @@ dialog.pokedex-entry > button {
   }
 
   [role="tablist"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.2rem;
   }
 
@@ -1209,7 +1265,11 @@ dialog.pokedex-entry > button {
     min-height: 0;
   }
 
-  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] button {
+  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] button,
+  .career-pc
+    > [role="tabpanel"]
+    > ul[aria-label="Career entries"]
+    .party-card--informational {
     grid-template-columns: 4rem minmax(0, 1fr);
     grid-template-rows: repeat(4, minmax(1rem, auto));
     min-height: 6rem;
