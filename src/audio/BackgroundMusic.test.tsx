@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, vi } from 'vitest';
 import { BackgroundMusic, backgroundTrack } from './BackgroundMusic';
 
@@ -44,4 +44,20 @@ it('silently tolerates browser autoplay blocking', () => {
   play.mockRejectedValueOnce(new DOMException('Blocked', 'NotAllowedError'));
 
   expect(() => render(<BackgroundMusic enabled />)).not.toThrow();
+});
+
+it('retries blocked autoplay on the first user gesture', async () => {
+  play
+    .mockRejectedValueOnce(new DOMException('Blocked', 'NotAllowedError'))
+    .mockResolvedValueOnce(undefined);
+
+  render(<BackgroundMusic enabled />);
+
+  await waitFor(() => expect(play).toHaveBeenCalledTimes(1));
+  fireEvent.pointerDown(document.body);
+
+  await waitFor(() => expect(play).toHaveBeenCalledTimes(2));
+
+  fireEvent.pointerDown(document.body);
+  expect(play).toHaveBeenCalledTimes(2);
 });

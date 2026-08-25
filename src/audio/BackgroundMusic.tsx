@@ -16,6 +16,27 @@ export function BackgroundMusic({ enabled }: BackgroundMusicProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
+    const removeGestureRetry = () => {
+      document.removeEventListener('pointerdown', retryAfterGesture, true);
+      document.removeEventListener('keydown', retryAfterGesture, true);
+    };
+
+    const addGestureRetry = () => {
+      document.addEventListener('pointerdown', retryAfterGesture, {
+        capture: true,
+        once: true,
+      });
+      document.addEventListener('keydown', retryAfterGesture, {
+        capture: true,
+        once: true,
+      });
+    };
+
+    function retryAfterGesture() {
+      removeGestureRetry();
+      syncPlayback();
+    }
+
     const syncPlayback = () => {
       const audio = audioRef.current;
 
@@ -24,13 +45,18 @@ export function BackgroundMusic({ enabled }: BackgroundMusicProps) {
       }
 
       if (!enabled || document.hidden) {
+        removeGestureRetry();
         audio.pause();
         return;
       }
 
       audio.volume = 0.18;
-      const playback = audio.play();
-      void playback?.catch(() => undefined);
+      try {
+        const playback = audio.play();
+        void playback?.then(removeGestureRetry).catch(addGestureRetry);
+      } catch {
+        addGestureRetry();
+      }
     };
 
     syncPlayback();
@@ -38,6 +64,7 @@ export function BackgroundMusic({ enabled }: BackgroundMusicProps) {
 
     return () => {
       document.removeEventListener('visibilitychange', syncPlayback);
+      removeGestureRetry();
       audioRef.current?.pause();
     };
   }, [enabled]);
