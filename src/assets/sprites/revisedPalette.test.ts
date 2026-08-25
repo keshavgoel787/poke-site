@@ -69,6 +69,15 @@ describe('classic roster sprite style', () => {
     expect(svg).toContain('<g fill="#35d34a"><rect x="22" y="12" width="2" height="2"/></g>');
   });
 
+  it.each([
+    [draftKingsA, ['<rect x="4" y="4" width="4" height="6"/>', '<rect x="14" y="4" width="4" height="6"/>', '<rect x="24" y="4" width="4" height="6"/>']],
+    [draftKingsB, ['<rect x="4" y="6" width="4" height="4"/>', '<rect x="14" y="2" width="4" height="8"/>', '<rect x="24" y="6" width="4" height="4"/>']],
+  ])('DraftKings crown tips are yellow-filled without isolated dark centers', (svg, tips) => {
+    const yellowLayer = svg.match(/<g fill="#ffd56b">(.+?)<\/g>/)?.[1] ?? '';
+
+    expect(tips.every((tip) => yellowLayer.includes(tip))).toBe(true);
+  });
+
   it.each(frames)('$name uses only the shared five-color palette', ({ svg }) => {
     const fills = Array.from(svg.matchAll(/\bfill="(#[0-9a-f]{6})"/gi), ([, fill]) =>
       fill.toLowerCase(),
