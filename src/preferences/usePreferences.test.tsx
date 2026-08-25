@@ -29,16 +29,16 @@ describe('usePreferences', () => {
     expect(result.current.soundEnabled).toBe(false);
   });
 
-  it('defaults music on and stores it independently from interface sound', () => {
+  it('defaults music off and stores it independently from interface sound', () => {
     const { result } = renderHook(() => usePreferences());
 
-    expect(result.current.musicEnabled).toBe(true);
-
-    act(() => result.current.setMusicEnabled(false));
-
-    expect(window.localStorage.getItem('career-pc:music')).toBe('off');
-    expect(window.localStorage.getItem('career-pc:sound')).toBeNull();
     expect(result.current.musicEnabled).toBe(false);
+
+    act(() => result.current.setMusicEnabled(true));
+
+    expect(window.localStorage.getItem('career-pc:music')).toBe('on');
+    expect(window.localStorage.getItem('career-pc:sound')).toBeNull();
+    expect(result.current.musicEnabled).toBe(true);
     expect(result.current.soundEnabled).toBe(true);
   });
 

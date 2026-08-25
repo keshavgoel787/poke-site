@@ -191,20 +191,20 @@ describe('CareerPC', () => {
     const audio = installWorkingAudioContext();
     renderCareerPC('/pokemon/experience');
     const sound = screen.getByRole('button', { name: 'SFX' });
-    const music = screen.getByRole('button', { name: 'Pause background music' });
+    const music = screen.getByRole('button', { name: 'Play background music' });
     const musicPlay = vi.mocked(HTMLMediaElement.prototype.play);
 
     expect(sound).toHaveAttribute('aria-pressed', 'true');
-    expect(music).toHaveAttribute('aria-pressed', 'true');
+    expect(music).toHaveAttribute('aria-pressed', 'false');
     expect(audio.AudioContext).not.toHaveBeenCalled();
-    expect(musicPlay).toHaveBeenCalledTimes(1);
+    expect(musicPlay).not.toHaveBeenCalled();
 
     await user.click(music);
 
     expect(sound).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('button', { name: 'Play background music' })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'Pause background music' })).toHaveAttribute(
       'aria-pressed',
-      'false',
+      'true',
     );
     expect(audio.AudioContext).not.toHaveBeenCalled();
     expect(musicPlay).toHaveBeenCalledTimes(1);
@@ -236,7 +236,7 @@ describe('CareerPC', () => {
   it('anchors the music control to the viewport outside the transformed PC panel', () => {
     renderCareerPC('/pokemon/experience');
 
-    const music = screen.getByRole('button', { name: 'Pause background music' });
+    const music = screen.getByRole('button', { name: 'Play background music' });
 
     expect(music.closest('.career-pc')).toBeNull();
     expect(music.parentElement).toHaveClass('music-control');

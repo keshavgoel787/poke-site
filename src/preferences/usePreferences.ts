@@ -31,7 +31,7 @@ export function usePreferences() {
     getStoredPreference(SOUND_PREFERENCE_KEY, true),
   );
   const [musicEnabled, setMusicEnabledState] = useState(() =>
-    getStoredPreference(MUSIC_PREFERENCE_KEY, true),
+    getStoredPreference(MUSIC_PREFERENCE_KEY),
   );
   const [reducedMotion, setReducedMotion] = useState(getReducedMotionPreference);
 
