@@ -47,3 +47,7 @@ application route to `/index.html` so direct links such as
 
 Deployment and DNS changes, including changes for `keshavgoel.dev`, require explicit
 user approval. This repository's verification workflow does not deploy or modify DNS.
+
+## Music credit
+
+Background music: [Littleroot Town - Pokémon Omega Ruby & Alpha Sapphire Music Extended HD](https://www.youtube.com/watch?v=zRGCzCn5azI&t=1s), credited to [Craig Maywell Vlogs](https://www.youtube.com/@NewBrawlgamemusic2). Used with permission for non-commercial use.

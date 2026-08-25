@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { playBleep } from '../audio/playBleep';
+import { BackgroundMusic } from '../audio/BackgroundMusic';
 import { getRoster, publishedRosterTabs } from '../data/portfolioData';
 import { pokemonPath, resolvePokemonRoute } from '../navigation/routes';
 import { CreatureGrid } from './CreatureGrid';
@@ -162,6 +163,7 @@ export function CareerPC() {
 
   return (
     <section className="career-pc" data-booting aria-labelledby="career-pc-title">
+      <BackgroundMusic enabled={soundEnabled} />
       <header className="career-pc__header">
         <h2 id="career-pc-title">Keshav&apos;s Pokémon</h2>
         <button type="button" aria-pressed={soundEnabled} onClick={toggleSound}>

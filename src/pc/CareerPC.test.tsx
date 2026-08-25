@@ -92,6 +92,8 @@ function renderCareerPC(path: string, priorPath?: string, nextPath?: string) {
 describe('CareerPC', () => {
   beforeEach(() => {
     const values = new Map<string, string>();
+    vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue();
+    vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => undefined);
     vi.stubGlobal('localStorage', {
       getItem: (key: string) => values.get(key) ?? null,
       setItem: (key: string, value: string) => values.set(key, value),
@@ -117,6 +119,10 @@ describe('CareerPC', () => {
     expect(screen.queryByText('VDart')).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'AWS details' })).toBeVisible();
     expect(screen.getAllByRole('listitem', { name: /move:/i }).length).toBeGreaterThan(0);
+    expect(screen.getByTestId('background-music')).toHaveAttribute(
+      'src',
+      'https://d2y16y8vzs5mvx.cloudfront.net/music/littleroot.mp3',
+    );
   });
 
   it('presents each party member with curated metadata and a completion bar', async () => {
