@@ -175,7 +175,7 @@ export function CareerPC() {
         </p>
       ) : null}
 
-      <nav aria-label="Professional roster">
+      <nav className="career-pc__roster-nav" aria-label="Pokémon roster">
         <div role="tablist" aria-label="Roster tabs">
           {rosterTabs.map((careerBox, index) => (
             <Link

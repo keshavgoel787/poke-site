@@ -306,6 +306,13 @@ describe('handheld reference visual system', () => {
   });
 
   it('fits three roster tabs and keeps informational cards non-interactive', () => {
+    expect(globalStyles).not.toMatch(/nav\[aria-label=/);
+    expect(
+      Array.from(globalStyles.matchAll(/\.career-pc > \.career-pc__roster-nav\s*\{/g)),
+    ).toHaveLength(3);
+    expect(globalStyles).toMatch(
+      /\.career-pc > \.career-pc__roster-nav\s*{[^}]*padding: 0\.55rem 0\.55rem 0;/,
+    );
     expect(globalStyles).toMatch(
       /\[role="tablist"\][\s\S]*grid-template-columns:\s*repeat\(3,/,
     );
@@ -375,7 +382,7 @@ describe('handheld reference visual system', () => {
       /\.career-pc__header > h2\s*{[^}]*padding: 0\.3rem 0\.6rem;/,
     );
     expect(compactDesktopStyles).toMatch(
-      /\.career-pc > nav\[aria-label="Professional roster"\]\s*{[^}]*padding: 0\.2rem 0\.3rem 0;/,
+      /\.career-pc > \.career-pc__roster-nav\s*{[^}]*padding: 0\.2rem 0\.3rem 0;/,
     );
     expect(compactDesktopStyles).toMatch(
       /\[role="tablist"\]\s*{[^}]*gap: 0\.2rem;/,

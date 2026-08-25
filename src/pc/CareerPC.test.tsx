@@ -101,6 +101,9 @@ describe('CareerPC', () => {
   it('shows three roster tabs and current experience party', () => {
     renderCareerPC('/pokemon/experience/amazon');
 
+    expect(screen.getByRole('navigation', { name: 'Pokémon roster' })).toHaveClass(
+      'career-pc__roster-nav',
+    );
     expect(screen.getAllByRole('tab', { hidden: true })).toHaveLength(3);
     expect(screen.getByRole('tab', { name: 'Experience', hidden: true })).toHaveAttribute(
       'aria-selected',

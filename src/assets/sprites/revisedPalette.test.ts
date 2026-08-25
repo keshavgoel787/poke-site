@@ -61,6 +61,12 @@ const frames = spritePairs.flatMap(({ name, frameA, frameB }) => [
   { name: `${name} frame B`, svg: frameB },
 ]);
 
+const forbiddenSvgElements =
+  /<(?:path|polygon|polyline|circle|ellipse|line|style|animate|animateTransform|set)\b/i;
+const forbiddenSvgAttributes = /\b(?:stroke(?:-[\w-]+)?|transform)\s*=/i;
+const forbiddenSvgStyles =
+  /\bstyle\s*=\s*["'][^"']*\bstroke(?:-[\w-]+)?\s*:/i;
+
 describe('classic roster sprite style', () => {
   it.each([remetraA, remetraB])('Remetra depicts a simple apple mascot', (svg) => {
     expect(svg).toContain('<title>Apple mascot</title>');
@@ -105,10 +111,12 @@ describe('classic roster sprite style', () => {
     expect(fills.every((fill) => approvedPalette.has(fill))).toBe(true);
   });
 
-  it.each(frames)('$name uses rectangle-only two-pixel geometry', ({ svg }) => {
+  it.each(frames)('$name uses rectangle-only static two-pixel geometry', ({ svg }) => {
     expect(svg).toContain('viewBox="0 0 32 32"');
     expect(svg).toContain('shape-rendering="crispEdges"');
-    expect(svg).not.toMatch(/<(?:path|polygon|polyline|circle|ellipse)\b/);
+    expect(svg).not.toMatch(forbiddenSvgElements);
+    expect(svg).not.toMatch(forbiddenSvgAttributes);
+    expect(svg).not.toMatch(forbiddenSvgStyles);
 
     const rects = Array.from(svg.matchAll(/<rect\b[^>]*\/>/g), ([rect]) => rect);
     expect(rects.length).toBeGreaterThan(0);
@@ -126,7 +134,5 @@ describe('classic roster sprite style', () => {
 
   it.each(spritePairs)('$name has a distinct object-specific animation frame', ({ frameA, frameB }) => {
     expect(frameA).not.toBe(frameB);
-    expect(frameA).not.toContain('transform="translate');
-    expect(frameB).not.toContain('transform="translate');
   });
 });

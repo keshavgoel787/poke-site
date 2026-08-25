@@ -447,7 +447,7 @@ ul {
   font-weight: 400;
 }
 
-.career-pc > nav[aria-label="Professional roster"] {
+.career-pc > .career-pc__roster-nav {
   padding: 0.55rem 0.55rem 0;
   background: #fffbd8;
 }
@@ -1127,7 +1127,7 @@ dialog.pokedex-entry > button {
     min-height: 0;
   }
 
-  .career-pc > nav[aria-label="Professional roster"] {
+  .career-pc > .career-pc__roster-nav {
     padding: 0.3rem 0.4rem 0;
   }
 
@@ -1239,7 +1239,7 @@ dialog.pokedex-entry > button {
     font-size: 0.9rem;
   }
 
-  .career-pc > nav[aria-label="Professional roster"] {
+  .career-pc > .career-pc__roster-nav {
     padding: 0.2rem 0.3rem 0;
   }
 
