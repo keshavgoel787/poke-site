@@ -2,16 +2,28 @@ import amazonA from './amazon-a.svg?raw';
 import amazonB from './amazon-b.svg?raw';
 import breatheEasyA from './breathe-easy-a.svg?raw';
 import breatheEasyB from './breathe-easy-b.svg?raw';
+import bhangraA from './bhangra-a.svg?raw';
+import bhangraB from './bhangra-b.svg?raw';
 import draftKingsA from './draftkings-a.svg?raw';
 import draftKingsB from './draftkings-b.svg?raw';
 import forgetMeNotA from './forget-me-not-a.svg?raw';
 import forgetMeNotB from './forget-me-not-b.svg?raw';
+import foodExplorerA from './food-explorer-a.svg?raw';
+import foodExplorerB from './food-explorer-b.svg?raw';
+import gamesCollectingA from './games-collecting-a.svg?raw';
+import gamesCollectingB from './games-collecting-b.svg?raw';
+import hikingA from './hiking-a.svg?raw';
+import hikingB from './hiking-b.svg?raw';
 import johnsonJohnsonA from './johnson-johnson-a.svg?raw';
 import johnsonJohnsonB from './johnson-johnson-b.svg?raw';
 import procureMateA from './procuremateai-a.svg?raw';
 import procureMateB from './procuremateai-b.svg?raw';
 import remetraA from './remetra-a.svg?raw';
 import remetraB from './remetra-b.svg?raw';
+import musicA from './music-a.svg?raw';
+import musicB from './music-b.svg?raw';
+import sigmaBetaRhoA from './sigma-beta-rho-a.svg?raw';
+import sigmaBetaRhoB from './sigma-beta-rho-b.svg?raw';
 import wpsDataLabA from './wps-data-lab-a.svg?raw';
 import wpsDataLabB from './wps-data-lab-b.svg?raw';
 
@@ -36,6 +48,12 @@ const spritePairs = [
   { name: 'Remetra', frameA: remetraA, frameB: remetraB },
   { name: 'ForgetMeNot', frameA: forgetMeNotA, frameB: forgetMeNotB },
   { name: 'BreatheEasy', frameA: breatheEasyA, frameB: breatheEasyB },
+  { name: 'Bhangra', frameA: bhangraA, frameB: bhangraB },
+  { name: 'Sigma Beta Rho', frameA: sigmaBetaRhoA, frameB: sigmaBetaRhoB },
+  { name: 'Games & Collecting', frameA: gamesCollectingA, frameB: gamesCollectingB },
+  { name: 'Hiking', frameA: hikingA, frameB: hikingB },
+  { name: 'Music', frameA: musicA, frameB: musicB },
+  { name: 'Food Explorer', frameA: foodExplorerA, frameB: foodExplorerB },
 ] as const;
 
 const frames = spritePairs.flatMap(({ name, frameA, frameB }) => [

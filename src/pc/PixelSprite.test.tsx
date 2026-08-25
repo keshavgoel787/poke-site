@@ -65,6 +65,20 @@ describe('PixelSprite', () => {
     },
   );
 
+  it.each([
+    'bhangra',
+    'sigma-beta-rho',
+    'games-collecting',
+    'hiking',
+    'music',
+    'food-explorer',
+  ])('renders two animation frames for %s', (spriteId) => {
+    render(<PixelSprite spriteId={spriteId} label={spriteId} animate />);
+
+    expect(screen.getByRole('img', { name: spriteId }).querySelectorAll('img')).toHaveLength(2);
+    cleanup();
+  });
+
   const entriesWithExistingSprites = rosterTabs
     .flatMap((roster) => roster.entries)
     .filter((entry) => entry.spriteId !== 'wps-data-lab' && entry.spriteId !== 'remetra');
