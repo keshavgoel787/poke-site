@@ -63,6 +63,12 @@ describe('classic roster sprite style', () => {
     expect(forgetMeNotB).toContain('<rect x="18" y="18" width="2" height="2"/>');
   });
 
+  it.each([draftKingsA, draftKingsB])('DraftKings wears three colored crown gems', (svg) => {
+    expect(svg).toContain('<g fill="#2877c8"><rect x="10" y="12" width="2" height="2"/></g>');
+    expect(svg).toContain('<g fill="#c74632"><rect x="16" y="12" width="2" height="2"/></g>');
+    expect(svg).toContain('<g fill="#35d34a"><rect x="22" y="12" width="2" height="2"/></g>');
+  });
+
   it.each(frames)('$name uses only the shared five-color palette', ({ svg }) => {
     const fills = Array.from(svg.matchAll(/\bfill="(#[0-9a-f]{6})"/gi), ([, fill]) =>
       fill.toLowerCase(),
