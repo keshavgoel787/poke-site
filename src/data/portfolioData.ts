@@ -184,6 +184,8 @@ export const rosterTabs: Roster[] = [
   },
 ];
 
+export const publishedRosterTabs = rosterTabs.filter((roster) => roster.id !== 'interests');
+
 export const trainerProfile: TrainerProfile = {
   name: 'Keshav Goel',
   school: 'Northeastern University',

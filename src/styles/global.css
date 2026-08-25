@@ -454,7 +454,7 @@ ul {
 
 [role="tablist"] {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.3rem;
 }
 
@@ -574,19 +574,6 @@ ul {
     inset 0 0 0 0.28rem #398aca,
     inset 0 0 0 0.18rem #eef1dc,
     inset 0 -0.5rem 0 #d8c813;
-}
-
-.career-pc
-  > [role="tabpanel"]
-  > ul.party-grid
-  button[aria-pressed="true"]::before {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-  z-index: 3;
-  color: var(--ink);
-  content: "▶";
-  animation: cursor-hop 520ms steps(2, end) infinite;
 }
 
 .career-pc
@@ -1244,7 +1231,7 @@ dialog.pokedex-entry > button {
   }
 
   [role="tablist"] {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.2rem;
   }
 

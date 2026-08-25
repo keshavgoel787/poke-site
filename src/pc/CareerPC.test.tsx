@@ -98,13 +98,14 @@ describe('CareerPC', () => {
     });
   });
 
-  it('shows three roster tabs and current experience party', () => {
+  it('shows only the two published roster tabs and current experience party', () => {
     renderCareerPC('/pokemon/experience/amazon');
 
     expect(screen.getByRole('navigation', { name: 'Pokémon roster' })).toHaveClass(
       'career-pc__roster-nav',
     );
-    expect(screen.getAllByRole('tab', { hidden: true })).toHaveLength(3);
+    expect(screen.getAllByRole('tab', { hidden: true })).toHaveLength(2);
+    expect(screen.queryByRole('tab', { name: 'Interests', hidden: true })).not.toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'Experience', hidden: true })).toHaveAttribute(
       'aria-selected',
       'true',
@@ -293,21 +294,12 @@ describe('CareerPC', () => {
     expect(screen.getByRole('button', { name: 'BreatheEasy' })).toBeVisible();
   });
 
-  it('shows six informational Interest cards without opening professional dialogs', async () => {
-    const user = userEvent.setup();
-    renderCareerPC('/pokemon/experience');
+  it('recovers an unpublished Interests route to Experience', async () => {
+    renderCareerPC('/pokemon/interests');
 
-    expect(screen.getAllByRole('tab')).toHaveLength(3);
-    await user.click(screen.getByRole('tab', { name: 'Interests' }));
-
-    expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/interests');
-    const list = screen.getByRole('list', { name: 'Interest entries' });
-    expect(list).toHaveClass('party-grid');
-    expect(within(list).getAllByRole('listitem')).toHaveLength(6);
-    expect(within(list).queryByRole('button')).not.toBeInTheDocument();
-    expect(screen.getByText('Fundraising & Academic Lead')).toBeVisible();
-    expect(screen.getByText('Pokémon · Destiny 2 · League')).toBeVisible();
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(await screen.findByTestId('current-route')).toHaveTextContent('/pokemon/experience');
+    expect(screen.queryByRole('tab', { name: 'Interests' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'AWS' })).toBeVisible();
   });
 
   it('keeps every box tab associated with the mounted active panel', () => {
@@ -326,17 +318,16 @@ describe('CareerPC', () => {
     renderCareerPC('/pokemon/experience');
     const experience = screen.getByRole('tab', { name: /experience/i });
     const projects = screen.getByRole('tab', { name: /projects/i });
-    const interests = screen.getByRole('tab', { name: /interests/i });
 
     act(() => experience.focus());
     await user.keyboard('{End}');
-    expect(interests).toHaveFocus();
+    expect(projects).toHaveFocus();
 
     await user.keyboard('{Home}');
     expect(experience).toHaveFocus();
 
     await user.keyboard('{ArrowLeft}');
-    expect(interests).toHaveFocus();
+    expect(projects).toHaveFocus();
 
     await user.keyboard('{ArrowRight}');
     expect(experience).toHaveFocus();

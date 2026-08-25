@@ -28,17 +28,17 @@ describe('resolvePokemonRoute', () => {
     });
   });
 
-  it('accepts the Interests roster without an entry', () => {
+  it('recovers the unpublished Interests roster to Experience', () => {
     expect(resolvePokemonRoute('interests')).toEqual({
-      tab: 'interests',
+      tab: 'experience',
       entryId: undefined,
-      recovered: false,
+      recovered: true,
     });
   });
 
-  it('recovers an Interest detail route to the Interests roster', () => {
+  it('recovers an unpublished Interest detail route to Experience', () => {
     expect(resolvePokemonRoute('interests', 'bhangra')).toEqual({
-      tab: 'interests',
+      tab: 'experience',
       entryId: undefined,
       recovered: true,
     });

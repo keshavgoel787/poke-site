@@ -1,4 +1,10 @@
-import { getRoster, getRosterEntry, rosterTabs, trainerProfile } from './portfolioData';
+import {
+  getRoster,
+  getRosterEntry,
+  publishedRosterTabs,
+  rosterTabs,
+  trainerProfile,
+} from './portfolioData';
 
 const visibleEntries = () => rosterTabs.flatMap((tab) => tab.entries);
 const professionalEntries = () => rosterTabs.slice(0, 2).flatMap((tab) => tab.entries);
@@ -53,6 +59,10 @@ it('provides the exact Interests roster content', () => {
     { creatureName: 'Food Explorer', role: 'Restaurants & cuisines', cardMetadata: 'Taste · Explore', category: 'Interest', spriteId: 'food-explorer' },
   ]);
   expect(getRoster('interests')).toBe(rosterTabs[2]);
+});
+
+it('keeps unfinished Interests content out of the published roster', () => {
+  expect(publishedRosterTabs.map((tab) => tab.id)).toEqual(['experience', 'projects']);
 });
 
 it('removes stale experience entries from the visible roster', () => {

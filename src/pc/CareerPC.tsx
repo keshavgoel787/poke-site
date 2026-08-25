@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { playBleep } from '../audio/playBleep';
-import { getRoster, rosterTabs } from '../data/portfolioData';
+import { getRoster, publishedRosterTabs } from '../data/portfolioData';
 import { pokemonPath, resolvePokemonRoute } from '../navigation/routes';
 import { CreatureGrid } from './CreatureGrid';
 import { PokedexEntry } from './PokedexEntry';
@@ -16,7 +16,7 @@ export function CareerPC() {
   const location = useLocation();
   const navigate = useNavigate();
   const resolvedRoute = resolvePokemonRoute(tab, entryId);
-  const box = getRoster(resolvedRoute.tab) ?? rosterTabs[0];
+  const box = getRoster(resolvedRoute.tab) ?? publishedRosterTabs[0];
   const interestsActive = box.id === 'interests';
   const routeSelectedEntry = box.entries.find(
     (entry) => entry.id === resolvedRoute.entryId,
@@ -129,7 +129,7 @@ export function CareerPC() {
 
   const moveTabFocus = (event: KeyboardEvent<HTMLAnchorElement>, currentIndex: number) => {
     if (event.key === ' ') {
-      const selectedTab = rosterTabs[currentIndex];
+      const selectedTab = publishedRosterTabs[currentIndex];
 
       event.preventDefault();
       setFocusedBoxId(selectedTab.id);
@@ -142,13 +142,13 @@ export function CareerPC() {
     let nextIndex: number | undefined;
 
     if (event.key === 'ArrowLeft') {
-      nextIndex = (currentIndex - 1 + rosterTabs.length) % rosterTabs.length;
+      nextIndex = (currentIndex - 1 + publishedRosterTabs.length) % publishedRosterTabs.length;
     } else if (event.key === 'ArrowRight') {
-      nextIndex = (currentIndex + 1) % rosterTabs.length;
+      nextIndex = (currentIndex + 1) % publishedRosterTabs.length;
     } else if (event.key === 'Home') {
       nextIndex = 0;
     } else if (event.key === 'End') {
-      nextIndex = rosterTabs.length - 1;
+      nextIndex = publishedRosterTabs.length - 1;
     }
 
     if (nextIndex === undefined) {
@@ -156,7 +156,7 @@ export function CareerPC() {
     }
 
     event.preventDefault();
-    setFocusedBoxId(rosterTabs[nextIndex].id);
+    setFocusedBoxId(publishedRosterTabs[nextIndex].id);
     boxTabRefs.current[nextIndex]?.focus();
   };
 
@@ -177,7 +177,7 @@ export function CareerPC() {
 
       <nav className="career-pc__roster-nav" aria-label="Pokémon roster">
         <div role="tablist" aria-label="Roster tabs">
-          {rosterTabs.map((careerBox, index) => (
+          {publishedRosterTabs.map((careerBox, index) => (
             <Link
               key={careerBox.id}
               ref={(element) => {
