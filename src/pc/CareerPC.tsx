@@ -17,6 +17,7 @@ export function CareerPC() {
   const navigate = useNavigate();
   const resolvedRoute = resolvePokemonRoute(tab, entryId);
   const box = getRoster(resolvedRoute.tab) ?? rosterTabs[0];
+  const interestsActive = box.id === 'interests';
   const routeSelectedEntry = box.entries.find(
     (entry) => entry.id === resolvedRoute.entryId,
   );
@@ -25,8 +26,8 @@ export function CareerPC() {
   const localSelectedEntry = hasEntryUrlSegment
     ? undefined
     : box.entries.find((entry) => entry.id === localSelectedEntryId);
-  const selectedEntry = routeSelectedEntry ?? localSelectedEntry;
-  const selectedCardId = selectedEntry?.id ?? box.entries[0].id;
+  const selectedEntry = interestsActive ? undefined : routeSelectedEntry ?? localSelectedEntry;
+  const selectedCardId = interestsActive ? undefined : selectedEntry?.id ?? box.entries[0].id;
   const recoveryState = location.state as RecoveryLocationState | null;
   const showRecoveryMessage =
     resolvedRoute.recovered || recoveryState?.pokemonRouteRecovered === true;
@@ -208,8 +209,10 @@ export function CareerPC() {
       >
         <CreatureGrid
           entries={box.entries}
-          selectedId={selectedCardId}
-          onSelect={selectEntry}
+          selectedId={interestsActive ? undefined : selectedCardId}
+          onSelect={interestsActive ? undefined : selectEntry}
+          interactive={!interestsActive}
+          ariaLabel={interestsActive ? 'Interest entries' : 'Career entries'}
         />
       </section>
       {selectedEntry ? <PokedexEntry entry={selectedEntry} onClose={closeEntry} /> : null}

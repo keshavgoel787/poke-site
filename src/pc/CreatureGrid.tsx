@@ -4,14 +4,48 @@ import { PixelSprite } from './PixelSprite';
 
 type CreatureGridProps = {
   entries: CareerEntry[];
-  selectedId: string;
-  onSelect: (entryId: string) => void;
+  selectedId?: string;
+  onSelect?: (entryId: string) => void;
+  interactive?: boolean;
+  ariaLabel?: string;
 };
 
 const previousKeys = new Set(['ArrowLeft', 'ArrowUp']);
 const nextKeys = new Set(['ArrowRight', 'ArrowDown']);
 
-export function CreatureGrid({ entries, selectedId, onSelect }: CreatureGridProps) {
+function CardContents({ entry, showCompletion }: { entry: CareerEntry; showCompletion: boolean }) {
+  const completionId = `party-card-${entry.id}-completion`;
+
+  return (
+    <>
+      <PixelSprite spriteId={entry.spriteId} label={entry.creatureName} animate />
+      <span className="party-card__name">{entry.creatureName}</span>
+      {entry.organization !== entry.creatureName ? (
+        <span className="party-card__organization">{entry.organization}</span>
+      ) : null}
+      <span className="party-card__role">{entry.role}</span>
+      <span className="party-card__metadata">{entry.cardMetadata}</span>
+      {showCompletion ? (
+        <>
+          <span className="party-card__completion" role="img" aria-label="Entry complete">
+            <span aria-hidden="true">━━━━━━━━</span>
+          </span>
+          <span id={completionId} hidden>
+            Entry complete
+          </span>
+        </>
+      ) : null}
+    </>
+  );
+}
+
+export function CreatureGrid({
+  entries,
+  selectedId,
+  onSelect,
+  interactive = true,
+  ariaLabel = 'Career entries',
+}: CreatureGridProps) {
   const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   const moveFocus = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
@@ -27,10 +61,20 @@ export function CreatureGrid({ entries, selectedId, onSelect }: CreatureGridProp
   };
 
   return (
-    <ul aria-label="Career entries">
+    <ul aria-label={ariaLabel}>
       {entries.map((entry, index) => {
         const selected = entry.id === selectedId;
         const completionId = `party-card-${entry.id}-completion`;
+
+        if (!interactive) {
+          return (
+            <li key={entry.id}>
+              <div className="party-card party-card--informational">
+                <CardContents entry={entry} showCompletion={false} />
+              </div>
+            </li>
+          );
+        }
 
         return (
           <li key={entry.id}>
@@ -43,26 +87,10 @@ export function CreatureGrid({ entries, selectedId, onSelect }: CreatureGridProp
               aria-describedby={completionId}
               aria-pressed={selected}
               tabIndex={selected ? 0 : -1}
-              onClick={() => onSelect(entry.id)}
+              onClick={() => onSelect?.(entry.id)}
               onKeyDown={(event) => moveFocus(event, index)}
             >
-              <PixelSprite
-                spriteId={entry.spriteId}
-                label={entry.creatureName}
-                animate
-              />
-              <span className="party-card__name">{entry.creatureName}</span>
-              {entry.organization !== entry.creatureName ? (
-                <span className="party-card__organization">{entry.organization}</span>
-              ) : null}
-              <span className="party-card__role">{entry.role}</span>
-              <span className="party-card__metadata">{entry.cardMetadata}</span>
-              <span className="party-card__completion" role="img" aria-label="Entry complete">
-                <span aria-hidden="true">━━━━━━━━</span>
-              </span>
-              <span id={completionId} hidden>
-                Entry complete
-              </span>
+              <CardContents entry={entry} showCompletion />
             </button>
           </li>
         );

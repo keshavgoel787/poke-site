@@ -98,10 +98,10 @@ describe('CareerPC', () => {
     });
   });
 
-  it('shows exactly the two professional roster tabs and current experience party', () => {
+  it('shows three roster tabs and current experience party', () => {
     renderCareerPC('/pokemon/experience/amazon');
 
-    expect(screen.getAllByRole('tab', { hidden: true })).toHaveLength(2);
+    expect(screen.getAllByRole('tab', { hidden: true })).toHaveLength(3);
     expect(screen.getByRole('tab', { name: 'Experience', hidden: true })).toHaveAttribute(
       'aria-selected',
       'true',
@@ -290,6 +290,22 @@ describe('CareerPC', () => {
     expect(screen.getByRole('button', { name: 'BreatheEasy' })).toBeVisible();
   });
 
+  it('shows six informational Interest cards without opening professional dialogs', async () => {
+    const user = userEvent.setup();
+    renderCareerPC('/pokemon/experience');
+
+    expect(screen.getAllByRole('tab')).toHaveLength(3);
+    await user.click(screen.getByRole('tab', { name: 'Interests' }));
+
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/interests');
+    const list = screen.getByRole('list', { name: 'Interest entries' });
+    expect(within(list).getAllByRole('listitem')).toHaveLength(6);
+    expect(within(list).queryByRole('button')).not.toBeInTheDocument();
+    expect(screen.getByText('Fundraising & Academic Lead')).toBeVisible();
+    expect(screen.getByText('Pokémon · Destiny 2 · League')).toBeVisible();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
   it('keeps every box tab associated with the mounted active panel', () => {
     renderCareerPC('/pokemon/experience');
 
@@ -306,16 +322,17 @@ describe('CareerPC', () => {
     renderCareerPC('/pokemon/experience');
     const experience = screen.getByRole('tab', { name: /experience/i });
     const projects = screen.getByRole('tab', { name: /projects/i });
+    const interests = screen.getByRole('tab', { name: /interests/i });
 
     act(() => experience.focus());
     await user.keyboard('{End}');
-    expect(projects).toHaveFocus();
+    expect(interests).toHaveFocus();
 
     await user.keyboard('{Home}');
     expect(experience).toHaveFocus();
 
     await user.keyboard('{ArrowLeft}');
-    expect(projects).toHaveFocus();
+    expect(interests).toHaveFocus();
 
     await user.keyboard('{ArrowRight}');
     expect(experience).toHaveFocus();
