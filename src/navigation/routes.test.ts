@@ -4,6 +4,7 @@ import { legacyPcPath, pokemonPath, resolvePokemonRoute } from './routes';
 describe('pokemonPath', () => {
   it('builds roster and entry routes', () => {
     expect(pokemonPath('experience')).toBe('/pokemon/experience');
+    expect(pokemonPath('interests')).toBe('/pokemon/interests');
     expect(pokemonPath('experience', 'draftkings')).toBe(
       '/pokemon/experience/draftkings',
     );
@@ -24,6 +25,22 @@ describe('resolvePokemonRoute', () => {
       tab: 'projects',
       entryId: 'forgetmenot',
       recovered: false,
+    });
+  });
+
+  it('accepts the Interests roster without an entry', () => {
+    expect(resolvePokemonRoute('interests')).toEqual({
+      tab: 'interests',
+      entryId: undefined,
+      recovered: false,
+    });
+  });
+
+  it('recovers an Interest detail route to the Interests roster', () => {
+    expect(resolvePokemonRoute('interests', 'bhangra')).toEqual({
+      tab: 'interests',
+      entryId: undefined,
+      recovered: true,
     });
   });
 

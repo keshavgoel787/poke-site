@@ -1,4 +1,4 @@
-export type RosterTab = 'experience' | 'projects';
+export type RosterTab = 'experience' | 'projects' | 'interests';
 
 export type ProfessionalMove = { name: string; skill: string };
 
@@ -7,7 +7,7 @@ export type CareerEntry = {
   creatureName: string;
   organization: string;
   role: string;
-  category: 'Experience' | 'Project';
+  category: 'Experience' | 'Project' | 'Interest';
   cardMetadata: string;
   dates?: string;
   location?: string;
@@ -168,6 +168,18 @@ export const rosterTabs: Roster[] = [
         moves: moves('Flutter', 'Dart', 'Google Maps API', 'Shelf', 'Docker'),
         spriteId: 'breathe-easy',
       },
+    ],
+  },
+  {
+    id: 'interests',
+    label: 'Interests',
+    entries: [
+      { id: 'bhangra', creatureName: 'Bhangra', organization: 'Bhangra', role: 'Captain', category: 'Interest', cardMetadata: 'Dance · Performance', highlight: '', professionalType: 'Interest', moves: [], spriteId: 'bhangra' },
+      { id: 'sigma-beta-rho', creatureName: 'Sigma Beta Rho', organization: 'Sigma Beta Rho', role: 'Fundraising & Academic Lead', category: 'Interest', cardMetadata: 'Leadership · Community', highlight: '', professionalType: 'Interest', moves: [], spriteId: 'sigma-beta-rho' },
+      { id: 'games-collecting', creatureName: 'Games & Collecting', organization: 'Games & Collecting', role: 'Pokémon · Destiny 2 · League', category: 'Interest', cardMetadata: 'Cards · Games', highlight: '', professionalType: 'Interest', moves: [], spriteId: 'games-collecting' },
+      { id: 'hiking', creatureName: 'Hiking', organization: 'Hiking', role: 'Trails & outdoors', category: 'Interest', cardMetadata: 'Explore · Recharge', highlight: '', professionalType: 'Interest', moves: [], spriteId: 'hiking' },
+      { id: 'music', creatureName: 'Music', organization: 'Music', role: 'House & R&B', category: 'Interest', cardMetadata: 'Listen · Discover', highlight: '', professionalType: 'Interest', moves: [], spriteId: 'music' },
+      { id: 'food-explorer', creatureName: 'Food Explorer', organization: 'Food Explorer', role: 'Restaurants & cuisines', category: 'Interest', cardMetadata: 'Taste · Explore', highlight: '', professionalType: 'Interest', moves: [], spriteId: 'food-explorer' },
     ],
   },
 ];

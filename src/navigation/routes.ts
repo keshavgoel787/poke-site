@@ -11,7 +11,9 @@ export const pokemonPath = (tab: RosterTab, entryId?: string) =>
 
 export function resolvePokemonRoute(tab?: string, entryId?: string): PokemonRouteState {
   const roster = rosterTabs.find((item) => item.id === tab) ?? rosterTabs[0];
-  const entry = roster.entries.find((item) => item.id === entryId);
+  const entry = roster.id === 'interests'
+    ? undefined
+    : roster.entries.find((item) => item.id === entryId);
   const hasExplicitTab = tab !== undefined;
 
   return {

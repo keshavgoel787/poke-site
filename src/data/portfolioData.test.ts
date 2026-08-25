@@ -1,9 +1,10 @@
-import { getRosterEntry, rosterTabs, trainerProfile } from './portfolioData';
+import { getRoster, getRosterEntry, rosterTabs, trainerProfile } from './portfolioData';
 
 const visibleEntries = () => rosterTabs.flatMap((tab) => tab.entries);
+const professionalEntries = () => rosterTabs.slice(0, 2).flatMap((tab) => tab.entries);
 
 it('provides exactly the approved roster tabs and visible entries', () => {
-  expect(rosterTabs.map((tab) => tab.id)).toEqual(['experience', 'projects']);
+  expect(rosterTabs.map((tab) => tab.id)).toEqual(['experience', 'projects', 'interests']);
   expect(rosterTabs[0].entries.map((entry) => entry.organization)).toEqual([
     'Amazon Web Services (AWS)',
     'DraftKings',
@@ -25,7 +26,33 @@ it('provides exactly the approved roster tabs and visible entries', () => {
     'Remetra',
     'ForgetMeNot',
     'BreatheEasy',
+    'Bhangra',
+    'Sigma Beta Rho',
+    'Games & Collecting',
+    'Hiking',
+    'Music',
+    'Food Explorer',
   ]);
+});
+
+it('provides the exact Interests roster content', () => {
+  const interests = rosterTabs[2].entries;
+
+  expect(interests.map(({ creatureName, role, cardMetadata, category, spriteId }) => ({
+    creatureName,
+    role,
+    cardMetadata,
+    category,
+    spriteId,
+  }))).toEqual([
+    { creatureName: 'Bhangra', role: 'Captain', cardMetadata: 'Dance · Performance', category: 'Interest', spriteId: 'bhangra' },
+    { creatureName: 'Sigma Beta Rho', role: 'Fundraising & Academic Lead', cardMetadata: 'Leadership · Community', category: 'Interest', spriteId: 'sigma-beta-rho' },
+    { creatureName: 'Games & Collecting', role: 'Pokémon · Destiny 2 · League', cardMetadata: 'Cards · Games', category: 'Interest', spriteId: 'games-collecting' },
+    { creatureName: 'Hiking', role: 'Trails & outdoors', cardMetadata: 'Explore · Recharge', category: 'Interest', spriteId: 'hiking' },
+    { creatureName: 'Music', role: 'House & R&B', cardMetadata: 'Listen · Discover', category: 'Interest', spriteId: 'music' },
+    { creatureName: 'Food Explorer', role: 'Restaurants & cuisines', cardMetadata: 'Taste · Explore', category: 'Interest', spriteId: 'food-explorer' },
+  ]);
+  expect(getRoster('interests')).toBe(rosterTabs[2]);
 });
 
 it('removes stale experience entries from the visible roster', () => {
@@ -87,9 +114,9 @@ it('uses one source-verified highlight and one or more source-verified moves per
     },
   } as const;
 
-  expect(Object.keys(expectedContent)).toHaveLength(visibleEntries().length);
+  expect(Object.keys(expectedContent)).toHaveLength(professionalEntries().length);
 
-  for (const entry of visibleEntries()) {
+  for (const entry of professionalEntries()) {
     expect(entry.highlight).toBe(expectedContent[entry.id as keyof typeof expectedContent].highlight);
     expect(entry.moves.map((move) => move.skill)).toEqual(
       expectedContent[entry.id as keyof typeof expectedContent].moves,
