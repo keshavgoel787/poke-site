@@ -502,7 +502,7 @@ ul {
     #fffbd8;
 }
 
-.career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] {
+.career-pc > [role="tabpanel"] > ul.party-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-content: start;
@@ -512,11 +512,11 @@ ul {
 
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   button,
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   .party-card--informational {
   position: relative;
   display: grid;
@@ -538,14 +538,14 @@ ul {
 
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   button {
   cursor: pointer;
 }
 
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   button::after {
   position: absolute;
   top: 0.5rem;
@@ -558,7 +558,7 @@ ul {
 
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   button:hover {
   background: #71b9ee;
   transform: translate(-2px, -2px);
@@ -566,7 +566,7 @@ ul {
 
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   button[aria-pressed="true"] {
   background: #f3df28;
   color: var(--ink);
@@ -578,7 +578,7 @@ ul {
 
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   button[aria-pressed="true"]::before {
   position: absolute;
   top: 0.5rem;
@@ -591,12 +591,12 @@ ul {
 
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   button
   > .pixel-sprite,
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   .party-card--informational
   > .pixel-sprite {
   grid-column: 1;
@@ -606,12 +606,12 @@ ul {
 
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   button
   > .party-card__name,
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   .party-card--informational
   > .party-card__name {
   align-self: end;
@@ -626,32 +626,32 @@ ul {
 
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   button
   > .party-card__organization,
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   .party-card--informational
   > .party-card__organization,
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   button
   > .party-card__role,
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   .party-card--informational
   > .party-card__role,
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   button
   > .party-card__metadata,
 .career-pc
   > [role="tabpanel"]
-  > ul[aria-label="Career entries"]
+  > ul.party-grid
   .party-card--informational
   > .party-card__metadata {
   grid-column: 2;
@@ -1056,18 +1056,18 @@ dialog.pokedex-entry > button {
     padding: 0.8rem;
   }
 
-  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] {
+  .career-pc > [role="tabpanel"] > ul.party-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.8rem;
   }
 
-  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] button {
+  .career-pc > [role="tabpanel"] > ul.party-grid button {
     min-height: 10.25rem;
   }
 
   .career-pc
     > [role="tabpanel"]
-    > ul[aria-label="Career entries"]
+    > ul.party-grid
     .party-card--informational {
     min-height: 10.25rem;
   }
@@ -1136,17 +1136,17 @@ dialog.pokedex-entry > button {
     padding: 0.4rem;
   }
 
-  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] {
+  .career-pc > [role="tabpanel"] > ul.party-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: repeat(3, minmax(0, 1fr));
     gap: 0.35rem;
     min-height: 0;
   }
 
-  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] button,
+  .career-pc > [role="tabpanel"] > ul.party-grid button,
   .career-pc
     > [role="tabpanel"]
-    > ul[aria-label="Career entries"]
+    > ul.party-grid
     .party-card--informational {
     min-height: 0;
     height: 6.75rem;
@@ -1258,17 +1258,17 @@ dialog.pokedex-entry > button {
     padding: 0.3rem;
   }
 
-  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] {
+  .career-pc > [role="tabpanel"] > ul.party-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: none;
     gap: 0.25rem;
     min-height: 0;
   }
 
-  .career-pc > [role="tabpanel"] > ul[aria-label="Career entries"] button,
+  .career-pc > [role="tabpanel"] > ul.party-grid button,
   .career-pc
     > [role="tabpanel"]
-    > ul[aria-label="Career entries"]
+    > ul.party-grid
     .party-card--informational {
     grid-template-columns: 4rem minmax(0, 1fr);
     grid-template-rows: repeat(4, minmax(1rem, auto));

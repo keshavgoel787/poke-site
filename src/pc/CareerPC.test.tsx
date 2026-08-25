@@ -299,6 +299,7 @@ describe('CareerPC', () => {
 
     expect(screen.getByTestId('current-route')).toHaveTextContent('/pokemon/interests');
     const list = screen.getByRole('list', { name: 'Interest entries' });
+    expect(list).toHaveClass('party-grid');
     expect(within(list).getAllByRole('listitem')).toHaveLength(6);
     expect(within(list).queryByRole('button')).not.toBeInTheDocument();
     expect(screen.getByText('Fundraising & Academic Lead')).toBeVisible();

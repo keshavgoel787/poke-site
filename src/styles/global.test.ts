@@ -295,7 +295,7 @@ describe('handheld reference visual system', () => {
       /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.career-pc[^}]*min-height: 0;/,
     );
     expect(globalStyles).toMatch(
-      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.career-pc [^{]*ul\[aria-label="Career entries"\]\s*{[^}]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/,
+      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.career-pc [^{]*ul\.party-grid\s*{[^}]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/,
     );
     expect(globalStyles).toMatch(
       /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.career-pc [^{]*button\s*,[\s\S]*?\.party-card--informational\s*{[^}]*min-height: 0;[^}]*height: 6\.75rem;/,
@@ -308,6 +308,9 @@ describe('handheld reference visual system', () => {
   it('fits three roster tabs and keeps informational cards non-interactive', () => {
     expect(globalStyles).toMatch(
       /\[role="tablist"\][\s\S]*grid-template-columns:\s*repeat\(3,/,
+    );
+    expect(globalStyles).toMatch(
+      /\.career-pc > \[role="tabpanel"\] > ul\.party-grid\s*{[^}]*display: grid;/,
     );
     expect(globalStyles).toContain('.party-card--informational');
     expect(globalStyles).toMatch(
@@ -384,13 +387,13 @@ describe('handheld reference visual system', () => {
       /\.career-pc > \[role="tabpanel"\]\s*{[^}]*padding: 0\.3rem;/,
     );
     expect(compactDesktopStyles).toMatch(
-      /\.career-pc > \[role="tabpanel"\] > ul\[aria-label="Career entries"\]\s*{[^}]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);[^}]*gap: 0\.25rem;/,
+      /\.career-pc > \[role="tabpanel"\] > ul\.party-grid\s*{[^}]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);[^}]*gap: 0\.25rem;/,
     );
     expect(compactDesktopStyles).toMatch(
-      /\.career-pc > \[role="tabpanel"\] > ul\[aria-label="Career entries"\]\s*{[^}]*grid-template-rows: none;/,
+      /\.career-pc > \[role="tabpanel"\] > ul\.party-grid\s*{[^}]*grid-template-rows: none;/,
     );
     expect(compactDesktopStyles).toMatch(
-      /\.career-pc > \[role="tabpanel"\] > ul\[aria-label="Career entries"\] button\s*,[\s\S]*?\.party-card--informational\s*{[^}]*min-height: 6rem;[^}]*padding: 0\.3rem;/,
+      /\.career-pc > \[role="tabpanel"\] > ul\.party-grid button\s*,[\s\S]*?\.party-card--informational\s*{[^}]*min-height: 6rem;[^}]*padding: 0\.3rem;/,
     );
     expect(compactDesktopStyles).toMatch(
       /\.career-pc \.pixel-sprite\s*{[^}]*width: 3\.75rem;[^}]*height: 3\.75rem;/,
@@ -451,7 +454,7 @@ describe('handheld reference visual system', () => {
       /\.career-pc__header\s*>\s*h2\s*{[^}]*background: #71b9ee;[^}]*color: var\(--ink\);/,
     );
     expect(globalStyles).toMatch(
-      /ul\[aria-label="Career entries"\]\s*button\s*,[\s\S]*?\.party-card--informational\s*{[^}]*background: #d9c94b;[^}]*color: var\(--ink\);/,
+      /ul\.party-grid\s*button\s*,[\s\S]*?\.party-card--informational\s*{[^}]*background: #d9c94b;[^}]*color: var\(--ink\);/,
     );
     expect(globalStyles).toMatch(
       /\.party-card__name\s*{[^}]*color: var\(--ink\);/,
@@ -494,11 +497,11 @@ describe('handheld reference visual system', () => {
     expect(globalStyles).toContain('min-width: 44px');
     expect(globalStyles).toContain('min-height: 44px');
     expect(globalStyles).toMatch(
-      /ul\[aria-label="Career entries"\]\s*{[\s\S]*?grid-template-columns: minmax\(0, 1fr\);/,
+      /ul\.party-grid\s*{[\s\S]*?grid-template-columns: minmax\(0, 1fr\);/,
     );
     expect(globalStyles).toMatch(/@media\s*\(min-width:\s*768px\)/);
     expect(globalStyles).toMatch(
-      /@media\s*\(min-width:\s*768px\)[\s\S]*?ul\[aria-label="Career entries"\][\s\S]*?grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/,
+      /@media\s*\(min-width:\s*768px\)[\s\S]*?ul\.party-grid[\s\S]*?grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/,
     );
   });
 

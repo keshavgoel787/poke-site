@@ -61,7 +61,7 @@ export function CreatureGrid({
   };
 
   return (
-    <ul aria-label={ariaLabel}>
+    <ul className="party-grid" aria-label={ariaLabel}>
       {entries.map((entry, index) => {
         const selected = entry.id === selectedId;
         const completionId = `party-card-${entry.id}-completion`;
