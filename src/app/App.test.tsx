@@ -3,6 +3,10 @@ import { MemoryRouter, useLocation } from 'react-router-dom';
 import { beforeEach, vi } from 'vitest';
 import { App } from './App';
 
+vi.mock('@vercel/analytics/react', () => ({
+  Analytics: () => <span data-testid="vercel-analytics" />,
+}));
+
 beforeEach(() => {
   const values = new Map<string, string>();
   vi.stubGlobal('localStorage', {
@@ -37,6 +41,12 @@ it('renders the Trainer Card and Experience roster together on the root route', 
   expect(screen.queryByRole('link', { name: "Keshav's Pokémon" })).not.toBeInTheDocument();
   expect(screen.getAllByRole('main')).toHaveLength(1);
   expect(screen.getByTestId('current-route')).toHaveTextContent(/^\/$/);
+});
+
+it('mounts Vercel Analytics once at the app root', () => {
+  renderApp('/');
+
+  expect(screen.getAllByTestId('vercel-analytics')).toHaveLength(1);
 });
 
 it('keeps the Trainer Card content on the root route', () => {
