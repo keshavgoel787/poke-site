@@ -295,7 +295,7 @@ describe('handheld reference visual system', () => {
     expect(declarationsFor('dialog.pokedex-entry[open]')).toContain('#fffbd8');
     expect(globalStyles).not.toMatch(/\.trainer-roster-card\s*{/);
     expect(globalStyles).toMatch(
-      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)\s*{[\s\S]*?\.trainer-screen\s*{[^}]*height: calc\(100dvh - 2rem\);[^}]*grid-template-rows: minmax\(0, 22\.25rem\) minmax\(0, 1fr\);/,
+      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)\s*{[\s\S]*?\.trainer-screen\s*{[^}]*height: auto;[^}]*grid-template-rows: minmax\(0, 22\.25rem\) auto;/,
     );
     expect(globalStyles).toMatch(
       /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.career-pc[^}]*min-height: 0;/,
@@ -333,7 +333,7 @@ describe('handheld reference visual system', () => {
 
   it('allocates enough desktop height to keep Trainer Card links inside the clipped card', () => {
     const desktopTrainerTrack = globalStyles.match(
-      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.trainer-screen\s*{[^}]*grid-template-rows: minmax\(0, ([\d.]+)rem\) minmax\(0, 1fr\);/,
+      /@media \(min-width: 90rem\) and \(min-height: 56\.25rem\)[\s\S]*?\.trainer-screen\s*{[^}]*grid-template-rows: minmax\(0, ([\d.]+)rem\) auto;/,
     );
 
     expect(desktopTrainerTrack).not.toBeNull();

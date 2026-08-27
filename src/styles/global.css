@@ -1104,8 +1104,8 @@ dialog.pokedex-entry > button {
 
   .trainer-screen {
     width: min(100%, 78rem);
-    height: calc(100dvh - 2rem);
-    grid-template-rows: minmax(0, 22.25rem) minmax(0, 1fr);
+    height: auto;
+    grid-template-rows: minmax(0, 22.25rem) auto;
     gap: 0.65rem;
   }
 
